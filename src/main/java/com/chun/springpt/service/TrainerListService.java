@@ -16,5 +16,7 @@ public class TrainerListService {
     public List<TrainerVO>selecTrainerList(){
         return dao.selectList();
     }
-    
+    public TrainerVO selectTrainerDetail(int id){
+        return dao.selectDetail(id);
+    }
 }
