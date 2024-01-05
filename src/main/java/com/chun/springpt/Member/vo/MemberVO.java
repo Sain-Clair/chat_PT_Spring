@@ -2,7 +2,7 @@ package com.chun.springpt.Member.vo;
 
 
 
-import java.sql.Date;
+import java.util.Date;
 import org.apache.ibatis.type.Alias;
 import lombok.Data;
 
@@ -20,4 +20,5 @@ public class MemberVO {
 	private float userKg;
 	private float userHeight;
 	private String foodId;
+	
 }
