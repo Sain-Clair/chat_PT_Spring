@@ -1,6 +1,9 @@
 package com.chun.springpt.Trainer.vo;
+import org.apache.ibatis.type.Alias;
+
 import lombok.Data;
 
+@Alias("tvo")
 @Data
 public class TrainerVO {
     private String TRAINERNAME;
