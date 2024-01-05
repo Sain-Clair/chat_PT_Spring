@@ -3,9 +3,11 @@ import lombok.Data;
 
 @Data
 public class TrainerVO {
-    private int idx;
-    private String name;
-    private String location;
-    private String awards;
-    private String comment;
+    private String TRAINERNAME;
+    private String TRAINERCOMMENT;
+    private String TRAINERID;
+    private String TRAINERPW;
+    private String TRAINERPURPOSE;
+    private String TRAINEREMAIL;
+    private String TRAINERGENDER;
 }
