@@ -13,8 +13,14 @@ import lombok.extern.slf4j.Slf4j;
 @EnableWebSocket
 public class ChatWebSocketConfig implements WebSocketConfigurer {
 
+    private final ChatWebSocketHandler chatWebSocketHandler; // 의존성 주입을 위해 필드 추가
+
+    public ChatWebSocketConfig(ChatWebSocketHandler chatWebSocketHandler) {
+        this.chatWebSocketHandler = chatWebSocketHandler;
+    }
+
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new ChatWebSocketHandler(), "/chatptCHAT").setAllowedOrigins("*");
+        registry.addHandler(chatWebSocketHandler, "/chatptCHAT").setAllowedOrigins("*");
     }
 }
