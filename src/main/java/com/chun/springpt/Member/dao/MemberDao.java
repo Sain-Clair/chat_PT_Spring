@@ -1,8 +1,12 @@
-package com.chun.springpt.dao;
+package com.chun.springpt.Member.dao;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
-import com.chun.springpt.vo.MemberVO;
+
+import com.chun.springpt.Member.vo.MemberVO;
+
+
 
 @Mapper
 public interface MemberDao {

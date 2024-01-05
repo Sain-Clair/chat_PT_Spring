@@ -1,4 +1,4 @@
-package com.chun.springpt.vo;
+package com.chun.springpt.Trainer.vo;
 import lombok.Data;
 
 @Data

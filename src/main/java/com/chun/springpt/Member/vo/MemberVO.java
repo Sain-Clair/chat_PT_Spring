@@ -1,8 +1,9 @@
-package com.chun.springpt.vo;
+package com.chun.springpt.Member.vo;
 
 import java.sql.Date;
 
 import org.apache.ibatis.type.Alias;
+
 import lombok.Data;
 
 @Alias("mvo")
