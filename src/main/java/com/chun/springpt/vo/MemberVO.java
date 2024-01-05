@@ -1,8 +1,7 @@
-package com.chun.springpt.Member.vo;
+package com.chun.springpt.vo;
 
+import java.util.Date;
 
-
-import java.sql.Date;
 import org.apache.ibatis.type.Alias;
 import lombok.Data;
 
@@ -14,10 +13,11 @@ public class MemberVO {
 	private String userPw;
 	private String userName;
 	private String userGender;
+
 	private int userRole;
 	private Date userBirth;
-	private String userpupose;
 	private float userKg;
 	private float userHeight;
 	private String foodId;
+
 }

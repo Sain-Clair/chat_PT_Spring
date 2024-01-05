@@ -1,10 +1,16 @@
-package com.chun.springpt.Trainer.vo;
+package com.chun.springpt.vo;
 import org.apache.ibatis.type.Alias;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Alias("tvo")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class TrainerVO {
     private String TRAINERNAME;
     private String TRAINERCOMMENT;
