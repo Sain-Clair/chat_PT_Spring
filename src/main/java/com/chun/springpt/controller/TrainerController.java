@@ -19,7 +19,6 @@ public class TrainerController {
     @GetMapping("/trainerList")
     public List<TrainerVO> getTrainerList(){
         return Tservice.selecTrainerList();
-    	
     	//List<TrainerVO> list = new ArrayList<>(); 기존코드   
     }
 }

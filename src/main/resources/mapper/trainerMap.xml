@@ -5,5 +5,5 @@
     <select id = "selectList" resultType = 'tvo'>
         select * from trainer order by trainername desc
     </select>
-
 </mapper>
+
