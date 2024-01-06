@@ -4,13 +4,13 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 
 public interface MessageDao {
-	List<MessageVO> getAllMessages();
+	// List<MessageVO> getAllMessages();
 
-	MessageVO getMessageById(Long id);
+	// MessageVO getMessageById(Long id);
 
-	void insertMessage(MessageVO message);
+	// void insertMessage(MessageVO message);
 
-	void updateMessage(MessageVO message);
+	// void updateMessage(MessageVO message);
 
-	void deleteMessage(Long id);
+	// void deleteMessage(Long id);
 }
