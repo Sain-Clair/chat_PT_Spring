@@ -1,0 +1,3 @@
+# 토큰의 함호화 코드
+jwt:
+  secret: hello.choonsik.world.my.name.is.choonsik
