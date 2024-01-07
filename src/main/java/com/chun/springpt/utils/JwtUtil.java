@@ -9,7 +9,7 @@ import java.util.Date;
 public class JwtUtil {
     public static String createJwt(String userID, String secretKey, Long expireMs) {
         Claims claims = Jwts.claims();
-        claims.put("userName", userID);
+        claims.put("userID", userID);
 
         return  Jwts.builder()
                 .setClaims(claims)

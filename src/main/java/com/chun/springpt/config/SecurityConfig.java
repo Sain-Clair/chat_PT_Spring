@@ -1,5 +1,8 @@
 package com.chun.springpt.config;
 
+import com.chun.springpt.service.UserService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,7 +19,13 @@ import org.springframework.web.filter.CorsFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final UserService userService;
+
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     @Bean
     public CorsFilter corsFilter() {
@@ -46,7 +55,8 @@ public class SecurityConfig {
                         )
                         .permitAll()
                 )
-                .authorizeHttpRequests(request -> request.anyRequest().authenticated());
+                .authorizeHttpRequests(request -> request.anyRequest().authenticated())
+                .addFilterBefore(new JWTFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
