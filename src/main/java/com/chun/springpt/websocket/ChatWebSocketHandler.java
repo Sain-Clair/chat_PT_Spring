@@ -36,7 +36,11 @@ public class ChatWebSocketHandler extends TextWebSocketHandler {
 		try {
 			ObjectMapper objectMapper = new ObjectMapper();
 			msg = objectMapper.readValue(payload, MessageVO.class);
+			System.out.println("!!!!!!!"+msg);
+			
 			MsgRoomVO room = msgService.findById(msg.getChatroomid());
+
+			System.out.println("!!!!!!!"+room);
 			room.handleActions(session, msg, msgService);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();

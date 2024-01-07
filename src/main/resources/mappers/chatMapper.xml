@@ -3,7 +3,7 @@
 <mapper namespace="com.chun.springpt.dao.MessageDao">
 	<insert id="insertRoom" parameterType="com.chun.springpt.vo.MsgRoomVO">
 		<!--INSERT INTO msg_rooms (room_id) VALUES (#{roomId})-->
-		INSERT INTO CHATLOG (CHATROOMID) VALUES (#{CHATROOMID})
+		INSERT INTO CHATLOG (chatroomid) VALUES (#{chatroomid})
 	</insert>
 	<!-- 다른 쿼리들 추가 가능 -->
 </mapper>

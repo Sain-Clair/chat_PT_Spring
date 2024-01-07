@@ -22,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MsgService {
     private final ObjectMapper objectMapper;
-    private Map<String, MsgRoomVO> msgRooms;
+    private Map<Integer, MsgRoomVO> msgRooms; // roomId를 Integer 타입으로 변경
 
     @PostConstruct
     private void init() {
@@ -33,14 +33,14 @@ public class MsgService {
         return new ArrayList<>(msgRooms.values());
     }
 
-    public MsgRoomVO findById(String roomId) {
+    public MsgRoomVO findById(int roomId) {
         return msgRooms.get(roomId);
     }
 
-    public MsgRoomVO createRoom(String name) {
-        
-        String roomId = name;
-        return MsgRoomVO.builder().roomId(roomId).build();
+    public MsgRoomVO createRoom(int name) {
+        int roomId = name;
+        msgRooms.put(roomId, MsgRoomVO.builder().roomId(roomId).build()); // MsgRoomVO 생성 후 맵에 추가
+        return msgRooms.get(roomId); // 해당 roomId에 대한 MsgRoomVO 반환
     }
 
     public <T> void sendMessage(WebSocketSession session, T message) {

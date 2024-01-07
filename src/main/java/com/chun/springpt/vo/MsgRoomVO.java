@@ -12,18 +12,18 @@ import lombok.Data;
 
 @Data
 public class MsgRoomVO {
-    private String roomId;
+    private int roomId;
     private Set<WebSocketSession> sessions = new HashSet<>();
 
     @Builder
-    public MsgRoomVO(String roomId) {
+    public MsgRoomVO(int roomId) {
         this.roomId = roomId;
     }
 
     public void handleActions(WebSocketSession session, MessageVO message, MsgService msgService) {
         if (message.getMessageType().equals(MessageVO.MessageType.ENTER)) {
             sessions.add(session);
-            message.setLOG(message.getUSERID() + "님이 입장했습니다.");
+            message.setLog(message.getUserid() + "님이 입장했습니다.");
         }
         sendMessage(message, msgService);
     }
