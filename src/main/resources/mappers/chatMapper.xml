@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><!-- 왼쪽 구문(http://mybaits) 강제로 다운로드 -->
 <mapper namespace="com.chun.springpt.dao.MessageDao">
-	<insert id="insertRoom" parameterType="com.chun.springpt.vo.MsgRoomVO">
-		<!--INSERT INTO msg_rooms (room_id) VALUES (#{roomId})-->
+	<!--public class MessageVO {
+    public enum MessageType {
+        ENTER, COMM
+    }
+    private MessageType messageType;
+    private int chatroomid;
+    private String userid;
+    private String log;
+    private Date logdate;
+    private boolean logisread;-->
+	
+<!--	<insert id="insertRoom2" parameterType="com.chun.springpt.vo.MsgRoomVO">
+		INSERT INTO msg_rooms (room_id) VALUES (#{roomId})
 		INSERT INTO CHATLOG (chatroomid) VALUES (#{chatroomid})
-	</insert>
+	</insert>-->
+	
+	<select id="roomList" resultType="msgroom">
+		select CHATROOMID from CHATROOM
+    </select>
+     
+   <insert id="insertRoom" parameterType="msgroom">
+	   INSERT INTO chatroom (CHATROOMID) VALUES (SEQ_CR_NO.nextVal)
+   </insert>
+   
+    <insert id="insertMessage" parameterType="msgvo">
+        INSERT INTO chatroom (CHATROOMID, LOG, LOGDATE, LOGISREAD, USERID)
+        VALUES (1, #{log}, SYSDATE, 0, #{userId})
+    </insert>
+
 	<!-- 다른 쿼리들 추가 가능 -->
 </mapper>

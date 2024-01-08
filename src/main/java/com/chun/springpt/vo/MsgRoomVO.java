@@ -3,6 +3,7 @@ package com.chun.springpt.vo;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.ibatis.type.Alias;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.chun.springpt.service.MsgService;
@@ -10,6 +11,7 @@ import com.chun.springpt.service.MsgService;
 import lombok.Builder;
 import lombok.Data;
 
+@Alias("msgroom")
 @Data
 public class MsgRoomVO {
     private int roomId;

@@ -21,7 +21,8 @@ public class SpringptApplication {
 			public void addCorsMappings(CorsRegistry registry) {
 				System.out.println("Test==================");
 				registry.addMapping("/**")
-				.allowedOrigins( "http://192.168.0.30:8080/", "http://localhost:8080/")
+//				.allowedOrigins( "http://192.168.0.30:8080/", "http://localhost:8080/")
+				.allowedOrigins( "*")
 				.allowedHeaders( "*")
 				.allowedMethods( "*") .maxAge (3600);
 
