@@ -2,30 +2,30 @@ package com.chun.springpt.vo;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import org.apache.ibatis.type.Alias;
 import org.springframework.web.socket.WebSocketSession;
-
 import com.chun.springpt.service.MsgService;
-
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 @Alias("msgroom")
 @Data
 public class MsgRoomVO {
-    private int roomId;
+    private String roomId;
+    private String name;
     private Set<WebSocketSession> sessions = new HashSet<>();
 
     @Builder
-    public MsgRoomVO(int roomId) {
+    public MsgRoomVO(String roomId, String name) {
         this.roomId = roomId;
+        this.name = name;
     }
 
     public void handleActions(WebSocketSession session, MessageVO message, MsgService msgService) {
-        if (message.getMessageType().equals(MessageVO.MessageType.ENTER)) {
+        if (message.getType().equals(MessageVO.MessageType.ENTER)) {
             sessions.add(session);
-            message.setLog(message.getUserid() + "님이 입장했습니다.");
+            message.setMessage(message.getSender() + "님이 온라인 상태입니다.");
         }
         sendMessage(message, msgService);
     }

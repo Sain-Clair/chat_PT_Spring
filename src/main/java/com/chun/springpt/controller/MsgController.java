@@ -16,17 +16,15 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/pt_chatroom")
+@RequestMapping("/chat")
 public class MsgController {
 
     private final MsgService msgService;
     
-    
-
     @PostMapping
-    public MsgRoomVO createRoom() {
+    public MsgRoomVO createRoom(@RequestParam String name) {
         System.out.println("!!!!채팅방생성!!!!!");
-        return msgService.createRoom();
+        return msgService.createRoom(name);
     	
 //    	 int generatedRoomName = generateRoomName(); // MyBatis를 사용하여 방 번호 생성
 //         System.out.println("!!!!채팅방생성!!!!!" + generatedRoomName);
@@ -36,11 +34,6 @@ public class MsgController {
 //         return MsgRoomVO;
      }
     
-    private int generateRoomName() {
-        // 여기서 적절한 로직을 사용하여 방 번호를 생성하고 반환하는 코드를 작성하세요
-        // 예: Random 또는 시퀀스 사용 등
-        return 2; // 임시로 정수 123을 반환하는 예시
-    }
 
     @GetMapping
     public List<MsgRoomVO> findAllRoom() {

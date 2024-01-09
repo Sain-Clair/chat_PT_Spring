@@ -26,9 +26,22 @@
    </insert>
    
     <insert id="insertMessage" parameterType="msgvo">
-        INSERT INTO chatroom (CHATROOMID, LOG, LOGDATE, LOGISREAD, USERID)
-        VALUES (1, #{log}, SYSDATE, 0, #{userId})
+        INSERT INTO CHATLOG (logdate, roomId, sender, message) 
+        VALUES (SYSDATE, #{roomId}, #{sender}, #{message})
     </insert>
-
+    
 	<!-- 다른 쿼리들 추가 가능 -->
+	
+	<insert id="insertChatRoom" parameterType="msgroom">
+        INSERT INTO CHATROOM (roomId, name) VALUES (#{roomId}, #{name})
+    </insert>
+    <select id="selectChatRoomById" resultType="msgroom">
+        SELECT * FROM CHATROOM WHERE roomId = #{roomId}
+    </select>
+    <select id="selectAllChatRooms" resultType="msgroom">
+        SELECT * FROM CHATROOM 
+    </select>
+    <delete id="deleteChatRoom" parameterType="java.lang.String">
+        DELETE FROM CHATROOM WHERE roomId = #{roomId}
+    </delete>
 </mapper>

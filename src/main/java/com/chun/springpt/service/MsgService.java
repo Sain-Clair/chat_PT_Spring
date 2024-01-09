@@ -2,9 +2,11 @@ package com.chun.springpt.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,45 +28,60 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class MsgService {
-    private final ObjectMapper objectMapper;
-    private Map<Integer, MsgRoomVO> msgRooms; // roomId를 Integer 타입으로 변경
 
-    @Autowired
-    private MessageDao msgdao; //chatroom + chatMessage
-   
-    
-    @PostConstruct
-    private void init() {
-        msgRooms = new LinkedHashMap<>();
-    }
+	private final ObjectMapper objectMapper;
+	private final MessageDao messageDao;
+	private Map<String, MsgRoomVO> msgRooms; 
+	
+	@Autowired
+	private MessageDao msgdao; // chatroom + chatMessage
 
-    public List<MsgRoomVO> findAllRoom() {
-        return msgdao.roomList();
-    }
+	@PostConstruct
+	private void init() {
+		msgRooms = new LinkedHashMap<>();
+	}
 
-    public MsgRoomVO findById(int roomId) {
-        return msgRooms.get(roomId);
-    }
-//   메시지 발송!
-    @Transactional
-    public MessageVO insertMessage(MessageVO message) {
-        // MessageDAO를 통해 받은 message를 DB에 삽입합니다.
-        return msgdao.insertMessage(message);
-    }
+	public List<MsgRoomVO> findAllRoom() {
+		return msgdao.selectAllChatRooms();
+	}
 
-    public MsgRoomVO createRoom() {
-    	return msgdao.insertRoom();
-    	
-    	//        int roomId = name;
-//        msgRooms.put(roomId, MsgRoomVO.builder().roomId(roomId).build()); // MsgRoomVO 생성 후 맵에 추가
-//        return msgRooms.get(roomId); // 해당 roomId에 대한 MsgRoomVO 반환
-    }
+	public MsgRoomVO findById(String roomId) {
+		return msgdao.selectChatRoomById(roomId);
+	}
 
-    public <T> void sendMessage(WebSocketSession session, T message) {
-        try {
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(message)));
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-        }
-    }
+//    public MsgRoomVO createRoom(String name) {
+//    	return msgdao.insertRoom();
+//    	
+//    	//        int roomId = name;
+////        msgRooms.put(roomId, MsgRoomVO.builder().roomId(roomId).build()); // MsgRoomVO 생성 후 맵에 추가
+////        return msgRooms.get(roomId); // 해당 roomId에 대한 MsgRoomVO 반환
+//    }
+
+	// 마이바티스 DB연동/ 방만들기
+	public MsgRoomVO createRoom(String name) {
+		String randomId = UUID.randomUUID().toString();
+		MsgRoomVO chatRoom = new MsgRoomVO(randomId, name);
+		msgRooms.put(randomId, chatRoom);
+		// 생성된 채팅방을 데이터베이스에 저장합니다.
+		msgdao.insertChatRoom(chatRoom);
+		return chatRoom;
+	}
+
+	// 마이바티스 DB연동/ 메시지 보내기
+	public <T> void sendMessage(WebSocketSession session, T message) {
+		try {
+
+			if (message instanceof MessageVO) {
+				MessageVO messageVO = (MessageVO) message;
+	            messageVO.setLogdate(new Date()); // 현재 시간 설정
+	            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(messageVO)));
+	            System.out.println("메시지 전송!!!!");
+
+	            msgdao.insertMessage(messageVO); // 메시지를 DB에 저장
+	            System.out.println(msgdao + " !!!메시지 DB저장 완료!!!");
+	        }
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+		}
+	}
 }
