@@ -5,6 +5,7 @@ import java.util.Date;
 import org.apache.ibatis.type.Alias;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Data;
 import lombok.Getter;
@@ -19,11 +20,15 @@ public class MessageVO {
     public enum MessageType {
         ENTER, TALK
     }
+    @JsonProperty("type")
     private MessageType type; // 메시지 타입
+    @JsonProperty("roomId")
     private String roomId; // 방번호
+    @JsonProperty("sender")
     private String sender; // 메시지 보낸사람
+    @JsonProperty("message")
     private String message; // 메시지
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date logdate; //보낸시간
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+//    private Date logdate; //보낸시간
     
 }

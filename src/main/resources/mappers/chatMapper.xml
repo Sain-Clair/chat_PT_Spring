@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><!-- 왼쪽 구문(http://mybaits) 강제로 다운로드 -->
-<mapper namespace="com.chun.springpt.dao.MessageDao">
+<mapper namespace="com.chun.springpt.mapper.ChatMapper">
 	<!--public class MessageVO {
     public enum MessageType {
         ENTER, COMM
@@ -35,10 +35,10 @@
 	<insert id="insertChatRoom" parameterType="msgroom">
         INSERT INTO CHATROOM (roomId, name) VALUES (#{roomId}, #{name})
     </insert>
-    <select id="selectChatRoomById" resultType="msgroom">
+    <select id="findRoomById" resultType="msgroom">
         SELECT * FROM CHATROOM WHERE roomId = #{roomId}
     </select>
-    <select id="selectAllChatRooms" resultType="msgroom">
+    <select id="findAllRoom" resultType="msgroom">
         SELECT * FROM CHATROOM 
     </select>
     <delete id="deleteChatRoom" parameterType="java.lang.String">
