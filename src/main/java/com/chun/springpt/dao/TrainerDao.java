@@ -10,9 +10,11 @@ import com.chun.springpt.vo.TrainerVO;
 public interface TrainerDao {
     // Trainer List
     public List<TrainerVO> selectList();
-
+    public List<TrainerVO> selectTopTrainerList();
     // 선택 Detail
     // TrainerVO selectDetail(@Param("tnum") int tnum);
     TrainerVO selectDetail(String trainer_id);
+
+    
 
 }

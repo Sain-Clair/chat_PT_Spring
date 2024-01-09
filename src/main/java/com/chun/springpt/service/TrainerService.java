@@ -9,17 +9,18 @@ import com.chun.springpt.dao.TrainerDao;
 import com.chun.springpt.vo.TrainerVO;
 
 @Service
-public class TrainerListService {
+public class TrainerService {
     @Autowired
     private TrainerDao dao;
-
+    
+    // 트레이너 리스트
     public List<TrainerVO> selecTrainerList() {
         return dao.selectList();
     }
-
-    // public TrainerVO selectTrainerDetail(int tnum){
-    // return dao.selectDetail(tnum);
-    // }
+    public List<TrainerVO> selectTopTrainerList(){
+        return dao.selectTopTrainerList();
+    }
+    // 트레이너 상세 정보
     public TrainerVO selectTrainerDetail(String trainer_id) {
         return dao.selectDetail(trainer_id);
     }
