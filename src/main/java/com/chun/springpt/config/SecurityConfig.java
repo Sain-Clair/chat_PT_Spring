@@ -50,10 +50,18 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(request -> request
+                        // 토큰 검증을 하지 않을 요청
                         .requestMatchers(
+//                                "/login"
                                 "/**"
                         )
                         .permitAll()
+                        // 토큰 검증을 할 요청
+                        .requestMatchers(
+//                                "/**"
+                                "/logintest"
+                        )
+                        .authenticated()
                 )
                 .authorizeHttpRequests(request -> request.anyRequest().authenticated())
                 .addFilterBefore(new JWTFilter(userService, secretKey), UsernamePasswordAuthenticationFilter.class);
