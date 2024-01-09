@@ -13,10 +13,14 @@ public class TrainerListService {
     @Autowired
     private TrainerDao dao;
 
-    public List<TrainerVO>selecTrainerList(){
+    public List<TrainerVO> selecTrainerList() {
         return dao.selectList();
     }
-    public TrainerVO selectTrainerDetail(int id){
-        return dao.selectDetail(id);
+
+    // public TrainerVO selectTrainerDetail(int tnum){
+    // return dao.selectDetail(tnum);
+    // }
+    public TrainerVO selectTrainerDetail(String trainer_id) {
+        return dao.selectDetail(trainer_id);
     }
 }

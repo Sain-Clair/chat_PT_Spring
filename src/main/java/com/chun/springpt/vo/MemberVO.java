@@ -8,16 +8,12 @@ import lombok.Data;
 @Alias("mvo")
 @Data
 public class MemberVO {
-	private String userId;
-	private String userEmail;
-	private String userPw;
-	private String userName;
-	private String userGender;
-
-	private int userRole;
-	private Date userBirth;
-	private float userKg;
-	private float userHeight;
-	private String foodId;
-
+	private String ID;
+	private String EMAIL;
+	private String PASSWORD;
+	private String NAME;
+	private String GENDER;
+	private String ROLE;
+	private Date BIRTH;
+	private String MEMBER_EMAIL;
 }

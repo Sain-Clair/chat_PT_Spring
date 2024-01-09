@@ -18,8 +18,8 @@ public class TrainerController {
     public List<TrainerVO> getTrainerList() {
         return Tservice.selecTrainerList();
     }
-    @GetMapping("/trainers/{id}")
-    public TrainerVO getTrainerDetail(@PathVariable int id) {
-        return Tservice.selectTrainerDetail(id);
+    @GetMapping("/trainers/{trainer_id}")
+    public TrainerVO getTrainerDetail(@PathVariable("trainer_id") String trainer_id) {
+        return Tservice.selectTrainerDetail(trainer_id);
     }
 }
