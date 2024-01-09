@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
 	id 'war'
-	id 'org.springframework.boot' version '3.1.7'
+	id 'org.springframework.boot' version '3.2.1'
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
@@ -27,8 +27,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'//관리자용 JPA(미구현)
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'//RestFull API
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc:3.1.4'// Jdbc
-	implementation 'org.springframework.boot:spring-boot-starter-security' // 스프링 시큐리티
-	implementation 'io.jsonwebtoken:jjwt:0.9.1'// JWT 토큰
+	implementation 'org.springframework.boot:spring-boot-starter-security' // 시큐리티
+	implementation 'org.springframework.security:spring-security-messaging:6.1.2' // 시큐리티
+	testImplementation 'org.springframework.security:spring-security-test' // 시큐리티
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.5' // JWT
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5' // JWT
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5' // JWT
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3'
