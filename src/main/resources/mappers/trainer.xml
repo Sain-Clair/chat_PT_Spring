@@ -3,7 +3,7 @@
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chun.springpt.Trainer.dao.TrainerDao">
     <select id = "selectList" resultType = 'tvo'>
-        select * from trainer order by trainername desc
+        select * from members inner join trainer_mem on members.id = trainer_mem.trainer_id order by name desc
     </select>
 </mapper>
 

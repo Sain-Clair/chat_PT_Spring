@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.chun.springpt.vo.TrainerVO;
 
-
 @Mapper
 public interface TrainerDao {
     // Trainer List
