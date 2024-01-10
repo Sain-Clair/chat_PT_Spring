@@ -32,6 +32,19 @@ public class MsgController {
 		messagingTemplate.convertAndSend("/sub/" + messageVO.getRoomId(), messageVO);
 		
 	}
+	
+//	이전코드
+	/*
+	 * @MessageMapping("/chat/message") public void message(@Payload MessageVO
+	 * messageVO) { if (MessageVO.MessageType.ENTER.equals(messageVO.getType()))
+	 * messageVO.setMessage(messageVO.getSender() + "님이 입장하셨습니다.");
+	 * messagingTemplate.convertAndSend("/sub/chat/room/" + messageVO.getRoomId(),
+	 * messageVO); chatRoomRepository.insertMessage(messageVO);
+	 * 
+	 * messagingTemplate.convertAndSend("/sub/" + messageVO.getRoomId(), messageVO);
+	 * 
+	 * }
+	 */
 
 }
 

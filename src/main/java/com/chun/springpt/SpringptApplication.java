@@ -22,7 +22,7 @@ public class SpringptApplication {
 				System.out.println("Test==================");
 				registry.addMapping("/**")
 //				.allowedOrigins( "http://192.168.0.30:8080/", "http://localhost:8080/")
-				.allowedOrigins( "*")
+				.allowedOrigins( "*", "http://192.168.0.60:8081")
 				.allowedHeaders( "*")
 				.allowedMethods( "*") .maxAge (3600);
 

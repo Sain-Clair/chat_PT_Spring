@@ -7,14 +7,13 @@ import org.apache.ibatis.type.Alias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Alias("msgvo")
 @Data
-@Getter
-@Setter
 public class MessageVO {
 	// 메시지 타입 : 입장, 채팅
     public enum MessageType {
