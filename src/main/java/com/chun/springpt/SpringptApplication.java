@@ -14,16 +14,16 @@ public class SpringptApplication {
 	}
 	@Bean
 	public WebMvcConfigurer crosConfigure(){
-		
+
 		return new WebMvcConfigurer() {
-			
+
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				System.out.println("Test==================");
 				registry.addMapping("/**")
-				.allowedOrigins( "http://192.168.0.30:8080/", "http://localhost:8080/", "http://localhost:8081/", "https://chunsik.shop/")
-				.allowedHeaders( "*")
-				.allowedMethods( "*") .maxAge (3600);
+				.allowedOrigins("http://localhost:8080", "http://localhost:8081", "https://chunsik.shop")
+				.allowedHeaders("*")
+				.allowedMethods("*").allowCredentials(true).maxAge (3600);
 
 			}
 		};
