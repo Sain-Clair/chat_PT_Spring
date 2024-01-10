@@ -1,9 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.chun.springpt.Trainer.dao.TrainerDao">
-    <select id = "selectList" resultType = 'tvo'>
-        select * from trainer order by trainername desc
+<mapper namespace="com.chun.springpt.dao.TrainerDao">
+    <resultMap id="trainerMemberResultMap" type="com.chun.springpt.vo.TrainerVO">
+        <!-- TrainerVO의 필드와 컬럼 매핑 -->
+        <id property="TNUM" column="TNUM"/>
+        <result property="TRAINER_ID" column="TRAINER_ID"/>
+        <result property="TRAINERCOMMENT" column="TRAINERCOMMENT"/>
+        <result property="TRAINERINTRO" column="TRAINERINTRO"/>
+        <result property="ADDRESS" column="ADDRESS"/>
+        <result property="CONTACTTIME" column="CONTACTTIME"/>
+        <result property="AWARDS1" column="AWARDS1"/>
+        <result property="AWARDS2" column="AWARDS2"/>
+        <result property="AWARDS3" column="AWARDS3"/>
+        <result property="AWARDS4" column="AWARDS4"/>
+        <result property="AWARDS5" column="AWARDS5"/>
+        <result property="STATUS" column="STATUS"/>
+
+        <!-- MemberVO의 필드와 컬럼 매핑 -->
+        <association property="memberVO" javaType="com.chun.springpt.vo.MemberVO">
+            <id property="ID" column="ID"/>
+            <result property="EMAIL" column="EMAIL"/>
+            <result property="PASSWORD" column="PASSWORD"/>
+            <result property="NAME" column="NAME"/>
+            <result property="GENDER" column="GENDER"/>
+            <result property="ROLE" column="ROLE"/>
+            <result property="BIRTH" column="BIRTH"/>
+            <result property="MEMBER_EMAIL" column="MEMBER_EMAIL"/>
+        </association>
+    </resultMap>
+    <!-- 트레이너 리스트-->
+    <select id="selectList" resultMap="trainerMemberResultMap">
+        select * from members inner join trainer_mem on members.id = trainer_mem.trainer_id order by name desc
+    </select>
+    <!-- 트레이너 상세정보-->
+    <select id="selectDetail" resultType="tvo">
+        SELECT m.name, m.gender, m.email, t.trainercomment, t.trainerintro, t.address, t.awards1, t.awards2, t.awards3, t.awards4, t.awards5, t.starttime, t.endtime, t.status
+FROM trainer_mem t INNER JOIN members m ON t.trainer_id = m.id WHERE t.trainer_id = #{trainer_id}
     </select>
 </mapper>
 
