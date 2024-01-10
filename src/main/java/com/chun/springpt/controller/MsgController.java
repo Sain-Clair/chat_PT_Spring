@@ -1,10 +1,17 @@
 package com.chun.springpt.controller;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.chun.springpt.repository.ChatRoomRepository;
 import com.chun.springpt.vo.MessageVO;
@@ -16,7 +23,8 @@ import lombok.RequiredArgsConstructor;
  * @RequiredArgsConstructor - Lombok 라이브러리의 어노테이션으로, final 또는 @NonNull 필드에 대한 생성자를 자동으로 생성합니다.
  */
 @RequiredArgsConstructor
-@Controller
+//@Controller
+@RestController
 public class MsgController {
 
     // 메시지 전송을 위한 SimpMessageSendingOperations 의존성 주입.
@@ -38,7 +46,9 @@ public class MsgController {
     public void message(@Payload MessageVO messageVO) {
         // 메시지 타입이 ENTER(입장)인 경우, 입장 알림 메시지를 설정합니다.
         if (MessageVO.MessageType.ENTER.equals(messageVO.getType())) {
-            messageVO.setMessage(messageVO.getSender() + "님이 온라인 상태입니다.");
+            
+
+        	messageVO.setMessage(messageVO.getSender() + " 님이 온라인 상태입니다.");
         }
 
         // 해당 채팅방 구독자들에게 메시지를 전송
@@ -51,6 +61,12 @@ public class MsgController {
         // 추가로 필요한 경우 다른 경로로 메시지를 전송할 수 있습니다.
         // 예를 들어, "/sub/{roomId}" 경로로 메시지를 전송하여, 다른 용도로 사용할 수 있습니다.
         messagingTemplate.convertAndSend("/sub/" + messageVO.getRoomId(), messageVO);
+    }
+    
+    
+    @GetMapping("/chat/rooms/{roomId}/messages")
+    public List<MessageVO> getMessageById(@PathVariable String roomId) {
+        return chatRoomRepository.getMessageById(roomId);
     }
 }
 //	이전코드

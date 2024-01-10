@@ -27,10 +27,6 @@ public class ChatRoomRepository {
 	public MsgRoomVO findRoomById(String roomId) {
 		return chatMapper.findRoomById(roomId);
 	}
-	
-	public void insertMessage(MessageVO messageVO) {
-        chatMapper.insertMessage(messageVO);
-    }
 
 	public MsgRoomVO createChatRoom(String name) {
 		MsgRoomVO msgRoomVO = new MsgRoomVO();
@@ -38,6 +34,16 @@ public class ChatRoomRepository {
 		msgRoomVO.setName(name);
 		chatMapper.insertChatRoom(msgRoomVO);
 		return msgRoomVO;
+	}
+	
+	
+	
+	public void insertMessage(MessageVO messageVO) {
+        chatMapper.insertMessage(messageVO);
+    }
+	
+	public List<MessageVO> getMessageById(String roomId) {
+		return chatMapper.getMessageById(roomId);
 	}
 
 	

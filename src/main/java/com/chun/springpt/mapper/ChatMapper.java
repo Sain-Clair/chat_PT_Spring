@@ -2,6 +2,7 @@ package com.chun.springpt.mapper;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.chun.springpt.vo.MessageVO;
@@ -13,9 +14,9 @@ import java.util.List;
 public interface ChatMapper {
 	List<MessageVO> getAllMessages();
 
-	MessageVO getMessageById(Long id);
+	public List<MessageVO> getMessageById(String roomId); // 메시지 로그 가져오기
 
-	void insertMessage(MessageVO message); // 메시지 전송
+	public void insertMessage(MessageVO message); // 메시지 전송
 
 	void updateMessage(MessageVO message);
 
@@ -26,3 +27,5 @@ public interface ChatMapper {
     public List<MsgRoomVO> findAllRoom(); // 전체 챗룸 선택
     public void deleteChatRoom(String roomId); // 챗룸 삭제
 }
+
+

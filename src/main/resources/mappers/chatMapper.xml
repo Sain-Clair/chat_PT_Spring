@@ -8,11 +8,16 @@
 	   INSERT INTO chatroom (CHATROOMID) VALUES (SEQ_CR_NO.nextVal)
    </insert>
 -->
-   
+   <!-- 채팅에 관한 SQL쿼리 -->
     <insert id="insertMessage" parameterType="msgvo">
-        INSERT INTO CHATLOG (logdate, roomId, sender, message) 
-        VALUES (SYSDATE, #{roomId}, #{sender}, #{message})
+        INSERT INTO CHATLOG (type, logdate, roomId, sender, message) 
+        VALUES (#{type}, SYSDATE, #{roomId}, #{sender}, #{message})
     </insert>
+    
+    <select id="getMessageById" resultType="msgvo">
+		<!--SELECT * FROM CHATLOG WHERE roomId = #{roomId} ORDER BY logdate ASC-->
+		SELECT * FROM CHATLOG WHERE roomId = #{roomId} and TYPE = 'TALK'  ORDER BY logdate ASC
+	</select>
     
 	<!-- 채팅방에 관한 SQL쿼리 -->
 	

@@ -25,9 +25,9 @@ public class MessageVO {
     private String roomId; // 방번호
     @JsonProperty("sender")
     private String sender; // 메시지 보낸사람
-    @JsonProperty("message")
-    private String message; // 메시지
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-//    private Date logdate; //보낸시간
+	@JsonProperty("message")
+	private String message; // 메시지
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date logdate; //보낸시간
     
 }
