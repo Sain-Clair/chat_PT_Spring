@@ -1,13 +1,19 @@
 package com.chun.springpt.dao;
 
-import com.chun.springpt.vo.UserVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 
 @Mapper
 public interface UserDao {
-    // 로그인
-    UserVO loginCheck(@Param("id") String id, @Param("password") String password);
+    // 권한 불러오기
+    String getRole(@Param("id") String id);
+
+    // 닉네임 불러오기
+    String getNickname(@Param("id") String id);
+
+    // 이름 불러오기
+    String getName(@Param("id") String id);
+
 
 }
