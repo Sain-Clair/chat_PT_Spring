@@ -31,10 +31,23 @@
     </resultMap>
     <!-- 트레이너 리스트-->
     <select id="selectList" resultMap="trainerMemberResultMap">
-        select * from members inner join trainer_mem on members.id = trainer_mem.trainer_id order by name desc
+        select * from members m inner join trainer_mem t on m.id = t.trainer_id order by name desc
+    </select>
+    <!-- 베스트 트레이너-->
+    <select id="selectBestTrainerList" resultMap="trainerMemberResultMap">
+        <![CDATA[
+        SELECT name, address, mainimage
+        FROM (
+            SELECT m.name, t.address, t.mainimage,
+                ROW_NUMBER() OVER (ORDER BY m.name DESC) as rnum
+            FROM trainer_mem t
+            INNER JOIN members m ON t.trainer_id = m.id
+        )        
+        WHERE rnum <= 5
+        ]]>
     </select>
     <!-- 트레이너 상세정보-->
-    <select id="selectDetail" resultType="tvo">
+    <select id="selectDetail" resultMap="trainerMemberResultMap">
         SELECT m.name, m.gender, m.email, t.trainercomment, t.trainerintro, t.address, t.awards1, t.awards2, t.awards3, t.awards4, t.awards5, t.starttime, t.endtime, t.status
 FROM trainer_mem t INNER JOIN members m ON t.trainer_id = m.id WHERE t.trainer_id = #{trainer_id}
     </select>

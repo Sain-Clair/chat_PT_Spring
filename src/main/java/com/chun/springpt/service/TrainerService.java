@@ -17,8 +17,9 @@ public class TrainerService {
     public List<TrainerVO> selecTrainerList() {
         return dao.selectList();
     }
-    public List<TrainerVO> selectTopTrainerList(){
-        return dao.selectTopTrainerList();
+    // 베스트 트레이너 리스트
+    public List<TrainerVO> selectBestTrainerList(){
+        return dao.selectBestTrainerList();
     }
     // 트레이너 상세 정보
     public TrainerVO selectTrainerDetail(String trainer_id) {
