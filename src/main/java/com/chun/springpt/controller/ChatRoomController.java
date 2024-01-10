@@ -15,8 +15,6 @@ import com.chun.springpt.vo.MsgRoomVO;
 
 import lombok.RequiredArgsConstructor;
 
-//import 생략...
-
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/chat")
@@ -30,7 +28,7 @@ public class ChatRoomController {
 		return "/chat/room";
 	}
 
-	// 모든 채팅방 목록 반환
+	// 모든 채팅방 목록 반환 | 수정! Request Param값을 가지고 와서 특정 
 	@GetMapping("/rooms")
 	@ResponseBody
 	public List<MsgRoomVO> room() {

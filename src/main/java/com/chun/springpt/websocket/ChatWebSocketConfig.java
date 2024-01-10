@@ -35,7 +35,7 @@ public class ChatWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		registry.addEndpoint("/ws-stomp").setAllowedOriginPatterns("*").withSockJS();
 	}
 
-	@Override
+	@Override//Jackson 으로 JSON을 핸들링 하여, 변환을 위함
 	public boolean configureMessageConverters(List<MessageConverter> messageConverters) {
 		messageConverters.add(new MappingJackson2MessageConverter());
 		return true;

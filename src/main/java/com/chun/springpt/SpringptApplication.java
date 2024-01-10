@@ -17,12 +17,12 @@ public class SpringptApplication {
 		
 		return new WebMvcConfigurer() {
 			
-			@Override
+			@Override//CORS 설정입니다.
 			public void addCorsMappings(CorsRegistry registry) {
 				System.out.println("Test==================");
 				registry.addMapping("/**")
 //				.allowedOrigins( "http://192.168.0.30:8080/", "http://localhost:8080/")
-				.allowedOrigins( "*", "http://192.168.0.60:8081")
+				.allowedOrigins( "*")
 				.allowedHeaders( "*")
 				.allowedMethods( "*") .maxAge (3600);
 
