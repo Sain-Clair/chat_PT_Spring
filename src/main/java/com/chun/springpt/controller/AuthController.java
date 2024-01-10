@@ -1,7 +1,7 @@
 package com.chun.springpt.controller;
 
 import com.chun.springpt.domain.dto.LoginRequest;
-import com.chun.springpt.service.UserService;
+import com.chun.springpt.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginRequest dto) {
-//        log.info("넘어온 아이디: {}",dto.getUserName());
-//        log.info("넘어온 비밀번호: {}",dto.getPassword());
-        return ResponseEntity.ok().body(userService.login(dto.getUserName(), dto.getPassword()));
+        log.info("넘어온 아이디: {}",dto.getUserName());
+        log.info("넘어온 비밀번호: {}",dto.getPassword());
+        return ResponseEntity.ok().body(authService.login(dto.getUserName(), dto.getPassword()));
     }
 }
