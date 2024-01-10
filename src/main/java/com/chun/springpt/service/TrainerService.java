@@ -25,4 +25,7 @@ public class TrainerService {
     public TrainerVO selectTrainerDetail(String trainer_id) {
         return dao.selectDetail(trainer_id);
     }
+    public List<TrainerVO> selectLocationTrainerList(String location) {
+        return dao.selectLocationTrainerList(location);
+    }
 }

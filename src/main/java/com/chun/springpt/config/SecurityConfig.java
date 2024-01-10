@@ -22,9 +22,7 @@ import java.util.List;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
     private final AuthService authService;
-
     @Value("${jwt.secret}")
     private String secretKey;
 
