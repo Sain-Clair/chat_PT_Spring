@@ -13,10 +13,8 @@ public interface TrainerDao {
     // 베스트 트레이너 리스트
     public List<TrainerVO> selectBestTrainerList();
     // 선택 Detail
-    public TrainerVO selectDetail(String trainer_id);
-    // 지역 트레이너 리스트
-    public List<TrainerVO> selectLocationTrainerList(String location);
-
-    
-
+    public TrainerVO selectDetail(String id);
+    // 지역 리스트 가져오기
+    public List<TrainerVO> selectRegion();
+    public List<TrainerVO> selectRegionTrainer();
 }

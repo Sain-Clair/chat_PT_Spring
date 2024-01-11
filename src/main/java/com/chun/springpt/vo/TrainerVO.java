@@ -20,7 +20,7 @@ public class TrainerVO {
    private String TRAINER_ID;
    private String TRAINERCOMMENT;
    private String TRAINERINTRO;
-   private String LOCATION;
+   private String REGION;
    private String AWARDS1;
    private String AWARDS2;
    private String AWARDS3;

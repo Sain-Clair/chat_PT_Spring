@@ -8,7 +8,7 @@
         <result property="TRAINER_ID" column="TRAINER_ID"/>
         <result property="TRAINERCOMMENT" column="TRAINERCOMMENT"/>
         <result property="TRAINERINTRO" column="TRAINERINTRO"/>
-        <result property="LOCATION" column="LOCATION"/>
+        <result property="REGION" column="REGION"/>
         <result property="CONTACTTIME" column="CONTACTTIME"/>
         <result property="AWARDS1" column="AWARDS1"/>
         <result property="AWARDS2" column="AWARDS2"/>
@@ -29,32 +29,36 @@
         <result property="MEMBER_EMAIL" column="MEMBER_EMAIL"/>
         </association>
     </resultMap>
-    <!-- 트레이너 리스트-->
+        <!-- ! resultType을 잘 설정하자...-->
+    <!-- 지역 선택 -->
+    <select id="selectRegion" resultType="java.lang.String">
+        select DISTINCT region from trainer_mem
+    </select>
+    <!-- 전체 트레이너 리스트-->
     <select id="selectList" resultMap="TrainerMemberResultMap">
         select * from members m inner join trainer_mem t on m.id = t.trainer_id order by name desc
     </select>
-    <!-- 베스트 트레이너-->
+    <!-- 이달의 추천 트레이너-->
     <select id="selectBestTrainerList" resultMap="TrainerMemberResultMap">
         <![CDATA[
-        SELECT name, LOCATION, mainimage, id
-            FROM (
-                SELECT m.name, t.location, t.mainimage, m.id,
-                    ROW_NUMBER() OVER (ORDER BY m.id DESC) as rnum
-                FROM trainer_mem t
-                INNER JOIN members m ON t.trainer_id = m.id
-            )        
-            WHERE rnum <= 5
+        SELECT name, region, mainimage, id
+        FROM (
+            SELECT m.name, t.region, t.mainimage, m.id,
+                ROW_NUMBER() OVER (ORDER BY m.id DESC) as rnum
+            FROM trainer_mem t
+            INNER JOIN members m ON t.trainer_id = m.id
+        )         
+        WHERE rnum <= 5
         ]]>
+    </select>
+    <!-- 해당 지역 추천 트레이너-->
+    <select id="selectRegionTrainer" resultMap="TrainerMemberResultMap">
+        select t.mainimage, t.REGION, m.name from trainer_mem t inner join members m on t.trainer_id = m.id where t.region=#{region};
     </select>
     <!-- 트레이너 상세정보-->
     <select id="selectDetail" resultMap="TrainerMemberResultMap">
-        SELECT m.name, m.gender, m.email, t.trainercomment, t.trainerintro, t.location, t.awards1, t.awards2, t.awards3, t.awards4, t.awards5, t.starttime, t.endtime, t.trainer_id, t.mainimage
+        SELECT m.name, m.gender, m.email, t.trainercomment, t.trainerintro, t.region, t.awards1, t.awards2, t.awards3, t.awards4, t.awards5, t.starttime, t.endtime, t.trainer_id, t.mainimage
         FROM trainer_mem t INNER JOIN members m ON t.trainer_id = m.id WHERE t.trainer_id = #{trainer_id}
     </select>
-    <!-- 트레이너 지역선택-->
-    <!-- <select id="selectLocationTrainerList" resultType="TrainerMemberResultMap">
-        select t.mainimage, m.name, t.trainerintro, t.location 
-        from trainer_mem t inner join members m on t.trainer_id = m.id where t.location = #{location}
-    </select> -->
 </mapper>
 
