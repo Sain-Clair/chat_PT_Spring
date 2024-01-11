@@ -38,4 +38,9 @@ public class AuthService {
         userVO = authDao.loginCheck(userName, password);
         return userVO;
     }
+
+    // 아이디 찾기
+    public String findId(String name, String email) {
+        return authDao.findId(name, email);
+    }
 }

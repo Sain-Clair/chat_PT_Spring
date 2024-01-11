@@ -4,5 +4,9 @@
     <select id="loginCheck" resultType="user">
         SELECT * FROM members WHERE id = #{id} AND PASSWORD = #{password}
     </select>
+    <!--이름과 이메일로 아이디 찾기-->
+    <select id="findId" resultType="String">
+        SELECT id FROM members WHERE name = #{name} AND email = #{email}
+    </select>
 
 </mapper>

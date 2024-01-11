@@ -30,7 +30,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:8081", "https://chunsik.shop", "ws://localhost/springpt/ws-stomp/**"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:8081",
+                "https://chunsik.shop", "ws://localhost/springpt/ws-stomp/**"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
@@ -50,7 +51,8 @@ public class SecurityConfig {
                 // .authorizeHttpRequests((auth) -> auth.anyRequest().permitAll())
                 .authorizeHttpRequests((auth) -> auth
                         // 토큰 검증을 하지 않을 요청
-                        .requestMatchers("/login", "/checkToken","/images/**","/ws-stomp/**").permitAll()
+                        .requestMatchers("/login", "/checkToken", "/images/**", "/ws-stomp/**", "/service/**")
+                        .permitAll()
                         // 그 외의 모든 요청은 토큰이 있어야 접근 가능
                         .anyRequest().authenticated())
                 // JWT 토큰 필터 추가: JwtTokenFilter를 BasicAuthenticationFilter 전에 추가하여 JWT 토큰을 검증
@@ -67,6 +69,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 
 }
