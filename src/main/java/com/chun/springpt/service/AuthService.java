@@ -1,6 +1,6 @@
 package com.chun.springpt.service;
 
-import com.chun.springpt.dao.UserDao;
+import com.chun.springpt.dao.AuthDao;
 import com.chun.springpt.utils.JwtUtil;
 import com.chun.springpt.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     @Autowired
-    private UserDao userDao;
+    private AuthDao authDao;
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -35,7 +35,7 @@ public class AuthService {
     // 가입된 회원인지 체크하고 유저객체 반환
     public UserVO getUser(String userName, String password) {
         UserVO userVO = null;
-        userVO = userDao.loginCheck(userName, password);
+        userVO = authDao.loginCheck(userName, password);
         return userVO;
     }
 }

@@ -31,7 +31,7 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:8081", "https://chunsik.shop"));
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
@@ -49,7 +49,9 @@ public class SecurityConfig {
                 // HTTP 요청에 대한 보안 필터 체인을 구성
                 // .authorizeHttpRequests((auth) -> auth.anyRequest().permitAll())
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/**").permitAll()
+                        // 토큰 검증을 하지 않을 요청
+                        .requestMatchers("/login", "/checkToken").permitAll()
+                        // 그 외의 모든 요청은 토큰이 있어야 접근 가능
                         .anyRequest().authenticated())
                 // JWT 토큰 필터 추가: JwtTokenFilter를 BasicAuthenticationFilter 전에 추가하여 JWT 토큰을 검증
                 .addFilterBefore(new JWTFilter(authService, secretKey), UsernamePasswordAuthenticationFilter.class)

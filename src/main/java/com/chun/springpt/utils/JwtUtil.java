@@ -31,6 +31,13 @@ public class JwtUtil {
                 .getBody().get("userName", String.class);
     }
 
+    // 토큰에서 id 가져오기
+    public static String getID(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
+                .getBody().get("userName", String.class);
+    }
+
+
     // 토큰에서 role 가져오기
     public static String getRole(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)

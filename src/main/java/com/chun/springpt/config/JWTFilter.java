@@ -37,26 +37,24 @@ public class JWTFilter extends OncePerRequestFilter {
         log.info("로깅 - Request URI: {}", request.getRequestURI());
 
         // 토큰이 없으면 block
-        if(authorization == null || !authorization.startsWith("Bearer ")) {
-            log.error("로깅 -authorization이 없거나, 잘못보냄.");
+        if(authorization == null || !authorization.startsWith("Bearer ") || authorization.length() == "Bearer null".length()) {
+            log.warn("로깅 - authorization이 없거나, 잘못보냄.");
             filterChain.doFilter(request, response);
             return;
         }
 
         // 토큰 꺼내기
         String token = authorization.split(" ")[1];
-        log.error("로깅 - Bearer로 시작하는 authorization 존재함");
 
         // 토큰 expired 되었는지 확인. expired 되었다면 block
         if (JwtUtil.isExpired(token, secretKey)) {
-            log.error("로깅 -토큰이 만료되었습니다.");
+            log.error("로깅 - 토큰이 만료되었습니다.");
             filterChain.doFilter(request, response);
             return;
         }
 
         // userName token에서 가져오기
         String userName = JwtUtil.getUserName(token, secretKey);
-        log.info("로깅 -유저 네임 :  {}", userName);
 
         // 권한 부여
         // role은 DB에서 가져와야됨. 지금은 하드코딩
