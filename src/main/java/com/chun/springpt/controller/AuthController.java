@@ -68,5 +68,21 @@ public class AuthController {
         return ResponseEntity.ok().body(userRole);
     }
 
+    @PostMapping("/service/findId")
+    public ResponseEntity<String> findId(@RequestBody Map<String, String> data) {
+        String name = data.get("name");
+        String email = data.get("email");
+        log.info("name: {}, email: {}", name, email);
+
+        String id = authService.findId(name, email);
+        log.info("찾은 id: {}", id);
+
+        if (id == null) {
+            return ResponseEntity.badRequest().body("일치하는 정보가 없습니다.");
+        }
+
+        return ResponseEntity.ok().body(id);
+    }
+
 
 }
