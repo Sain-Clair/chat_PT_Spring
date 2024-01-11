@@ -13,23 +13,22 @@ import jakarta.annotation.PostConstruct;
 @SpringBootApplication
 public class SpringptApplication {
 
-	
 	public static void main(String[] args) {
 		SpringApplication.run(SpringptApplication.class, args);
 	}
+
 	@Bean
-	public WebMvcConfigurer crosConfigure(){
-		
+	public WebMvcConfigurer crosConfigure() {
+
 		return new WebMvcConfigurer() {
-			
-			@Override//CORS 설정입니다.
+
+			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				System.out.println("Test==================");
 				registry.addMapping("/**")
-//				.allowedOrigins( "http://192.168.0.30:8080/", "http://localhost:8080/")
-				.allowedOrigins( "*")
-				.allowedHeaders( "*")
-				.allowedMethods( "*") .maxAge (3600);
+						.allowedOrigins("http://localhost:8080/", "http://localhost:8081/", "https://chunsik.shop", "http://localhost/", "ws://localhost")
+						.allowedHeaders("*")
+						.allowedMethods("*").allowCredentials(true).maxAge(3600);
 
 			}
 		};
