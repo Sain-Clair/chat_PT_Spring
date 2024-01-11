@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.chun.springpt.service.TrainerService;
 import com.chun.springpt.vo.TrainerVO;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -36,12 +35,14 @@ public class TrainerController {
     // 지역 선택 후, 지역에 맞는 트레이너
     @GetMapping("/regionTrainer/{region}")
     public List<TrainerVO> getRegionTrainer(@PathVariable("region") String region) {
+        System.out.println("지역" + region);
         return Tservice.selectRegionTrainer(region);
     }
     
     // 트레이너 상세정보
     @GetMapping("/trainerList/{trainer_id}")
     public TrainerVO getTrainerDetail(@PathVariable("trainer_id") String trainer_id) {
+        System.out.println("트레이너 디테일" +trainer_id);
         return Tservice.selectTrainerDetail(trainer_id);
     }
     

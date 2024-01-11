@@ -35,6 +35,6 @@ public class TrainerService {
 
     // 지역 선택 후 트레이너 리스트 가져오기
     public List<TrainerVO> selectRegionTrainer(String region) {
-        return dao.selectRegionTrainer();
+        return dao.selectRegionTrainer(region);
     }
 }
