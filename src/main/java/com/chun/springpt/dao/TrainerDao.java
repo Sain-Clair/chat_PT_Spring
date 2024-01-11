@@ -8,12 +8,14 @@ import com.chun.springpt.vo.TrainerVO;
 
 @Mapper
 public interface TrainerDao {
-    // Trainer List
+    //  트레이너 리스트
     public List<TrainerVO> selectList();
-    public List<TrainerVO> selectTopTrainerList();
+    // 베스트 트레이너 리스트
+    public List<TrainerVO> selectBestTrainerList();
     // 선택 Detail
-    // TrainerVO selectDetail(@Param("tnum") int tnum);
-    TrainerVO selectDetail(String trainer_id);
+    public TrainerVO selectDetail(String trainer_id);
+    // 지역 트레이너 리스트
+    public List<TrainerVO> selectLocationTrainerList(String location);
 
     
 

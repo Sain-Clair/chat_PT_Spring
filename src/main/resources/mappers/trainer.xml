@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chun.springpt.dao.TrainerDao">
-    <resultMap id="trainerMemberResultMap" type="com.chun.springpt.vo.TrainerVO">
+    <resultMap id="TrainerMemberResultMap" type="com.chun.springpt.vo.TrainerVO">
         <!-- TrainerVO의 필드와 컬럼 매핑 -->
         <id property="TNUM" column="TNUM"/>
         <result property="TRAINER_ID" column="TRAINER_ID"/>
         <result property="TRAINERCOMMENT" column="TRAINERCOMMENT"/>
         <result property="TRAINERINTRO" column="TRAINERINTRO"/>
-        <result property="ADDRESS" column="ADDRESS"/>
+        <result property="LOCATION" column="LOCATION"/>
         <result property="CONTACTTIME" column="CONTACTTIME"/>
         <result property="AWARDS1" column="AWARDS1"/>
         <result property="AWARDS2" column="AWARDS2"/>
@@ -16,27 +16,45 @@
         <result property="AWARDS4" column="AWARDS4"/>
         <result property="AWARDS5" column="AWARDS5"/>
         <result property="STATUS" column="STATUS"/>
-
+        <result property="MAINIMAGE" column="MAINIMAGE"/>
         <!-- MemberVO의 필드와 컬럼 매핑 -->
         <association property="memberVO" javaType="com.chun.springpt.vo.MemberVO">
-            <id property="ID" column="ID"/>
-            <result property="EMAIL" column="EMAIL"/>
-            <result property="PASSWORD" column="PASSWORD"/>
-            <result property="NAME" column="NAME"/>
-            <result property="GENDER" column="GENDER"/>
-            <result property="ROLE" column="ROLE"/>
-            <result property="BIRTH" column="BIRTH"/>
-            <result property="MEMBER_EMAIL" column="MEMBER_EMAIL"/>
+        <id property="ID" column="ID"/>
+        <result property="EMAIL" column="EMAIL"/>
+        <result property="PASSWORD" column="PASSWORD"/>
+        <result property="NAME" column="NAME"/>
+        <result property="GENDER" column="GENDER"/>
+        <result property="ROLE" column="ROLE"/>
+        <result property="BIRTH" column="BIRTH"/>
+        <result property="MEMBER_EMAIL" column="MEMBER_EMAIL"/>
         </association>
     </resultMap>
     <!-- 트레이너 리스트-->
-    <select id="selectList" resultMap="trainerMemberResultMap">
-        select * from members inner join trainer_mem on members.id = trainer_mem.trainer_id order by name desc
+    <select id="selectList" resultMap="TrainerMemberResultMap">
+        select * from members m inner join trainer_mem t on m.id = t.trainer_id order by name desc
+    </select>
+    <!-- 베스트 트레이너-->
+    <select id="selectBestTrainerList" resultMap="TrainerMemberResultMap">
+        <![CDATA[
+        SELECT name, LOCATION, mainimage, id
+            FROM (
+                SELECT m.name, t.location, t.mainimage, m.id,
+                    ROW_NUMBER() OVER (ORDER BY m.id DESC) as rnum
+                FROM trainer_mem t
+                INNER JOIN members m ON t.trainer_id = m.id
+            )        
+            WHERE rnum <= 5
+        ]]>
     </select>
     <!-- 트레이너 상세정보-->
-    <select id="selectDetail" resultType="tvo">
-        SELECT m.name, m.gender, m.email, t.trainercomment, t.trainerintro, t.address, t.awards1, t.awards2, t.awards3, t.awards4, t.awards5, t.starttime, t.endtime, t.status
-FROM trainer_mem t INNER JOIN members m ON t.trainer_id = m.id WHERE t.trainer_id = #{trainer_id}
+    <select id="selectDetail" resultMap="TrainerMemberResultMap">
+        SELECT m.name, m.gender, m.email, t.trainercomment, t.trainerintro, t.location, t.awards1, t.awards2, t.awards3, t.awards4, t.awards5, t.starttime, t.endtime, t.trainer_id, t.mainimage
+        FROM trainer_mem t INNER JOIN members m ON t.trainer_id = m.id WHERE t.trainer_id = #{trainer_id}
     </select>
+    <!-- 트레이너 지역선택-->
+    <!-- <select id="selectLocationTrainerList" resultType="TrainerMemberResultMap">
+        select t.mainimage, m.name, t.trainerintro, t.location 
+        from trainer_mem t inner join members m on t.trainer_id = m.id where t.location = #{location}
+    </select> -->
 </mapper>
 
