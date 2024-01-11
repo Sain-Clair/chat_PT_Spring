@@ -1,23 +1,44 @@
-package com.chun.springpt.websocket;
+// Stomp통신 구현함에 따라 chatController에서 아래의 기능을 하므로 ChatWebSocketHandler는 삭제하였습니다. 20240109
 
-import org.springframework.stereotype.Component;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
-@Component
-public class ChatWebSocketHandler extends TextWebSocketHandler {
-
-    @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String payload = message.getPayload();
-        log.info("payload : {}", payload);
-
-        TextMessage initialGreeting = new TextMessage("Welcome to Swoomi Chat Server ~O_O~");
-        session.sendMessage(initialGreeting);
-    }
-}
-
+//package com.chun.springpt.websocket;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.stereotype.Component;
+//import org.springframework.web.socket.TextMessage;
+//import org.springframework.web.socket.WebSocketSession;
+//import org.springframework.web.socket.handler.TextWebSocketHandler;
+//
+//import com.chun.springpt.service.MsgService;
+//import com.chun.springpt.vo.MessageVO;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//
+//import lombok.extern.slf4j.Slf4j;
+//
+//@Slf4j
+//@Component
+//public class ChatWebSocketHandler extends TextWebSocketHandler {
+//
+//    private final MsgService msgService;
+//    private final ObjectMapper objectMapper;
+//
+//    @Autowired
+//    public ChatWebSocketHandler(MsgService msgService, ObjectMapper objectMapper) {
+//        this.msgService = msgService;
+//        this.objectMapper = objectMapper;
+//    }
+//
+//    @Override
+//    protected void handleTextMessage(WebSocketSession session, TextMessage textMessage) throws Exception {
+//        String payload = textMessage.getPayload();
+//        log.info("payload : {}", payload);
+//
+//        try {
+//            MessageVO messageVO = objectMapper.readValue(payload, MessageVO.class);
+//            msgService.sendMessage(session, messageVO); // 메시지 처리 로직을 MsgService로 위임
+//        } catch (Exception e) {
+//            log.error("메시지 처리 중 오류 발생", e);
+//        }
+//    }
+//}
+//
