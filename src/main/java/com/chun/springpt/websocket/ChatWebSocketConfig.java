@@ -1,6 +1,7 @@
 package com.chun.springpt.websocket;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -18,10 +19,13 @@ import org.springframework.messaging.converter.MessageConverter;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSocketMessageBroker
 public class ChatWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    private final StompHandler stompHandler;
+	
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
 		config.enableSimpleBroker("/sub"); // 구독자
@@ -40,6 +44,11 @@ public class ChatWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		messageConverters.add(new MappingJackson2MessageConverter());
 		return true;
 	}
+	
+	@Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(stompHandler);
+    }
 
 }
 

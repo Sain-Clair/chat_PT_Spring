@@ -11,10 +11,17 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-
-    //    private static String secretKey;
-    @Value("${jwt.secret}")
     private static String secretKey;
+
+    @Value("${jwt.secret}")
+    public void setSecretKey(String key) {
+        JwtUtil.secretKey = key;
+    }
+
+    // secretKey를 반환하는 메서드 추가
+    public static String getSecretKey() {
+        return secretKey;
+    }
 
     // 헤더에서 토큰 추출하는 메서드
     public static String extractToken(String authorizationHeader) {
@@ -25,42 +32,33 @@ public class JwtUtil {
     }
 
     // 토큰에서 userName 가져오기
-    public static String getUserName(String token, String secretKey) {
-        JwtUtil.secretKey = secretKey;
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
-                .getBody().get("userName", String.class);
+    public static String getUserName(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("userName", String.class);
     }
 
     // 토큰에서 id 가져오기
     public static String getID(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
-                .getBody().get("userName", String.class);
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("userName", String.class);
     }
-
 
     // 토큰에서 role 가져오기
     public static String getRole(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
-                .getBody().get("role", String.class);
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("role", String.class);
     }
 
     // 토큰이 만료되었는지 확인
-    // true: 만료됨
-    public static boolean isExpired(String token, String secretKey) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
-                .getBody().getExpiration().before(new Date());
+    public static boolean isExpired(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getExpiration()
+                .before(new Date());
     }
 
-    public static String createJwt(String userName, String role, String secretKey, Long expireMs) {
+    public static String createJwt(String userName, String role, Long expireMs) {
         Claims claims = Jwts.claims();
         claims.put("userName", userName);
         claims.put("role", role);
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder().setClaims(claims).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expireMs))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
+                .signWith(SignatureAlgorithm.HS256, secretKey).compact();
     }
 }

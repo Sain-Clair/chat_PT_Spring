@@ -2,6 +2,9 @@ package com.chun.springpt.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,15 +13,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import com.chun.springpt.utils.JwtUtil;
+import com.chun.springpt.vo.LoginInfo;
 import com.chun.springpt.vo.MsgRoomVO;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/chat")
 public class ChatRoomController {
+
+	private final JwtUtil jwtUtil;
 
 	private final com.chun.springpt.repository.ChatRoomRepository chatRoomRepository;
 
@@ -55,4 +63,18 @@ public class ChatRoomController {
 	public MsgRoomVO roomInfo(@PathVariable String roomId) {
 		return chatRoomRepository.findRoomById(roomId);
 	}
+	
+	@GetMapping("/user")
+    @ResponseBody
+    public LoginInfo getUserInfo() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        String role = auth.getAuthorities().isEmpty() ? "USER" : auth.getAuthorities().iterator().next().getAuthority();
+
+        // JWT 토큰 생성 시 만료 시간 설정 (예: 1시간 = 3600000ms)
+        long expireMs = 3600000;
+        String token = jwtUtil.createJwt(name, role, null);
+
+        return LoginInfo.builder().name(name).token(token).build();
+    }
 }
