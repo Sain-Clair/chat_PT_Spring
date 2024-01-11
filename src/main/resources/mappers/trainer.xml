@@ -52,9 +52,9 @@
         FROM trainer_mem t INNER JOIN members m ON t.trainer_id = m.id WHERE t.trainer_id = #{trainer_id}
     </select>
     <!-- 트레이너 지역선택-->
-    <select id="selectLocationTrainerList" resultType="TrainerMemberResultMap">
+    <!-- <select id="selectLocationTrainerList" resultType="TrainerMemberResultMap">
         select t.mainimage, m.name, t.trainerintro, t.location 
         from trainer_mem t inner join members m on t.trainer_id = m.id where t.location = #{location}
-    </select>
+    </select> -->
 </mapper>
 
