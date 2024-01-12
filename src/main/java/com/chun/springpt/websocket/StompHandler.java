@@ -45,7 +45,6 @@ public class StompHandler implements ChannelInterceptor {
                     log.error("Invalid Token", e);
                 	System.out.println("33333333333비정상적 접속 확인 | " + jwtToken);
                     throw new IllegalArgumentException("Invalid Token");
-                    
                 }
             }
         }

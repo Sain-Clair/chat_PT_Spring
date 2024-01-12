@@ -62,7 +62,7 @@ public class AuthController {
 		// 헤더에서 토큰 추출
 		String authorizationHeader = request.getHeader("Authorization");
 		String token = JwtUtil.extractToken(authorizationHeader);
-
+		System.out.println(token +"!!!!!!!!!");
 		if (token == null || token.isEmpty()) {
 			return ResponseEntity.badRequest().body("Invalid or empty token");
 		}
@@ -70,6 +70,7 @@ public class AuthController {
 		try {
 			// 사용자 권한
 			String userRole = JwtUtil.getRole(token);
+
 			return ResponseEntity.ok().body(userRole);
 		} catch (Exception e) {
 			log.error("Token processing error", e);
