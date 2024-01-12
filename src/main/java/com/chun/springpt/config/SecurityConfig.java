@@ -1,7 +1,11 @@
 package com.chun.springpt.config;
 
 import com.chun.springpt.service.AuthService;
+import com.chun.springpt.utils.JwtUtil;
+
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +20,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+
+
 import java.util.List;
 
 @Configuration
@@ -25,12 +31,16 @@ public class SecurityConfig {
     private final AuthService authService;
     @Value("${jwt.secret}")
     private String secretKey;
+    
+    @Autowired
+    private JwtUtil jwtUtil; // JwtUtil 인스턴스 주입
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:8081", "https://chunsik.shop"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:8081", "ws://localhost/springpt/ws-stomp/", "https://chunsik.shop"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
@@ -43,6 +53,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf((csrf) -> csrf.disable())
+              
                 .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
                 .formLogin((login) -> login.disable())
                 .httpBasic((basic) -> basic.disable())
@@ -50,7 +61,8 @@ public class SecurityConfig {
                 // .authorizeHttpRequests((auth) -> auth.anyRequest().permitAll())
                 .authorizeHttpRequests((auth) -> auth
                         // 토큰 검증을 하지 않을 요청
-                        .requestMatchers("/login", "/checkToken","/images/**", "/service/**").permitAll()
+                		
+                        .requestMatchers("/login", "/chat/**","/checkToken","/images/**", "/service/**").permitAll()
                         // 그 외의 모든 요청은 토큰이 있어야 접근 가능
                         .anyRequest().authenticated())
                 // JWT 토큰 필터 추가: JwtTokenFilter를 BasicAuthenticationFilter 전에 추가하여 JWT 토큰을 검증
@@ -59,6 +71,8 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 로그아웃 기능 비활성화: 상태를 유지하지 않는 인증 방식에서는 로그아웃이 필요 없다.
                 .logout((logout) -> logout.disable());
+        		
+                
         return http.build();
     }
 

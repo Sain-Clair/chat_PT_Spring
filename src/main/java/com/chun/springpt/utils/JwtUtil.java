@@ -11,10 +11,12 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-
-    //    private static String secretKey;
-    @Value("${jwt.secret}")
     private static String secretKey;
+
+    @Value("${jwt.secret}")
+    public void setSecretKey(String secretKey) {
+        JwtUtil.secretKey = secretKey;
+    }
 
     // 헤더에서 토큰 추출하는 메서드
     public static String extractToken(String authorizationHeader) {
@@ -25,8 +27,7 @@ public class JwtUtil {
     }
 
     // 토큰에서 userName 가져오기
-    public static String getUserName(String token, String secretKey) {
-        JwtUtil.secretKey = secretKey;
+    public static String getUserName(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
                 .getBody().get("userName", String.class);
     }
@@ -34,9 +35,8 @@ public class JwtUtil {
     // 토큰에서 id 가져오기
     public static String getID(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
-                .getBody().get("userName", String.class);
+                .getBody().get("id", String.class); // "userName"을 "id"로 변경했음 (예상하는 필드명에 따라)
     }
-
 
     // 토큰에서 role 가져오기
     public static String getRole(String token) {
@@ -46,12 +46,12 @@ public class JwtUtil {
 
     // 토큰이 만료되었는지 확인
     // true: 만료됨
-    public static boolean isExpired(String token, String secretKey) {
+    public static boolean isExpired(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
                 .getBody().getExpiration().before(new Date());
     }
 
-    public static String createJwt(String userName, String role, String secretKey, Long expireMs) {
+    public static String createJwt(String userName, String role, Long expireMs) {
         Claims claims = Jwts.claims();
         claims.put("userName", userName);
         claims.put("role", role);
