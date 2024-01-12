@@ -20,62 +20,73 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
+  
+    @Autowired
+    private HttpServletRequest request;
 
-	@Autowired
-	private HttpServletRequest request;
+    private final AuthService authService;
 
-	private final AuthService authService;
+    private final UserService userService;
 
-	private final UserService userService;
+    @PostMapping("/login")
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest dto) {
 
-	@PostMapping("/login")
-	public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest dto) {
+        String token = authService.login(dto.getUserName(), dto.getPassword());
+        if (token == null) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "로그인 실패");
+            return ResponseEntity.ok(errorResponse);
+        }
 
-		String token = authService.login(dto.getUserName(), dto.getPassword());
-		if (token == null) {
-			Map<String, String> errorResponse = new HashMap<>();
-			errorResponse.put("error", "로그인 실패");
-			return ResponseEntity.badRequest().body(errorResponse);
-		}
+        String name= "";
+        String nickname = "";
+        String role = userService.getRole(dto.getUserName());
 
-		String name = "";
-		String nickname = "";
-		String role = userService.getRole(dto.getUserName());
+        if (Objects.equals(role, "TRAINER")) {
+            name = userService.getName(dto.getUserName());
+        } else if (Objects.equals(role, "NORMAL")) {
+            nickname = userService.getNickname(dto.getUserName());
+        } else if (Objects.equals(role, "ADMIN")) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "관리자 로그인 이용 필요");
+            return ResponseEntity.ok(errorResponse);
+        }
 
-		if (Objects.equals(role, "TRAINER")) {
-			name = userService.getName(dto.getUserName());
-		} else if (Objects.equals(role, "NORMAL")) {
-			nickname = userService.getNickname(dto.getUserName());
-		}
+        Map<String, String> responseData = new HashMap<>();
+        responseData.put("token", token);
+        responseData.put("role", role);
+        responseData.put("name", name);
+        responseData.put("nickname", nickname);
 
-		Map<String, String> responseData = new HashMap<>();
-		responseData.put("token", token);
-		responseData.put("role", role);
-		responseData.put("name", name);
-		responseData.put("nickname", nickname);
+        return ResponseEntity.ok(responseData);
+    }
 
-		return ResponseEntity.ok(responseData);
-	}
+    @GetMapping("/checkToken")
+    public ResponseEntity<?> checkToken() {
+        // 헤더에서 토큰 추출
+        String authorizationHeader = request.getHeader("Authorization");
+        String token = JwtUtil.extractToken(authorizationHeader);
 
-	@GetMapping("/checkToken")
-	public ResponseEntity<?> checkToken() {
-		// 헤더에서 토큰 추출
-		String authorizationHeader = request.getHeader("Authorization");
-		String token = JwtUtil.extractToken(authorizationHeader);
-		System.out.println(token +"!!!!!!!!!");
-		if (token == null || token.isEmpty()) {
-			return ResponseEntity.badRequest().body("Invalid or empty token");
-		}
+        // 사용자 권한
+        String userRole = JwtUtil.getRole(token);
 
-		try {
-			// 사용자 권한
-			String userRole = JwtUtil.getRole(token);
+        return ResponseEntity.ok().body(userRole);
+    }
 
-			return ResponseEntity.ok().body(userRole);
-		} catch (Exception e) {
-			log.error("Token processing error", e);
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Token processing error");
-		}
-	}
+    @PostMapping("/service/findId")
+    public ResponseEntity<String> findId(@RequestBody Map<String, String> data) {
+        String name = data.get("name");
+        String email = data.get("email");
+        log.info("name: {}, email: {}", name, email);
+
+        String id = authService.findId(name, email);
+        log.info("찾은 id: {}", id);
+
+        if (id == null) {
+            return ResponseEntity.badRequest().body("일치하는 정보가 없습니다.");
+        }
+
+        return ResponseEntity.ok().body(id);
+    }
 
 }
