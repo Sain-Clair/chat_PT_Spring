@@ -20,23 +20,33 @@ import lombok.extern.slf4j.Slf4j;
 // 예외 처리나 기타 로직에 필요한 추가적인 클래스들을 임포트합니다.
 
 @Slf4j
-@RequiredArgsConstructor
 @Component
 public class StompHandler implements ChannelInterceptor {
-
-    private final JwtUtil jwtUtil;
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
-        if (StompCommand.CONNECT == accessor.getCommand()) {
-            String token = accessor.getFirstNativeHeader("token");
-            if (token != null && !jwtUtil.isExpired(token)) {
-                // 토큰이 유효한 경우 처리
-            } else {
-                // 토큰이 유효하지 않은 경우 예외 처리 또는 연결 거부
-                throw new IllegalArgumentException("Invalid or expired token");
+        if (StompCommand.CONNECT.equals(accessor.getCommand())) {
+            String jwtToken = accessor.getFirstNativeHeader("Authorization");
+            
+            if (jwtToken != null && jwtToken.startsWith("Bearer ")) {
+                String token = jwtToken.substring(7); // "Bearer " 이후의 문자열을 추출합니다.
+
+                try {
+                    if (!JwtUtil.isExpired(token)) {
+                        System.out.println("1111111111111토큰이 유효함 / 정상 처리");
+                    } else {
+                    	System.out.println("2222222222222토큰이 만료된 경우 처리");
+                        // 토큰이 만료된 경우 처리
+                        throw new IllegalArgumentException("Expired token");
+                    }
+                } catch (Exception e) {
+                    log.error("Invalid Token", e);
+                	System.out.println("33333333333비정상적 접속 확인 | " + jwtToken);
+                    throw new IllegalArgumentException("Invalid Token");
+                    
+                }
             }
         }
 
