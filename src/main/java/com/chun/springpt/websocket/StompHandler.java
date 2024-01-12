@@ -35,15 +35,15 @@ public class StompHandler implements ChannelInterceptor {
 
                 try {
                     if (!JwtUtil.isExpired(token)) {
-                        System.out.println("1111111111111토큰이 유효함 / 정상 처리");
+                        System.out.println("1 토큰이 유효함 / pass ");
                     } else {
-                    	System.out.println("2222222222222토큰이 만료된 경우 처리");
+                    	System.out.println("2 토큰이 만료된 경우 처리 / deny");
                         // 토큰이 만료된 경우 처리
-                        throw new IllegalArgumentException("Expired token");
+                        throw new IllegalArgumentException("Expired token / ");
                     }
                 } catch (Exception e) {
                     log.error("Invalid Token", e);
-                	System.out.println("33333333333비정상적 접속 확인 | " + jwtToken);
+                	System.out.println("3 비정상적 접속 확인 | " + jwtToken);
                     throw new IllegalArgumentException("Invalid Token");
                 }
             }
