@@ -26,7 +26,7 @@ public class AuthService {
 
         if(userVO != null) {
             String role = userVO.getRole().toString();
-            return JwtUtil.createJwt(userName, role, secretKey, expiredMs);
+            return JwtUtil.createJwt(userName, role, expiredMs);
         } else {
             return null;
         }
