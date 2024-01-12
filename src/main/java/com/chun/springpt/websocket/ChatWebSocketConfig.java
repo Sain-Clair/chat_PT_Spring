@@ -47,7 +47,7 @@ public class ChatWebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	
 	@Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.tors(stompHandler);
+        registration.interceptors(stompHandler);
     }
 
 }

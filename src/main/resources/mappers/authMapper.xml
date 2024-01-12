@@ -8,5 +8,12 @@
     <select id="findId" resultType="String">
         SELECT id FROM members WHERE name = #{name} AND email = #{email}
     </select>
-
+    <!--비밀번호 변경 전 가입한 회원인지 확인-->
+    <select id="userCheck" resultType="user">
+        SELECT * FROM members WHERE id = #{id} AND name = #{name} AND email = #{email}
+    </select>
+    <!--비밀번호 변경-->
+    <select id="changePassword" resultType="user">
+        update members set password = #{password} where id = #{id}
+    </select>
 </mapper>

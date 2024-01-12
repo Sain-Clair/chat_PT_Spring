@@ -2,15 +2,19 @@ package com.chun.springpt.controller;
 
 import com.chun.springpt.domain.dto.LoginRequest;
 import com.chun.springpt.service.AuthService;
+import com.chun.springpt.service.MailService;
 import com.chun.springpt.service.UserService;
 import com.chun.springpt.utils.JwtUtil;
+import com.chun.springpt.vo.UserVO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,10 +32,13 @@ public class AuthController {
 
     private final UserService userService;
 
+    private final MailService mailService;
+
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest dto) {
 
         String token = authService.login(dto.getUserName(), dto.getPassword());
+
         if (token == null) {
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", "로그인 실패");
@@ -77,7 +84,6 @@ public class AuthController {
     public ResponseEntity<String> findId(@RequestBody Map<String, String> data) {
         String name = data.get("name");
         String email = data.get("email");
-        log.info("name: {}, email: {}", name, email);
 
         String id = authService.findId(name, email);
         log.info("찾은 id: {}", id);
@@ -87,6 +93,33 @@ public class AuthController {
         }
 
         return ResponseEntity.ok().body(id);
+    }
+
+    @PostMapping("/service/findPw")
+    public ResponseEntity<String> findPw(@RequestBody Map<String, String> data) {
+        String id = data.get("id");
+        String name = data.get("name");
+        String email = data.get("email");
+
+        UserVO userVO = authService.userCheck(id, name, email);
+        if (userVO == null) {
+            return ResponseEntity.badRequest().body("일치하는 정보가 없습니다.");
+        }
+
+        String number = String.valueOf(mailService.sendMail(email));
+        log.info("number: {}", number);
+
+        return ResponseEntity.ok().body(number);
+    }
+
+    @PostMapping("/service/changePw")
+    public ResponseEntity<String> changePw(@RequestBody Map<String, String> data) {
+        String id = data.get("id");
+        String newPassword = data.get("newPassword");
+
+        authService.changePassword(id, newPassword);
+
+        return ResponseEntity.ok().body("성공");
     }
 
 }
