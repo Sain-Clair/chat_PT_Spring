@@ -1,0 +1,18 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chun.springpt.dao.DietDao">
+    <!--로그인시 존재하는 회원인지 확인-->
+    <select id="Dailyinfo" resultType="dvo">
+        SELECT TRUNC(u.uploaddate) as uploadDate, SUM(foodcal * (u.mass / f.foodweight)) as dailyTotal
+        FROM upphoto u
+        INNER JOIN food f ON u.foodnum = f.foodnum
+        inner join normal_mem n on u.nnum =n.nnum
+        WHERE n.normal_id = #{userName}
+        AND TRUNC(u.uploaddate) BETWEEN TO_DATE(#{startPeriod}, 'YYYY-MM-DD') AND TO_DATE(#{endPeriod}, 'YYYY-MM-DD')
+        GROUP BY TRUNC(u.uploaddate)
+        ORDER BY TRUNC(u.uploaddate)
+    </select>
+    <select id="getRecommandCal" statementType="CALLABLE" resultType="HashMap">
+        {call get_recommand_cal(#{userName, jdbcType=VARCHAR, mode=IN}, #{result, jdbcType=NUMERIC, mode=OUT})}
+    </select>
+
+</mapper>
