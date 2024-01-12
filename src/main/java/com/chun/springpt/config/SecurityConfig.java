@@ -32,7 +32,7 @@ public class SecurityConfig {
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:8080", "http://localhost:8081",
                 "https://chunsik.shop", "ws://localhost/springpt/ws-stomp/**"));
-        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "OPTIONS"));
+        corsConfiguration.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
