@@ -34,7 +34,7 @@ public class AuthController {
         if (token == null) {
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", "로그인 실패");
-            return ResponseEntity.badRequest().body(errorResponse);
+            return ResponseEntity.ok(errorResponse);
         }
 
         String name= "";
@@ -45,6 +45,10 @@ public class AuthController {
             name = userService.getName(dto.getUserName());
         } else if (Objects.equals(role, "NORMAL")) {
             nickname = userService.getNickname(dto.getUserName());
+        } else if (Objects.equals(role, "ADMIN")) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "관리자 로그인 이용 필요");
+            return ResponseEntity.ok(errorResponse);
         }
 
         Map<String, String> responseData = new HashMap<>();
