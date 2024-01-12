@@ -47,14 +47,14 @@ public class JWTFilter extends OncePerRequestFilter {
         String token = authorization.split(" ")[1];
 
         // 토큰 expired 되었는지 확인. expired 되었다면 block
-        if (JwtUtil.isExpired(token, secretKey)) {
+        if (JwtUtil.isExpired(token)) {
             log.error("로깅 - 토큰이 만료되었습니다.");
             filterChain.doFilter(request, response);
             return;
         }
 
         // userName token에서 가져오기
-        String userName = JwtUtil.getUserName(token, secretKey);
+        String userName = JwtUtil.getUserName(token);
 
         // 권한 부여
         // role은 DB에서 가져와야됨. 지금은 하드코딩

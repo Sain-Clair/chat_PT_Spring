@@ -26,7 +26,7 @@ public class AuthService {
 
         if(userVO != null) {
             String role = userVO.getRole().toString();
-            return JwtUtil.createJwt(userName, role, secretKey, expiredMs);
+            return JwtUtil.createJwt(userName, role, expiredMs);
         } else {
             return null;
         }
@@ -37,5 +37,10 @@ public class AuthService {
         UserVO userVO = null;
         userVO = authDao.loginCheck(userName, password);
         return userVO;
+    }
+
+    // 아이디 찾기
+    public String findId(String name, String email) {
+        return authDao.findId(name, email);
     }
 }

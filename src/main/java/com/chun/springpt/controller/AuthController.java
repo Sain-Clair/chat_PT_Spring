@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthController {
-
+  
     @Autowired
     private HttpServletRequest request;
 
@@ -34,7 +35,7 @@ public class AuthController {
         if (token == null) {
             Map<String, String> errorResponse = new HashMap<>();
             errorResponse.put("error", "로그인 실패");
-            return ResponseEntity.badRequest().body(errorResponse);
+            return ResponseEntity.ok(errorResponse);
         }
 
         String name= "";
@@ -45,6 +46,10 @@ public class AuthController {
             name = userService.getName(dto.getUserName());
         } else if (Objects.equals(role, "NORMAL")) {
             nickname = userService.getNickname(dto.getUserName());
+        } else if (Objects.equals(role, "ADMIN")) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "관리자 로그인 이용 필요");
+            return ResponseEntity.ok(errorResponse);
         }
 
         Map<String, String> responseData = new HashMap<>();
@@ -68,5 +73,20 @@ public class AuthController {
         return ResponseEntity.ok().body(userRole);
     }
 
+    @PostMapping("/service/findId")
+    public ResponseEntity<String> findId(@RequestBody Map<String, String> data) {
+        String name = data.get("name");
+        String email = data.get("email");
+        log.info("name: {}, email: {}", name, email);
+
+        String id = authService.findId(name, email);
+        log.info("찾은 id: {}", id);
+
+        if (id == null) {
+            return ResponseEntity.badRequest().body("일치하는 정보가 없습니다.");
+        }
+
+        return ResponseEntity.ok().body(id);
+    }
 
 }
