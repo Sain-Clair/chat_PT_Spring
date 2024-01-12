@@ -43,4 +43,16 @@ public class AuthService {
     public String findId(String name, String email) {
         return authDao.findId(name, email);
     }
+
+    // 비밀번호 변경을 위한 가입 확인 및 유저 객체 반환
+    public UserVO userCheck(String id, String name, String email) {
+        UserVO userVO = null;
+        userVO = authDao.userCheck(id, name, email);
+        return userVO;
+    }
+
+    // 비밀번호 변경
+    public void changePassword(String id, String newPassword) {
+        authDao.changePassword(id, newPassword);
+    }
 }
