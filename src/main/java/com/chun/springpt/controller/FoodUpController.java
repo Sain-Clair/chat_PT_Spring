@@ -27,17 +27,15 @@ public class FoodUpController {
 
     @PostMapping("/food_up")
     public Map<String, Object> food_upload(HttpServletRequest request,
-                                                 @RequestParam Map<String, MultipartFile> fileMap) throws Exception {
+                                           @RequestParam Map<String, String> fileMap) throws Exception {
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
         String userName = JwtUtil.getID(token);
 
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-        for (Map.Entry<String, MultipartFile> entry : fileMap.entrySet()) {
-            MultipartFile file = entry.getValue();
-            if (!file.isEmpty()) {
-                byte[] bytes = file.getBytes();
-                String base64String = Base64.getEncoder().encodeToString(bytes);
+        for (Map.Entry<String, String> entry : fileMap.entrySet()) {
+            String base64String = entry.getValue();
+            if (base64String != null && !base64String.isEmpty()) {
                 formData.add(entry.getKey(), base64String);
             }
         }
@@ -51,7 +49,9 @@ public class FoodUpController {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {})
                 .block(); // block()을 사용하여 Mono를 동기적으로 처리
+
         // 결과를 Vue로 반환
         return responseFromDjango;
     }
+
 }
