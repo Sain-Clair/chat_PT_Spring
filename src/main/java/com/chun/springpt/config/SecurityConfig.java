@@ -51,7 +51,7 @@ public class SecurityConfig {
                 // .authorizeHttpRequests((auth) -> auth.anyRequest().permitAll())
                 .authorizeHttpRequests((auth) -> auth
                         // 토큰 검증을 하지 않을 요청
-                        .requestMatchers("/login", "/checkToken", "/images/**", "/ws-stomp/**", "/service/**")
+                        .requestMatchers("/login", "/checkToken", "/images/**", "/ws-stomp/**", "/service/**", "/validCheckEmail/**")
                         .permitAll()
                         // 그 외의 모든 요청은 토큰이 있어야 접근 가능
                         .anyRequest().authenticated())
