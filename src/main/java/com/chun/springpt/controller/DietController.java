@@ -2,15 +2,13 @@ package com.chun.springpt.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
+
 import java.math.BigDecimal;
 
 import com.chun.springpt.service.DietService;
-import com.chun.springpt.service.TrainerService;
 import com.chun.springpt.utils.JwtUtil;
 import com.chun.springpt.vo.DietVO;
 
@@ -18,7 +16,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import java.util.HashMap;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,9 +64,12 @@ public class DietController {
         BigDecimal recommandCalBigDecimal = (BigDecimal) recommandCal.get("result");
         Double recommandCalDouble = recommandCalBigDecimal.doubleValue();
         log.info("로깅 - 권장 칼로리: {}", recommandCalDouble);
+        
+        List<DietVO> differ_last =  Dservice.differ_last(userName);
 
         Map<String, Object> response = new HashMap<>();
         response.put("dietList", dietList);
+        response.put("last_differ",differ_last);
         response.put("recommandCal", recommandCal.get("result"));
 
         return response; // JSON 형식으로 데이터를 반환합니다.

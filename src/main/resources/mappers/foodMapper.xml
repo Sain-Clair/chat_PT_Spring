@@ -11,8 +11,43 @@
         GROUP BY TRUNC(u.uploaddate)
         ORDER BY TRUNC(u.uploaddate)
     </select>
+    <!--유저 권장 칼로리를 구하기 위한 SQL (프로시저 이용)-->
     <select id="getRecommandCal" statementType="CALLABLE" resultType="HashMap">
         {call get_recommand_cal(#{userName, jdbcType=VARCHAR, mode=IN}, #{result, jdbcType=NUMERIC, mode=OUT})}
     </select>
+    <!-- 유저 전일 대비 비교표를 위한 SQL-->
+    <select id= "get_differ_lastday" resultType="dvo">
+    SELECT
+    u.category,
+    SUM(f.foodcal) AS total_calories_today,
+    LISTAGG(f.foodname, ', ') WITHIN GROUP (ORDER BY f.foodname) AS food_names,
+    (
+                SELECT SUM(f2.foodcal)
+                FROM upphoto u2
+                INNER JOIN food f2 ON u2.foodnum = f2.foodnum
+                INNER JOIN normal_mem n2 ON u2.nnum = n2.nnum
+                WHERE TRUNC(u2.uploaddate) = TRUNC(SYSDATE - 1) AND n2.normal_id = #{userName} AND u2.category = u.category
+            ) AS total_calories_yesterday,
+            (SUM(f.foodcal) - (
+                SELECT SUM(f2.foodcal)
+                FROM upphoto u2
+                INNER JOIN food f2 ON u2.foodnum = f2.foodnum
+                INNER JOIN normal_mem n2 ON u2.nnum = n2.nnum
+                WHERE TRUNC(u2.uploaddate) = TRUNC(SYSDATE - 1) AND n2.normal_id = #{userName} AND u2.category = u.category
+            )) AS calorie_difference
+        FROM upphoto u
+        INNER JOIN food f ON u.foodnum = f.foodnum
+        INNER JOIN normal_mem n ON u.nnum = n.nnum
+        WHERE TRUNC(u.uploaddate) IN (TRUNC(SYSDATE), TRUNC(SYSDATE - 1)) AND n.normal_id = #{userName}
+        GROUP BY u.category
+        ORDER BY
+            CASE
+                WHEN u.category = '아침' THEN 1
+                WHEN u.category = '점심' THEN 2
+                WHEN u.category = '저녁' THEN 3
+                WHEN u.category = '간식' THEN 4
+                ELSE 5
+            END
 
+    </select>
 </mapper>

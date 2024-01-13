@@ -25,4 +25,8 @@ public class DietService {
         dietDao.getRecommandCal(resultMap);
         return resultMap;
     }
+
+    public List<DietVO> differ_last(String userName){
+        return dietDao.get_differ_lastday(userName);
+    }
 }

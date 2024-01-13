@@ -1,6 +1,6 @@
 package com.chun.springpt.dao;
 
-import java.util.HashMap;
+
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -14,4 +14,6 @@ public interface DietDao {
     List<DietVO> Dailyinfo(String userName, String startPeriod, String endPeriod);
 
     Map<String,Object> getRecommandCal(Map<String, Object> resultMap);
+
+    List<DietVO> get_differ_lastday(String userName);
 }
