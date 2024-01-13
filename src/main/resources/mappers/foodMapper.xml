@@ -18,23 +18,26 @@
     <!-- 유저 전일 대비 비교표를 위한 SQL-->
     <select id= "get_differ_lastday" resultType="dvo">
     SELECT
-    u.category,
-    SUM(f.foodcal) AS total_calories_today,
-    LISTAGG(f.foodname, ', ') WITHIN GROUP (ORDER BY f.foodname) AS food_names,
-    (
-                SELECT SUM(f2.foodcal)
+            u.category,
+            SUM(CASE WHEN TRUNC(u.uploaddate) = TRUNC(SYSDATE) THEN f.foodcal * (u.mass / f.foodweight) ELSE 0 END) AS total_calories_today,
+            LISTAGG(CASE WHEN TRUNC(u.uploaddate) = TRUNC(SYSDATE) THEN f.foodname ELSE NULL END, ', ') WITHIN GROUP (ORDER BY f.foodname) AS food_names,
+            (
+                SELECT SUM(f2.foodcal * (u2.mass / f2.foodweight))
                 FROM upphoto u2
                 INNER JOIN food f2 ON u2.foodnum = f2.foodnum
                 INNER JOIN normal_mem n2 ON u2.nnum = n2.nnum
                 WHERE TRUNC(u2.uploaddate) = TRUNC(SYSDATE - 1) AND n2.normal_id = #{userName} AND u2.category = u.category
             ) AS total_calories_yesterday,
-            (SUM(f.foodcal) - (
-                SELECT SUM(f2.foodcal)
-                FROM upphoto u2
-                INNER JOIN food f2 ON u2.foodnum = f2.foodnum
-                INNER JOIN normal_mem n2 ON u2.nnum = n2.nnum
-                WHERE TRUNC(u2.uploaddate) = TRUNC(SYSDATE - 1) AND n2.normal_id = #{userName} AND u2.category = u.category
-            )) AS calorie_difference
+            (
+                SUM(CASE WHEN TRUNC(u.uploaddate) = TRUNC(SYSDATE) THEN f.foodcal * (u.mass / f.foodweight) ELSE 0 END) -
+                (
+                    SELECT SUM(f2.foodcal * (u2.mass / f2.foodweight))
+                    FROM upphoto u2
+                    INNER JOIN food f2 ON u2.foodnum = f2.foodnum
+                    INNER JOIN normal_mem n2 ON u2.nnum = n2.nnum
+                    WHERE TRUNC(u2.uploaddate) = TRUNC(SYSDATE - 1) AND n2.normal_id = #{userName} AND u2.category = u.category
+                )
+            ) AS calorie_difference
         FROM upphoto u
         INNER JOIN food f ON u.foodnum = f.foodnum
         INNER JOIN normal_mem n ON u.nnum = n.nnum
@@ -48,6 +51,7 @@
                 WHEN u.category = '간식' THEN 4
                 ELSE 5
             END
+
 
     </select>
 </mapper>
