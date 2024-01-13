@@ -15,6 +15,7 @@ import lombok.Getter;
 public class MsgRoomVO {
     private String roomId;
     private String name;
+		private String trainerId;
     private Set<WebSocketSession> sessions = new HashSet<>();
 
     public static MsgRoomVO create(String name) {

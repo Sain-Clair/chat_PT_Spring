@@ -14,7 +14,7 @@ public class TokenTestController {
     private HttpServletRequest request;
 
     // 토큰을 핸들링하는 컨트롤러
-    @PostMapping("/logintest")
+   @PostMapping("/logintest")
     public ResponseEntity<String> loginTest() {
 
         // 헤더에서 토큰 추출
