@@ -13,8 +13,14 @@ public class SignUpController {
     @Autowired
     private SignUpService signUpService;
     @PostMapping("/validCheckEmail/{email}")
-    public String emailCheck(@PathVariable("email") String email) {
+    public int emailCheck(@PathVariable("email") String email) {
         return signUpService.validCheckEmail(email);
     }
+    @PostMapping("/Authentication/")
+    public String postMethodName(@RequestBody String entity) {
+        
+        return entity;
+    }
+    
     
 }

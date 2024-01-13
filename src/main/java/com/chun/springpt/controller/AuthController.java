@@ -1,24 +1,27 @@
 package com.chun.springpt.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.chun.springpt.domain.dto.LoginRequest;
 import com.chun.springpt.service.AuthService;
 import com.chun.springpt.service.MailService;
 import com.chun.springpt.service.UserService;
 import com.chun.springpt.utils.JwtUtil;
 import com.chun.springpt.vo.UserVO;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -122,4 +125,23 @@ public class AuthController {
         return ResponseEntity.ok().body("성공");
     }
 
+
+    // 윤승현
+    // 회원가입 인증
+    // @PostMapping("/service/authemail")
+    // public ResponseEntity<String> authemail(@RequestBody Map<String, String> data) {
+    //     String email = data.get("email");
+
+    //     String number = String.valueOf(mailService.sendMail(email));
+    //     log.info("number: {}", number);
+
+    //     return ResponseEntity.ok().body(number);
+    // }
+    @PostMapping("/service/authemail/{email}")
+    public int authemail(@PathVariable("email") String email) {
+        System.out.println("여기는 부트 email" + email);
+        int number = mailService.sendMail(email);
+        return number;
+    }
+    
 }
