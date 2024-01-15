@@ -53,7 +53,7 @@ public class MatchptController {
     String token = JwtUtil.extractToken(authorizationHeader);
 
     // 사용자 아이디
-    String userId = JwtUtil.getUserName(token);
+    String userId = JwtUtil.getID(token);
     msgRoomVO.setUserId(userId);
 
     // 사용자 권한
