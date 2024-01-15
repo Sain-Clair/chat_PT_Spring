@@ -14,13 +14,15 @@ import lombok.Getter;
 @Data
 public class MsgRoomVO {
     private String roomId;
-    private String name;
+		private String trainerId;
+		private String userId;
+		private String status; //("대기 : wait ? 승인 : live ? 만료 : expired ")
     private Set<WebSocketSession> sessions = new HashSet<>();
 
     public static MsgRoomVO create(String name) {
     	MsgRoomVO msgRoomVO = new MsgRoomVO();
     	msgRoomVO.roomId = UUID.randomUUID().toString();
-    	msgRoomVO.name = name;
+
     	
 		return msgRoomVO;
 	}

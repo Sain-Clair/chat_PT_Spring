@@ -25,4 +25,18 @@ public class DietService {
         dietDao.getRecommandCal(resultMap);
         return resultMap;
     }
+
+    public List<DietVO> differ_last(String userName){
+        return dietDao.get_differ_lastday(userName);
+    }
+
+
+    public List<DietVO> selectWeightList(String userName, String startPeriod, String endPeriod) {
+        return dietDao.getWeekWeight(userName, startPeriod, endPeriod);
+    }
+
+    public DietVO getTargetWeight(String userName) {
+        return dietDao.getTargetWeight(userName);
+    }
+    
 }

@@ -25,12 +25,13 @@ public class MailService {
         try {
             message.setFrom(senderEmail);
             message.setRecipients(MimeMessage.RecipientType.TO, mail);
-            message.setSubject("이메일 인증");
+            message.setSubject("ChatPT 비밀번호 변경 인증 코드 입니다.");
             String body = "";
-            body += "<div style='width: 500px; height: 500px; border: 1px solid black;'>";
-            body += "<h1>이메일 인증</h1>";
-            body += "<p>아래의 인증번호를 입력해주세요.</p>";
-            body += "<h3>" + number + "</h3>";
+            body += "<div style='width: 500px; height: 500px; padding: 20px;'>";
+            body += "<img src='https://blog.kakaocdn.net/dn/bnsz0K/btsDs2x4b4I/akmKesL6I8vtAPkWNVOk2k/img.png' style='width: 350px; height: auto;'/>";
+            body += "<h1 style='color: #333; font-size: 24px;'>이메일 인증</h1>";
+            body += "<p style='color: #666; font-size: 16px;'>아래의 인증번호를 입력해주세요.</p>";
+            body += "<h3 style='color: #333; font-size: 20px;'>" + number + "</h3>";
             body += "</div>";
             message.setText(body, "utf-8", "html");
 

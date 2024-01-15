@@ -4,6 +4,6 @@
     <select id="todayPhotoList" resultType="uptvo">
         select UpPhoto.* from UpPhoto
                                   join normal_mem on UpPhoto.nnum = normal_mem.nnum
-        where TRUNC(UpPhoto.uploaddate) = '24/01/12' and normal_mem.normal_id = #{nnum}
+        where TRUNC(UpPhoto.uploaddate) = '24/01/13' and normal_mem.normal_id = #{nnum}
     </select>
 </mapper>
