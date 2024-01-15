@@ -28,25 +28,6 @@ public class FoodUpController {
 
   @PostMapping("/food_up")
   public Map<String, Object> food_upload(HttpServletRequest request,
-                                         @RequestParam Map<String, MultipartFile> fileMap) throws Exception {
-    String authorizationHeader = request.getHeader("Authorization");
-    String token = JwtUtil.extractToken(authorizationHeader);
-    String userName = JwtUtil.getID(token);
-
-    MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-    for (Map.Entry<String, MultipartFile> entry : fileMap.entrySet()) {
-      MultipartFile file = entry.getValue();
-      if (!file.isEmpty()) {
-        byte[] bytes = file.getBytes();
-        String base64String = Base64.getEncoder().encodeToString(bytes);
-        formData.add(entry.getKey(), base64String);
-      }
-    }
-    formData.add("userName", userName);
-
-// <<<<<<< HEAD
-  @PostMapping("/food_up")
-  public Map<String, Object> food_upload(HttpServletRequest request,
       @RequestParam Map<String, String> fileMap) throws Exception {
     String authorizationHeader = request.getHeader("Authorization");
     String token = JwtUtil.extractToken(authorizationHeader);
@@ -60,7 +41,6 @@ public class FoodUpController {
       }
     }
     formData.add("userName", userName);
-
     // WebClient를 동기적으로 사용하여 결과를 받아옴
     Map<String, Object> responseFromDjango = webClient.post()
         .uri("/imgmodel/findFood")
@@ -74,19 +54,4 @@ public class FoodUpController {
     // 결과를 Vue로 반환
     return responseFromDjango;
   }
-
-  // =======
-  // // WebClient를 동기적으로 사용하여 결과를 받아옴
-  // Map<String, Object> responseFromDjango = webClient.post()
-  // .uri("/imgmodel/findFood")
-  // .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-  // .body(BodyInserters.fromFormData(formData))
-  // .retrieve()
-  // .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {
-  // })
-  // .block(); // block()을 사용하여 Mono를 동기적으로 처리
-  // // 결과를 Vue로 반환
-  // return responseFromDjango;
-  // }
-  // >>>>>>> lsh_USERnTRAINER_MATCHING_DEV1 추후 확인 요망
 }
