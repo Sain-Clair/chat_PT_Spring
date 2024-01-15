@@ -1,5 +1,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chun.springpt.dao.DietDao">
+<!-- 일주일 마다 그날그날의 음식 칼로리를 구하는 SQL-->
     <select id="Dailyinfo" resultType="dvo">
         SELECT TRUNC(u.uploaddate) as uploadDate, SUM(foodcal * (u.mass / f.foodweight)) as dailyTotal
         FROM upphoto u
@@ -51,6 +52,7 @@
                 ELSE 5
             END
     </select>
+    <!-- 유저 일주일 단위 체중 변화 기록 구하기-->
     <select id = "getWeekWeight" resultType = "dvo">
         SELECT TRUNC(ml.dietlogdate) as dietlogdate, ml.dietlogkg
         FROM MEMBERDIETLOG ML
@@ -59,7 +61,39 @@
         AND TRUNC(ml.dietlogdate)  BETWEEN TO_DATE(#{startPeriod}, 'YYYY-MM-DD') AND TO_DATE(#{endPeriod}, 'YYYY-MM-DD')
         ORDER BY TRUNC(ml.dietlogdate)
     </select>
+
+    <!-- 유저 목표 체중 구하기-->
     <select id = "getTargetWeight" resultType = "dvo">
         select target_weight from normal_mem where normal_id = #{userName}
+    </select>
+    <!-- 유저 권장 탄단지 구하기, (프로시저 이용)-->
+    <select id="getRecommandTandangi" statementType="CALLABLE">
+        {call get_recommand_tandangi(
+            #{userName, jdbcType=VARCHAR, mode=IN},
+            #{p_recommand_cal, jdbcType=NUMERIC, mode=OUT},
+            #{p_recommand_tan, jdbcType=NUMERIC, mode=OUT},
+            #{p_recommand_dan, jdbcType=NUMERIC, mode=OUT},
+            #{p_recommand_gi, jdbcType=NUMERIC, mode=OUT}
+        )}
+    </select>
+    <select id = "getWeekAvgTandangi" resultType = "nvo">
+    SELECT AVG(dailyTotal_tan) as weeklyAvg_tan,
+       AVG(dailyTotal_dan) as weeklyAvg_dan,
+       AVG(dailyTotal_gi) as weeklyAvg_gi
+    FROM (
+        SELECT TRUNC(u.uploaddate) as uploadDate, 
+            SUM(f.food_tan * (u.mass / f.foodweight)) as dailyTotal_tan,
+            SUM(f.food_dan * (u.mass / f.foodweight)) as dailyTotal_dan,
+            SUM(f.food_gi * (u.mass / f.foodweight)) as dailyTotal_gi
+        FROM upphoto u
+        INNER JOIN food f ON u.foodnum = f.foodnum
+        INNER JOIN normal_mem n ON u.nnum = n.nnum
+        WHERE n.normal_id = #{userName}
+        AND TRUNC(u.uploaddate) BETWEEN TO_DATE(#{startPeriod}, 'YYYY-MM-DD') 
+                                    AND TO_DATE(#{endPeriod}, 'YYYY-MM-DD')
+        GROUP BY TRUNC(u.uploaddate)
+    ) subquery
+
+
     </select>
 </mapper>

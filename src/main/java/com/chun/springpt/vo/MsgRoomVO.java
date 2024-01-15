@@ -1,5 +1,6 @@
 package com.chun.springpt.vo;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -17,6 +18,7 @@ public class MsgRoomVO {
 		private String trainerId;
 		private String userId;
 		private String status; //("대기 : wait ? 승인 : live ? 만료 : expired ")
+		private Date ptstart;
     private Set<WebSocketSession> sessions = new HashSet<>();
 
     public static MsgRoomVO create(String name) {

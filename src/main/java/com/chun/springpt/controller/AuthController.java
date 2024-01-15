@@ -124,23 +124,11 @@ public class AuthController {
 
         return ResponseEntity.ok().body("성공");
     }
-
-
-    // 윤승현
-    // 회원가입 인증
-    // @PostMapping("/service/authemail")
-    // public ResponseEntity<String> authemail(@RequestBody Map<String, String> data) {
-    //     String email = data.get("email");
-
-    //     String number = String.valueOf(mailService.sendMail(email));
-    //     log.info("number: {}", number);
-
-    //     return ResponseEntity.ok().body(number);
-    // }
+    // 회원가입 email 인증 //y
     @PostMapping("/service/authemail/{email}")
     public int authemail(@PathVariable("email") String email) {
-        System.out.println("여기는 부트 email" + email);
-        int number = mailService.sendMail(email);
+        int number = mailService.sendEmailCheck(email);
+        log.info("number: {}", number);
         return number;
     }
     

@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import com.chun.springpt.service.DietService;
 import com.chun.springpt.utils.JwtUtil;
 import com.chun.springpt.vo.DietVO;
+import com.chun.springpt.vo.NutritionVO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,7 +30,7 @@ public class DietController {
     private DietService Dservice;
 
     @GetMapping("/food_recommand")
-    public Map<String, Object> foodRecommand(HttpServletRequest request) {
+    public Map<String, Object> foodRecommand() {
         // 헤더에서 토큰 추출
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
@@ -75,7 +76,7 @@ public class DietController {
 
     @GetMapping("diet_weight_analysis")
     public Map<String, Object>getWeightList(@RequestParam("startPeriod") String startPeriod,
-        @RequestParam("endPeriod") String endPeriod, HttpServletRequest request) {
+        @RequestParam("endPeriod") String endPeriod) {
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
 
@@ -92,6 +93,24 @@ public class DietController {
 
         return response; // JSON 형식으로 데이터를 반환합니다.
 
+    }
+
+    @GetMapping("/getRecommandTandangi")
+    public Map<String, Object> getRecommandTandangi(@RequestParam("startPeriod") String startPeriod,
+    @RequestParam("endPeriod") String endPeriod) {
+
+        String authorizationHeader = request.getHeader("Authorization");
+        String token = JwtUtil.extractToken(authorizationHeader);
+
+        // 사용자 아이디
+        String userName = JwtUtil.getID(token);
+        Map<String, Object> recommandTandnagi = Dservice.GetRecommandTandangi(userName);
+        NutritionVO avgTanDanGi = Dservice.getWeekAvgTandangi(userName, startPeriod, endPeriod);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("recommandTandnagi", recommandTandnagi);
+        response.put("avgTanDanGi",avgTanDanGi);
+        return response;
     }
 
 }
