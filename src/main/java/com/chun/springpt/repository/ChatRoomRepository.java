@@ -31,8 +31,15 @@ public class ChatRoomRepository {
 
   public MsgRoomVO createChatRoom(MsgRoomVO msgRoomVO) {
     msgRoomVO.setRoomId(UUID.randomUUID().toString());
+    msgRoomVO.setStatus("wait");// 채팅방 상태 승인전까지 wait상태
+
     chatMapper.insertChatRoom(msgRoomVO);
     return msgRoomVO;
+  }
+
+  public void deleteChatRoom(MsgRoomVO msgRoomVO) {
+
+    chatMapper.deleteChatRoom(msgRoomVO);
   }
 
 

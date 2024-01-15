@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.chun.springpt.vo.DietVO;
+import com.chun.springpt.vo.NutritionVO;
 
 import java.util.Map;
 
@@ -21,4 +22,9 @@ public interface DietDao {
     List<DietVO> getWeekWeight(String userName, String startPeriod, String endPeriod);
     // 목표 몸무게를 구해옴
     DietVO getTargetWeight(String userName);
-}
+    // 프로시저를 이용해 권장 탄,단,지를 구해옴
+    void getRecommandTandangi(Map<String, Object> params);
+    // 일주일 치 평균 탄,단,지 를 구해옴
+    NutritionVO getWeekAvgTandangi(String userName, String startPeriod, String endPeriod);
+
+    }
