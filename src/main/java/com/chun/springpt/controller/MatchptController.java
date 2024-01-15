@@ -1,22 +1,15 @@
 package com.chun.springpt.controller;
 
 import com.chun.springpt.repository.ChatRoomRepository;
-import com.chun.springpt.service.MemberService;
 import com.chun.springpt.utils.JwtUtil;
 import com.chun.springpt.vo.MsgRoomVO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.BodyInserters;
-
-import java.util.Base64;
-import java.util.Map;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping
@@ -34,7 +27,7 @@ public class MatchptController {
     String token = JwtUtil.extractToken(authorizationHeader);
 
     // 사용자 아이디
-    String userId = JwtUtil.getUserName(token);
+    String userId = JwtUtil.getID(token);
     msgRoomVO.setUserId(userId);
 
     // 사용자 권한
