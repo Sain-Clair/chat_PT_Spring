@@ -10,7 +10,7 @@ import com.chun.springpt.vo.MsgRoomVO;
 
 import java.util.List;
 
-@Mapper // Dao의 역활 |  mybatis 접속 로직을 관리 
+@Mapper // Dao의 역활 |  mybatis 접속 로직을 관리
 public interface ChatMapper {
   List<MessageVO> getAllMessages();
 
@@ -28,7 +28,7 @@ public interface ChatMapper {
 
   public List<MsgRoomVO> findAllRoom(); // 전체 챗룸 선택
 
-  public void deleteChatRoom(String roomId); // 챗룸 삭제
+  public void deleteChatRoom(MsgRoomVO msgRoomVO); // 챗룸 삭제
 }
 
 
