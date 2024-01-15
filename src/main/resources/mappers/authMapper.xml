@@ -16,9 +16,9 @@
     <select id="changePassword" resultType="user">
         update members set password = #{password} where id = #{id}
     </select>
-    <!--이메일 중복체크-->
-    <select id="checkEmail" resultType="int">
-        SELECT COUNT(*) FROM members WHERE email = #{email}
+    <!--이메일 중복체크 및 권한 반환-->
+    <select id="checkEmailReturnId" resultType="String">
+        SELECT id FROM members WHERE email = #{email}
     </select>
     <select id="loginCheckWithEmail" resultType="user">
         SELECT * FROM members WHERE email = #{email}

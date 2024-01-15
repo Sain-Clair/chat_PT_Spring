@@ -2,13 +2,16 @@ package com.chun.springpt.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Component
+@Slf4j
 public class JwtUtil {
 
     private static String secretKey;
@@ -38,7 +41,12 @@ public class JwtUtil {
 
     // 토큰에서 role 가져오기
     public static String getRole(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("role", String.class);
+        try {
+            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("role", String.class);
+        } catch (MalformedJwtException e) {
+//            log.warn("로깅 - 토큰이 없기때문에 예외가 발생함. 이 예외는 무시해도 좋습니다.");
+        }
+        return null;
     }
 
     // 토큰이 만료되었는지 확인

@@ -56,10 +56,9 @@ public class AuthService {
         return authDao.loginCheckWithEmail(email);
     }
 
-    // 가입한 회원인지 이메일로 확인
-    // 0이면 미가입, 1이면 가입
-    public int checkEmail(String email) {
-        return authDao.checkEmail(email);
+    // 가입한 회원인지 이메일로 확인하고 아이디 반환
+    public String checkEmailReturnId(String email) {
+        return authDao.checkEmailReturnId(email);
     }
 
     // 아이디 찾기

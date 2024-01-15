@@ -3,15 +3,21 @@ package com.chun.springpt.controller;
 import com.chun.springpt.domain.dto.KakaoProfile;
 import com.chun.springpt.service.AuthService;
 import com.chun.springpt.service.KakaoService;
+import com.chun.springpt.service.UserService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/kakao")
@@ -24,44 +30,57 @@ public class KakaoController {
     @Autowired
     private KakaoService kakaoService;
 
-    @GetMapping("/callback")
-    public ResponseEntity<Map<String, String>> kakaoCallback(String code) {
+    @Autowired
+    private UserService userService;
 
+    @GetMapping("/kakaoLogin/{code}")
+    public ResponseEntity<Map<String, String>> kakaoLogin(@PathVariable("code") String code) {
         // 프론트에서 받은 코드를 통해 카카오 서버로 토큰을 요청
         ResponseEntity<String> tokenResponse = kakaoService.getKakaoToken(code);
 
-        // 토큰을 보내서 유저의 정보를 가져옴
-        KakaoProfile kakaoProfile = kakaoService.getKakaoProfile(tokenResponse);
+        // 토큰을 통해 디코딩된 유저 정보 리스트 반환받기
+        String decodedIDToken = kakaoService.getDecodedIDToken(tokenResponse);
 
         // 유저의 정보를 통해 이메일을 가져옴
-        String kakaoEmail = kakaoService.getKakaoEmail(kakaoProfile);
+        String kakaoEmail = kakaoService.getEmail(decodedIDToken);
 
         // 이메일을 통해 회원가입 여부를 확인
-        int isSign = authService.checkEmail(kakaoEmail);
+        String id = authService.checkEmailReturnId(kakaoEmail);
 
         Map<String, String> responseData = new HashMap<>();
-        if (isSign == 0) {
-            // isSign : false
-            // UUID로 만든 아이디,이메일,닉네임,프로필 사진 넘기기
-            // 그리고 뷰에서 그걸 로컬 스토리지에 올려서 리디렉션
-            // 바인딩 받아서 그대로 회원가입 진행하기
-            responseData.put("isSign", "false");
-            responseData.put("id", "kakao_"+kakaoEmail);
-            responseData.put("email", kakaoEmail);
-            responseData.put("nickname", kakaoService.getKakaoNickname(kakaoProfile));
-            responseData.put("profileImage", kakaoService.getKakaoImage(kakaoProfile));
+        if (id == null) { // 비회원이면 회원가입할 때 채워줄 정보 보내기
 
-        } else {
-            // isSign : true
-            // 이메일에 맞는 토큰 생성해서 보내야됨
-            // 그리고 뷰에서 그걸 로컬 스토리지에 올려서 리디렉션
-            // 바인딩 받아서 그대로 로그인 진행하기
+            responseData.put("isSign", "false");
+            responseData.put("id", "kakao_" + kakaoEmail);
+            responseData.put("email", kakaoEmail);
+            responseData.put("nickname", kakaoService.getNickname(decodedIDToken));
+            responseData.put("profileImage", kakaoService.getProfileImage(decodedIDToken));
+
+        } else { // 회원이면 토큰 발급해서 보내기
+
+            String name= "";
+            String nickname = "";
+            String role = userService.getRole(id);
+
+            if (Objects.equals(role, "TRAINER")) {
+                name = userService.getName(id);
+            } else if (Objects.equals(role, "NORMAL")) {
+                nickname = userService.getNickname(id);
+            } else if (Objects.equals(role, "ADMIN")) {
+                Map<String, String> errorResponse = new HashMap<>();
+                errorResponse.put("error", "관리자 로그인 이용 필요");
+                return ResponseEntity.ok(errorResponse);
+            }
+
             String token = authService.loginWithEmail(kakaoEmail);
             responseData.put("isSign", "true");
             responseData.put("token", token);
-
+            responseData.put("role", role);
+            responseData.put("name", name);
+            responseData.put("nickname", nickname);
         }
-        return ResponseEntity.ok(responseData);
 
+        return ResponseEntity.ok(responseData);
     }
+
 }
