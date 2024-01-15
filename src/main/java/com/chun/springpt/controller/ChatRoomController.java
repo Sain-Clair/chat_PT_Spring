@@ -36,11 +36,11 @@ public class ChatRoomController {
 	}
 
 	// 채팅방 생성
-	@PostMapping("/room")
-	@ResponseBody
-	public MsgRoomVO createRoom(@RequestParam String name) {
-		return chatRoomRepository.createChatRoom(name); // createChatRoom(name);
-	}
+//	@PostMapping("/room")
+//	@ResponseBody
+//	public MsgRoomVO createRoom() {
+//		return chatRoomRepository.createChatRoom(MsgRoomVO); // createChatRoom(name);
+//	}
 
 	// 채팅방 입장 화면
 	@GetMapping("/room/enter/{roomId}")
