@@ -54,7 +54,7 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         // userName token에서 가져오기
-        String userName = JwtUtil.getUserName(token);
+        String userName = JwtUtil.getID(token);
 
         // 권한 부여
         // role은 DB에서 가져와야됨. 지금은 하드코딩
