@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.chun.springpt.dao.DietDao;
 import com.chun.springpt.vo.DietVO;
+import com.chun.springpt.vo.NutritionVO;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -37,6 +38,18 @@ public class DietService {
 
     public DietVO getTargetWeight(String userName) {
         return dietDao.getTargetWeight(userName);
+    }
+    
+    public Map<String, Object> GetRecommandTandangi(String userName) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("userName", userName);
+        dietDao.getRecommandTandangi(params); // 저장 프로시저 호출
+        return params; // OUT 매개변수가 포함된 결과 맵 반환
+        
+    }
+
+    public NutritionVO getWeekAvgTandangi(String userName,String startPeriod, String endPeriod){
+        return dietDao.getWeekAvgTandangi(userName, startPeriod, endPeriod);
     }
     
 }
