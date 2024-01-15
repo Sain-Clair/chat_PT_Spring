@@ -17,8 +17,8 @@ public interface AuthDao {
 
     // 아이디 중복 체크
 
-    // 이메일 중복 체크
-    int checkEmail(@Param("email") String email);
+    // 이메일 유무 확인 및 권한 반환
+    String checkEmailReturnId(@Param("email") String email);
 
     // 비밀번호 변경을 위한 회원 유무 확인
     UserVO userCheck(@Param("id") String id, @Param("name") String name, @Param("email") String email);
