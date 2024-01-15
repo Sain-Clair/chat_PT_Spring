@@ -125,11 +125,11 @@ public class AuthController {
         return ResponseEntity.ok().body("성공");
     }
     // 회원가입 email 인증 //y
-    @PostMapping("/service/authemail/{email}")
-    public int authemail(@PathVariable("email") String email) {
+    @PostMapping("/service/authemail")
+    public ResponseEntity<Integer> authemail(@RequestBody Map<String, String> data) {
+        String email = data.get("email");
         int number = mailService.sendEmailCheck(email);
         log.info("number: {}", number);
-        return number;
+        return ResponseEntity.ok().body(number);
     }
-    
 }
