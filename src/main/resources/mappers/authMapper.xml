@@ -16,4 +16,11 @@
     <select id="changePassword" resultType="user">
         update members set password = #{password} where id = #{id}
     </select>
+    <!--이메일 중복체크-->
+    <select id="checkEmail" resultType="int">
+        SELECT COUNT(*) FROM members WHERE email = #{email}
+    </select>
+    <select id="loginCheckWithEmail" resultType="user">
+        SELECT * FROM members WHERE email = #{email}
+    </select>
 </mapper>

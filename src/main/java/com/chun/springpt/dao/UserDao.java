@@ -15,5 +15,4 @@ public interface UserDao {
     // 이름 불러오기
     String getName(@Param("id") String id);
 
-
 }

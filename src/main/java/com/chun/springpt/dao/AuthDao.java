@@ -10,20 +10,24 @@ public interface AuthDao {
     // 로그인
     UserVO loginCheck(@Param("id") String id, @Param("password") String password);
 
+    // 카카오 로그인 (이메일을 통한)
+    UserVO loginCheckWithEmail(@Param("email") String email);
 
     // 회원가입
 
     // 아이디 중복 체크
 
     // 이메일 중복 체크
+    int checkEmail(@Param("email") String email);
 
     // 비밀번호 변경을 위한 회원 유무 확인
     UserVO userCheck(@Param("id") String id, @Param("name") String name, @Param("email") String email);
 
     // 비밀번호 변경
     void changePassword(@Param("id") String id, @Param("password") String newPassword);
-    // 회원 탈퇴
 
     // 아이디 찾기
     String findId(@Param("name")String name, @Param("email")String email);
+
+    // 회원 탈퇴
 }

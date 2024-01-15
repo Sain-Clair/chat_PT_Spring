@@ -24,7 +24,7 @@ public class AuthService {
     public String login(String userName, String password) {
         UserVO userVO = getUser(userName, password);
 
-        if(userVO != null) {
+        if (userVO != null) {
             String role = userVO.getRole().toString();
             return JwtUtil.createJwt(userName, role, expiredMs);
         } else {
@@ -32,11 +32,34 @@ public class AuthService {
         }
     }
 
-    // 가입된 회원인지 체크하고 유저객체 반환
+    // 카카오 로그인
+    // 이메일을 통해서 토큰 발급 시키기
+    public String loginWithEmail(String email) {
+        UserVO userVO = getUserWithEmail(email);
+
+        String role = userVO.getRole().toString();
+        String userName = userVO.getId();
+        return JwtUtil.createJwt(userName, role, expiredMs);
+
+    }
+
+    // 가입된 회원인지 체크하고 유저객체 반환(로그인을 위해)
     public UserVO getUser(String userName, String password) {
         UserVO userVO = null;
         userVO = authDao.loginCheck(userName, password);
         return userVO;
+    }
+
+
+    // 카카오 로그인을 위해 이메일로 유저객체 반환
+    private UserVO getUserWithEmail(String email) {
+        return authDao.loginCheckWithEmail(email);
+    }
+
+    // 가입한 회원인지 이메일로 확인
+    // 0이면 미가입, 1이면 가입
+    public int checkEmail(String email) {
+        return authDao.checkEmail(email);
     }
 
     // 아이디 찾기
@@ -55,4 +78,6 @@ public class AuthService {
     public void changePassword(String id, String newPassword) {
         authDao.changePassword(id, newPassword);
     }
+
+
 }
