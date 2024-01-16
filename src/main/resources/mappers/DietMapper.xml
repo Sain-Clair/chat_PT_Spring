@@ -77,23 +77,62 @@
         )}
     </select>
     <select id = "getWeekAvgTandangi" resultType = "nvo">
-    SELECT AVG(dailyTotal_tan) as weeklyAvg_tan,
-       AVG(dailyTotal_dan) as weeklyAvg_dan,
-       AVG(dailyTotal_gi) as weeklyAvg_gi
-    FROM (
-        SELECT TRUNC(u.uploaddate) as uploadDate, 
-            SUM(f.food_tan * (u.mass / f.foodweight)) as dailyTotal_tan,
-            SUM(f.food_dan * (u.mass / f.foodweight)) as dailyTotal_dan,
-            SUM(f.food_gi * (u.mass / f.foodweight)) as dailyTotal_gi
-        FROM upphoto u
-        INNER JOIN food f ON u.foodnum = f.foodnum
-        INNER JOIN normal_mem n ON u.nnum = n.nnum
-        WHERE n.normal_id = #{userName}
-        AND TRUNC(u.uploaddate) BETWEEN TO_DATE(#{startPeriod}, 'YYYY-MM-DD') 
-                                    AND TO_DATE(#{endPeriod}, 'YYYY-MM-DD')
-        GROUP BY TRUNC(u.uploaddate)
-    ) subquery
-
-
+        SELECT AVG(dailyTotal_tan) as weeklyAvg_tan,
+        AVG(dailyTotal_dan) as weeklyAvg_dan,
+        AVG(dailyTotal_gi) as weeklyAvg_gi
+        FROM (
+            SELECT TRUNC(u.uploaddate) as uploadDate, 
+                SUM(f.food_tan * (u.mass / f.foodweight)) as dailyTotal_tan,
+                SUM(f.food_dan * (u.mass / f.foodweight)) as dailyTotal_dan,
+                SUM(f.food_gi * (u.mass / f.foodweight)) as dailyTotal_gi
+            FROM upphoto u
+            INNER JOIN food f ON u.foodnum = f.foodnum
+            INNER JOIN normal_mem n ON u.nnum = n.nnum
+            WHERE n.normal_id = #{userName}
+            AND TRUNC(u.uploaddate) BETWEEN TO_DATE(#{startPeriod}, 'YYYY-MM-DD') 
+                                        AND TO_DATE(#{endPeriod}, 'YYYY-MM-DD')
+            GROUP BY TRUNC(u.uploaddate)
+        ) subquery
     </select>
+    <select id = "getTanTop3" resultType = "nvo">
+    <![CDATA[
+        SELECT * FROM (
+        SELECT food_tan/foodweight as ratio, foodname,foodimg
+        FROM food
+        ORDER BY ratio DESC
+        )
+        WHERE ROWNUM <= 3
+        ]]>
+    </select>
+    <select id = "getDanTop3" resultType = "nvo">
+    <![CDATA[
+        SELECT * FROM (
+        SELECT food_dan/foodweight as ratio, foodname,foodimg
+        FROM food
+        ORDER BY ratio DESC
+        )
+        WHERE ROWNUM <= 3
+        ]]>
+    </select>
+    <select id = "getGiTop3" resultType = "nvo">
+    <![CDATA[
+        SELECT * FROM (
+        SELECT food_gi/foodweight as ratio, foodname,foodimg
+        FROM food
+        ORDER BY ratio DESC
+        )
+        WHERE ROWNUM <= 3
+        ]]>
+    </select>
+    <select id = "getCalTop3" resultType = "nvo">
+    <![CDATA[
+        SELECT * FROM (
+        SELECT foodcal/foodweight as ratio, foodname,foodimg
+        FROM food
+        ORDER BY ratio DESC
+        )
+        WHERE ROWNUM <= 3
+        ]]>
+    </select>
+
 </mapper>
