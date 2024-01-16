@@ -10,4 +10,8 @@ public class NutritionVO {
     private double weeklyAvg_tan;
     private double weeklyAvg_dan;
     private double weeklyAvg_gi;
+
+    private double ratio;
+    private String Foodname;
+    private String foodimg;
 }
