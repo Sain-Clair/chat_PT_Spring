@@ -19,25 +19,24 @@ public class SignUpController {
 
     // id 중복 체크
     @PostMapping("/signUp/id")
-    public ResponseEntity<String> checkId(@RequestBody Map<String, String> data) {
+    public int checkId(@RequestBody Map<String, String> data) {
         String id = data.get("id");
         int num = signUpService.validCheckId(id);
         if (num < 1) {
-            return ResponseEntity.ok().body("사용가능");
+            return 0;
         } else {
-            return ResponseEntity.ok().body("사용 불가");
+            return 1;
         }
     }
     // 이메일 중복 체크
     @PostMapping("/signUp/email")
-    public ResponseEntity<String> emailCheck(@RequestBody Map<String, String> data) {
+    public int emailCheck(@RequestBody Map<String, String> data) {
         String email = data.get("email");
         int num = signUpService.validCheckEmail(email);
         if (num < 1) {
-            return ResponseEntity.ok().body("사용가능");
+            return 0;
         } else {
-            return ResponseEntity.ok().body("사용 불가");
+            return 1;
         }
     }
-
 }
