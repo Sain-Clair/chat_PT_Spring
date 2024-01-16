@@ -14,4 +14,9 @@ public class NutritionVO {
     private double ratio;
     private String Foodname;
     private String foodimg;
+    private double foodcal;
+    private double food_tan;
+    private double food_dan;
+    private double food_gi;
+    private double foodweight;
 }
