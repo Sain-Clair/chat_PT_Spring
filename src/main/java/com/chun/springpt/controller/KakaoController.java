@@ -54,6 +54,8 @@ public class KakaoController {
             responseData.put("id", "kakao_" + kakaoEmail);
             responseData.put("email", kakaoEmail);
             responseData.put("nickname", kakaoService.getNickname(decodedIDToken));
+            log.info(responseData.get("nickname"));
+            System.err.println(responseData.get("nickname"));
             responseData.put("profileImage", kakaoService.getProfileImage(decodedIDToken));
 
         } else { // 회원이면 토큰 발급해서 보내기

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 @Service
@@ -64,8 +64,7 @@ public class KakaoService {
 
             // id_token중에서도 유저 정보(페이로드)가 들어있는 [1]번째 배열을 디코딩
             byte[] decodedBytes = Base64.getDecoder().decode(jwtParts[1]);
-
-            return new String(decodedBytes);
+            return new String(decodedBytes, StandardCharsets.UTF_8);
 
         } catch (Exception e) {
             // JSON 파싱 오류 처리
