@@ -3,6 +3,7 @@ package com.chun.springpt.service;
 import com.chun.springpt.domain.dto.KakaoProfile;
 import com.chun.springpt.domain.dto.OAuthToken;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.Base64;
 
 @Service
 @Slf4j
@@ -26,7 +29,7 @@ public class KakaoService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", "aa7e1b658afaea7d32248761c5aed3ef");
-        params.add("redirect_uri", "http://localhost/springpt/kakao/callback");
+        params.add("redirect_uri", "http://localhost:8081/service/kakaojoin");
         params.add("code", code);
 
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);
@@ -41,63 +44,68 @@ public class KakaoService {
 
         return response;
     }
-    
-    // 토큰을 보내서 유저의 정보를 가져옴
-    public KakaoProfile getKakaoProfile(ResponseEntity<String> response) {
+
+    // 디코딩된 토큰 가져오기
+    public String getDecodedIDToken(ResponseEntity<String> response) {
+        String responseBody = response.getBody();
+
+        // Jackson ObjectMapper 생성
         ObjectMapper objectMapper = new ObjectMapper();
-        OAuthToken oAuthToken = null;
+
         try {
-            oAuthToken = objectMapper.readValue(response.getBody(), OAuthToken.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            // JSON 문자열을 JsonNode로 읽기
+            JsonNode jsonNode = objectMapper.readTree(responseBody);
+
+            // id_token 키의 값 추출
+            String idToken = jsonNode.get("id_token").asText();
+
+            // id_token을 .을 기준으로 분리
+            String[] jwtParts = idToken.split("\\.");
+
+            // id_token중에서도 유저 정보(페이로드)가 들어있는 [1]번째 배열을 디코딩
+            byte[] decodedBytes = Base64.getDecoder().decode(jwtParts[1]);
+
+            return new String(decodedBytes);
+
+        } catch (Exception e) {
+            // JSON 파싱 오류 처리
+            e.printStackTrace();
         }
 
-        log.info("카카오 엑세스 토큰 : " + oAuthToken.getAccess_token());
+        return null;
+    }
 
-        // POST 방식으로 key=value 데이터를 요청 (카카오쪽으로)
-        RestTemplate rt2 = new RestTemplate();
-        HttpHeaders headers2 = new HttpHeaders();
-        headers2.add("Authorization", "Bearer " + oAuthToken.getAccess_token());
-        headers2.add("Content-type", "application/x-www-form-urlencoded");
-
-        HttpEntity<MultiValueMap<String, String>> kakaoProfileRequest = new HttpEntity<>(headers2);
-
-        // Http 요청하기 - POST 방식으로 - 그리고 response 변수의 응답 받음
-        ResponseEntity<String> response2 = rt2.exchange(
-                "https://kapi.kakao.com/v2/user/me",
-                HttpMethod.POST,
-                kakaoProfileRequest,
-                String.class
-        );
-
-        ObjectMapper objectMapper2 = new ObjectMapper();
-        KakaoProfile kakaoProfile = null;
+    // 디코딩된 토큰을 통해 원하는 필드 받기
+    private String getValueFromDecodedToken(String decodedIDToken, String fieldName) {
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            kakaoProfile = objectMapper2.readValue(response2.getBody(), KakaoProfile.class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            // JSON 문자열을 JsonNode로 읽기
+            JsonNode jsonNode = objectMapper.readTree(decodedIDToken);
+
+            // 지정된 필드의 값을 추출
+            return jsonNode.get(fieldName).asText();
+        } catch (Exception e) {
+            // JSON 파싱 오류 처리
+            e.printStackTrace();
         }
-
-        return kakaoProfile;
+        return null;
+    }
+    
+    // 디코딩된 토큰을 넣어서 이메일 가져오기
+    public String getEmail(String decodedIDToken) {
+        return getValueFromDecodedToken(decodedIDToken, "email");
     }
 
-    // 유저의 정보에서 카카오 아이디(시퀀스)를 가져옴
-    public String getKakaoId(KakaoProfile kakaoProfile) {
-        return kakaoProfile.getId().toString();
+    // 디코딩된 토큰을 넣어서 닉네임 가져오기
+    public String getNickname(String decodedIDToken) {
+        return getValueFromDecodedToken(decodedIDToken, "nickname");
     }
 
-    // 유저의 정보에서 카카오 이메일을 가져옴
-    public String getKakaoEmail(KakaoProfile kakaoProfile) {
-        return kakaoProfile.getKakao_account().getEmail();
+    // 디코딩된 토큰을 넣어서 프로필 사진 가져오기
+    public String getProfileImage(String decodedIDToken) {
+        return getValueFromDecodedToken(decodedIDToken, "picture");
     }
 
-    // 유저의 정보에서 카카오 닉네임을 가져옴
-    public String getKakaoNickname(KakaoProfile kakaoProfile) {
-        return kakaoProfile.getKakao_account().getProfile().getNickname();
-    }
 
-    // 유저의 정보에서 카카오 이미지를 가져옴
-    public String getKakaoImage(KakaoProfile kakaoProfile) {
-        return kakaoProfile.getKakao_account().getProfile().getProfile_image_url();
-    }
+
 }

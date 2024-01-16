@@ -51,5 +51,18 @@ public class DietService {
     public NutritionVO getWeekAvgTandangi(String userName,String startPeriod, String endPeriod){
         return dietDao.getWeekAvgTandangi(userName, startPeriod, endPeriod);
     }
+
+    public List<NutritionVO> getTanTop3(){
+        return dietDao.getTanTop3();
+    }
+    public List<NutritionVO> getDanTop3(){
+        return dietDao.getDanTop3();
+    }
+    public List<NutritionVO> getGiTop3(){
+        return dietDao.getGiTop3();
+    }
+    public List<NutritionVO> getCalTop3(){
+        return dietDao.getCalTop3();
+    }
     
 }

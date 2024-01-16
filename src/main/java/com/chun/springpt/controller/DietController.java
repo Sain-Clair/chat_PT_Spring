@@ -75,8 +75,8 @@ public class DietController {
     }
 
     @GetMapping("diet_weight_analysis")
-    public Map<String, Object>getWeightList(@RequestParam("startPeriod") String startPeriod,
-        @RequestParam("endPeriod") String endPeriod) {
+    public Map<String, Object> getWeightList(@RequestParam("startPeriod") String startPeriod,
+            @RequestParam("endPeriod") String endPeriod) {
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
 
@@ -86,10 +86,10 @@ public class DietController {
         List<DietVO> weightList = Dservice.selectWeightList(userName, startPeriod, endPeriod);
 
         DietVO targetWeight = Dservice.getTargetWeight(userName);
-        
+
         Map<String, Object> response = new HashMap<>();
         response.put("weightList", weightList);
-        response.put("targetWeight",targetWeight);
+        response.put("targetWeight", targetWeight);
 
         return response; // JSON 형식으로 데이터를 반환합니다.
 
@@ -97,7 +97,7 @@ public class DietController {
 
     @GetMapping("/getRecommandTandangi")
     public Map<String, Object> getRecommandTandangi(@RequestParam("startPeriod") String startPeriod,
-    @RequestParam("endPeriod") String endPeriod) {
+            @RequestParam("endPeriod") String endPeriod) {
 
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
@@ -106,11 +106,26 @@ public class DietController {
         String userName = JwtUtil.getID(token);
         Map<String, Object> recommandTandnagi = Dservice.GetRecommandTandangi(userName);
         NutritionVO avgTanDanGi = Dservice.getWeekAvgTandangi(userName, startPeriod, endPeriod);
-        
+
         Map<String, Object> response = new HashMap<>();
         response.put("recommandTandnagi", recommandTandnagi);
-        response.put("avgTanDanGi",avgTanDanGi);
+        response.put("avgTanDanGi", avgTanDanGi);
         return response;
+    }
+
+    @GetMapping("/food_top3")
+    public List<NutritionVO> getfood_top3(@RequestParam("chooseone") String param) {
+        log.info(param);
+        if (param.equals("food_tan")) {
+            return Dservice.getTanTop3();
+        } else if (param.equals("food_dan")) {
+            return Dservice.getDanTop3();
+        } else if (param.equals("food_gi")) {
+            return Dservice.getGiTop3();
+        } else {
+            log.info("else branch executed");
+            return Dservice.getCalTop3();
+        }
     }
 
 }

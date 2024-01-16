@@ -27,4 +27,9 @@ public interface DietDao {
     // 일주일 치 평균 탄,단,지 를 구해옴
     NutritionVO getWeekAvgTandangi(String userName, String startPeriod, String endPeriod);
 
+    List<NutritionVO> getTanTop3();
+    List<NutritionVO> getDanTop3();
+    List<NutritionVO> getGiTop3();
+    List<NutritionVO> getCalTop3();
+
     }
