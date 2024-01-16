@@ -1,8 +1,5 @@
 package com.chun.springpt.service;
 
-import com.chun.springpt.domain.dto.KakaoProfile;
-import com.chun.springpt.domain.dto.OAuthToken;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
@@ -44,6 +42,28 @@ public class KakaoService {
 
         return response;
     }
+
+    // response를 통해 access_token 가져오기
+    public String getAccessoken(ResponseEntity<String> response) {
+        String responseBody = response.getBody();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            // JSON 문자열을 JsonNode로 읽기
+            JsonNode jsonNode = objectMapper.readTree(responseBody);
+
+            // access_token 키의 값 추출
+            return jsonNode.get("access_token").asText();
+
+        } catch (Exception e) {
+            // JSON 파싱 오류 처리
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
 
     // 디코딩된 토큰 가져오기
     public String getDecodedIDToken(ResponseEntity<String> response) {
@@ -104,7 +124,5 @@ public class KakaoService {
     public String getProfileImage(String decodedIDToken) {
         return getValueFromDecodedToken(decodedIDToken, "picture");
     }
-
-
 
 }
