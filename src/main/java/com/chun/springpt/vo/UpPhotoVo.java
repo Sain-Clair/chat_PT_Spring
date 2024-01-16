@@ -20,6 +20,10 @@ public class UpPhotoVo {
     private int CANDIDATE1RATE;
     private int CANDIDATE2RATE;
     private int CANDIDATE3RATE;
-
+    private int MASS;
+    private double FOODCAL;
+    private int FOOD_TAN;
+    private int FOOD_DAN;
+    private int FOOD_GI;
 
 }
