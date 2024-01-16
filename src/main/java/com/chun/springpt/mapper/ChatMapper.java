@@ -26,7 +26,7 @@ public interface ChatMapper {
 
   public MsgRoomVO findRoomById(String roomId); // 챗룸 하나 선택
 
-  public List<MsgRoomVO> findAllRoom(); // 전체 챗룸 선택
+  public List<MsgRoomVO> findAllRoom(MsgRoomVO msgRoomVO); // 전체 챗룸 선택
 
   public void deleteChatRoom(MsgRoomVO msgRoomVO); // 챗룸 삭제
 }
