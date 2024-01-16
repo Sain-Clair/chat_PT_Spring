@@ -1,11 +1,8 @@
 package com.chun.springpt.controller;
 
-import com.chun.springpt.domain.dto.KakaoProfile;
 import com.chun.springpt.service.AuthService;
 import com.chun.springpt.service.KakaoService;
 import com.chun.springpt.service.UserService;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -41,6 +37,9 @@ public class KakaoController {
         // 토큰을 통해 디코딩된 유저 정보 리스트 반환받기
         String decodedIDToken = kakaoService.getDecodedIDToken(tokenResponse);
 
+        // 토큰을 통해 access_token 가져오기
+        String accessToken = kakaoService.getAccessoken(tokenResponse);
+
         // 유저의 정보를 통해 이메일을 가져옴
         String kakaoEmail = kakaoService.getEmail(decodedIDToken);
 
@@ -51,11 +50,10 @@ public class KakaoController {
         if (id == null) { // 비회원이면 회원가입할 때 채워줄 정보 보내기
 
             responseData.put("isSign", "false");
+            responseData.put("accessToken", accessToken);
             responseData.put("id", "kakao_" + kakaoEmail);
             responseData.put("email", kakaoEmail);
             responseData.put("nickname", kakaoService.getNickname(decodedIDToken));
-            log.info(responseData.get("nickname"));
-            System.err.println(responseData.get("nickname"));
             responseData.put("profileImage", kakaoService.getProfileImage(decodedIDToken));
 
         } else { // 회원이면 토큰 발급해서 보내기
