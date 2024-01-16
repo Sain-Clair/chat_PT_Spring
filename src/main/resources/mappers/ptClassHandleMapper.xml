@@ -1,0 +1,32 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chun.springpt.dao.PthandleDao">
+        <!--로그인시 존재하는 회원인지 확인-->
+
+    <select id="ptAllList" resultType="ptHandle">
+        SELECT
+        M.NAME,
+        M.BIRTH,
+        M.GENDER,
+        N.PURPOSE,
+        N.WEIGHT,
+        N.HEIGHT,
+        N.TARGET_WEIGHT,
+        MT.USERID,
+        MT.PTSTART,
+        MT.PTEND,
+        MT.STATUS
+        FROM
+        MATCHING MT
+        JOIN MEMBERS M ON MT.USERID = M.ID
+        JOIN NORMAL_MEM N ON M.ID = N.NORMAL_ID
+        WHERE
+        MT.TRAINERID = #{TRAINERID}
+    </select>
+
+    <update id="pthandleToLive" parameterType="ptHandle">
+        UPDATE MATCHING
+        SET STATUS = #{STATUS},
+        PTSTART = SYSDATE
+        WHERE USERID = #{USERID}
+    </update>
+</mapper>
