@@ -21,6 +21,8 @@ public class MsgRoomVO {
 		private Date ptstart;
     private Set<WebSocketSession> sessions = new HashSet<>();
 
+		private String name;
+
     public static MsgRoomVO create(String name) {
     	MsgRoomVO msgRoomVO = new MsgRoomVO();
     	msgRoomVO.roomId = UUID.randomUUID().toString();
