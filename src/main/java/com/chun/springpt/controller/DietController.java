@@ -11,6 +11,7 @@ import com.chun.springpt.service.DietService;
 import com.chun.springpt.utils.JwtUtil;
 import com.chun.springpt.vo.DietVO;
 import com.chun.springpt.vo.NutritionVO;
+import com.chun.springpt.vo.SearchVO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -127,5 +128,58 @@ public class DietController {
             return Dservice.getCalTop3();
         }
     }
+
+
+    @GetMapping("/searchOption")
+    public List<SearchVO> getSearchData(@RequestParam("selectedCategory")String selectedCategory,
+    @RequestParam("selectedSubCategory")String selectedSubCategory) {
+        log.info("로깅 - 대분류 카테고리: {}", selectedCategory);
+        log.info("로깅 - 중분류 카테고리: {}", selectedSubCategory);
+
+        String authorizationHeader = request.getHeader("Authorization");
+        String token = JwtUtil.extractToken(authorizationHeader);
+
+        // 사용자 아이디
+        String userName = JwtUtil.getID(token);
+
+        if(selectedCategory.equals("연령대 별 보기")){
+            int age = 0;
+            if(selectedSubCategory.equals("10대")){
+                age = 10;
+            }else if(selectedSubCategory.equals("20대")){
+                age = 20;
+            }else if(selectedSubCategory.equals("30대")){
+                age = 30;
+            }else if(selectedSubCategory.equals("40대")){
+                age = 40;
+            }else if(selectedSubCategory.equals("50대")){
+                age = 50;
+            }else if(selectedSubCategory.equals("60대")){
+                age = 60;
+            }else if(selectedSubCategory.equals("70대")){
+                age = 70;
+
+            }
+            int agemax = age +9;
+
+            return Dservice.SearchAge(age, agemax, userName);
+
+        }else if(selectedCategory.equals("먹은 시간별 보기")){
+            return Dservice.SearchCategory(selectedSubCategory, userName);
+        }else if(selectedCategory.equals("식단 목적별 보기")){
+            int purpose = 100;
+            if(selectedSubCategory.equals("다이어트")){
+                purpose = 0;
+            }else if(selectedSubCategory.equals("체중유지")){
+                purpose = 1;
+            }else if(selectedSubCategory.equals("벌크업")){
+                purpose = 2;
+            }
+            return Dservice.SearchPurpose(purpose, userName);
+        }
+        return null;
+
+    }
+    
 
 }
