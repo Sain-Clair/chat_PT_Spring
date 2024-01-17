@@ -18,10 +18,10 @@ public class UpPhotoService {
         return upPhotoDao.todayPhotoList(user_id);
     }
 
-    public int deleteFood(int upphotoid, String user_id) {
-        log.info("Attempting to delete food with upphotoid: {} for user: {}", upphotoid, user_id);
-        int result = upPhotoDao.deleteFood(upphotoid, user_id);
-        log.info("Result of deletion: {}", result > 0 ? "Success" : "Failure");
-        return result;
+    public int deleteFood(int upphotoid) {
+        return upPhotoDao.deleteFood(upphotoid);
+    }
+    public void updateQuantity(UpPhotoVo vo){
+        upPhotoDao.updateQuantity(vo);
     }
 }

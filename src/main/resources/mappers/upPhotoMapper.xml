@@ -12,11 +12,11 @@
             TRUNC(UpPhoto.uploaddate) = TRUNC(SYSDATE)
           AND normal_mem.normal_id = #{nnum}
     </select>
-    <delete id="deleteFood" parameterType="map">
-        <![CDATA[
+    <delete id="deleteFood">
         delete from upphoto
-        where upphotoid = #{upphotoid} and nnum in
-            (select nnum from normal_mem where normal_id = #{user_id} )
-        ]]>
+        where upphotoid = #{upphotoid}
     </delete>
+    <update id="updateQuantity" parameterType="uptvo">
+        update upphoto set mass = #{mass} where upphotoid = #{upphotoid}
+    </update>
 </mapper>

@@ -9,5 +9,6 @@ import java.util.List;
 @Mapper
 public interface UpPhotoDao {
     List<UpPhotoVo> todayPhotoList(String user_id);
-    int deleteFood(int upphotoid, String user_id);
+    int deleteFood(int upphotoid);
+    void updateQuantity(UpPhotoVo vo);
 }

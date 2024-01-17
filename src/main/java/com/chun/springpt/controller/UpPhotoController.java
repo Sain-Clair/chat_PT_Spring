@@ -11,18 +11,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
 public class UpPhotoController {
+    private final UpPhotoService upPhotoService;
+
     @Autowired
-    private UpPhotoService upPhotoService;
+    public UpPhotoController(UpPhotoService upPhotoService) {
+        this.upPhotoService = upPhotoService;
+    }
     @Autowired
     private HttpServletRequest request;
 
     @GetMapping("/todayPhoto")
-    private List<UpPhotoVo> getTodayPhotoList(){
+    private List<UpPhotoVo> getTodayPhotoList(HttpServletRequest request){
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
         String user_id = JwtUtil.getID(token);
@@ -31,24 +37,30 @@ public class UpPhotoController {
 
     @PostMapping("/deleteFood")
     private ResponseEntity<?> deleteFood(@RequestBody UpPhotoRequest food) {
-        log.info("Received request to delete food with upphotoid: {}", food.getUpphotoid());
-
-        String authorizationHeader = request.getHeader("Authorization");
-        String token = JwtUtil.extractToken(authorizationHeader);
-        String user_id = JwtUtil.getID(token);
-        log.info("Extracted user ID from token: {}", user_id);
-
         int upphotoid = food.getUpphotoid();
-        int deletedRows = upPhotoService.deleteFood(upphotoid, user_id);
-
-        log.info("Number of rows deleted: {}", deletedRows);
+        int deletedRows = upPhotoService.deleteFood(upphotoid);
 
         if (deletedRows > 0) {
-            log.info("Deletion successful for upphotoid: {}", upphotoid);
+            String imagePath = "E:\\chat_PT_Spring\\src\\main\\resources\\static\\images\\upphoto\\" + upphotoid + ".jpg";
+            File file = new File(imagePath);
+            if (file.exists()) {
+                file.delete();
+            }
             return ResponseEntity.ok().body("Deletion successful");
         } else {
-            log.warn("No food found to delete for upphotoid: {}", upphotoid);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Food not found");
         }
+    }
+
+    @PostMapping("/updateQuantity")
+    private void updateQuantity(@RequestBody Map<String, Object> requestData){
+        int upphotoid = (Integer) requestData.get("upphotoid");
+        int newQuantity = (Integer) requestData.get("newQuantity");
+
+        UpPhotoVo vo = new UpPhotoVo();
+        vo.setUpphotoid(upphotoid);
+        vo.setMass(newQuantity);
+
+        upPhotoService.updateQuantity(vo);
     }
 }
