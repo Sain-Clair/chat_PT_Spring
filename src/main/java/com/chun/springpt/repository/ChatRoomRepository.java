@@ -21,8 +21,9 @@ public class ChatRoomRepository {
     this.chatMapper = chatRoomMapper;
   }
 
-  public List<MsgRoomVO> findAllRoom() {
-    return chatMapper.findAllRoom();
+  public List<MsgRoomVO> findAllRoom(MsgRoomVO msgRoomVO) {
+
+    return chatMapper.findAllRoom(msgRoomVO);
   }
 
   public MsgRoomVO findRoomById(String roomId) {

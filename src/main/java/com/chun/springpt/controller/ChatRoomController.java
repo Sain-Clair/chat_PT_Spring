@@ -2,6 +2,9 @@ package com.chun.springpt.controller;
 
 import java.util.List;
 
+import com.chun.springpt.utils.JwtUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,17 +25,28 @@ public class ChatRoomController {
 
 	private final com.chun.springpt.repository.ChatRoomRepository chatRoomRepository;
 
+	@Autowired
+	private JwtUtil jwtUtil;
 	// 채팅 리스트 화면
 	@GetMapping("/room")
 	public String rooms(Model model) {
 		return "/chat/room";
 	}
 
+
+	@Autowired
+	private HttpServletRequest request;
 	// 모든 채팅방 목록 반환 | 수정! Request Param값을 가지고 와서 특정 
 	@GetMapping("/rooms")
 	@ResponseBody
-	public List<MsgRoomVO> room() {
-		return chatRoomRepository.findAllRoom(); // selectAllChatRooms();
+	public List<MsgRoomVO> room(MsgRoomVO msgRoomVO) {
+		String authorizationHeader = request.getHeader("Authorization");
+		String token = JwtUtil.extractToken(authorizationHeader);
+		// 사용자 아이디
+		String userName = JwtUtil.getID(token);
+
+		msgRoomVO.setUserId(userName);
+		return chatRoomRepository.findAllRoom(msgRoomVO); // selectAllChatRooms();
 	}
 
 	// 채팅방 생성
