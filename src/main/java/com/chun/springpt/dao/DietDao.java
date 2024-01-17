@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.chun.springpt.vo.DietVO;
 import com.chun.springpt.vo.NutritionVO;
+import com.chun.springpt.vo.SearchVO;
 
 import java.util.Map;
 
@@ -32,4 +33,7 @@ public interface DietDao {
     List<NutritionVO> getGiTop3();
     List<NutritionVO> getCalTop3();
 
+    List<SearchVO> searchCategory(String category, String userName);
+    List<SearchVO> searchPurpose(int purpose, String userName);
+    List<SearchVO> searchAge(int age, int agemax, String userName);
     }

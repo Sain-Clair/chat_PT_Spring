@@ -94,6 +94,7 @@
             GROUP BY TRUNC(u.uploaddate)
         ) subquery
     </select>
+    <!-- 음식 상위 3순위 까지 구하기 -->
     <select id = "getTanTop3" resultType = "nvo">
     <![CDATA[
         SELECT * FROM (
@@ -134,5 +135,60 @@
         WHERE ROWNUM <= 3
         ]]>
     </select>
+    <!-- 끝 -->
 
+
+    <!-- 검색 조건 별 매퍼-->
+    <!-- 카테고리 별 검색 매퍼-->
+    <select id ="searchCategory" resultType = "svo">
+    <![CDATA[
+        SELECT * FROM (
+          SELECT N.NICKNAME,F.FOODIMG, F.FOODNAME, F.FOODCAL, F.FOOD_TAN, F.FOOD_DAN, F.FOOD_GI, U.CATEGORY ,U.UPLOADDATE
+          FROM MEMBERS M
+          INNER JOIN NORMAL_MEM N ON M.ID = N.NORMAL_ID
+          INNER JOIN UPPHOTO U ON N.NNUM = U.NNUM
+          INNER JOIN FOOD F ON U.FOODNUM = F.FOODNUM
+          WHERE U.category = #{category} 
+          AND M.ROLE = 'NORMAL'
+          AND N.normal_id != #{userName}
+          ORDER BY U.UPLOADDATE DESC
+        )
+        WHERE ROWNUM <= 25
+    ]]>
+    </select>
+    <!--목적 검색 별 검색 매퍼-->
+    <select id ="searchPurpose" resultType = "svo">
+    <![CDATA[
+        SELECT * FROM (
+          SELECT  N.NICKNAME,F.FOODIMG, F.FOODNAME, F.FOODCAL, F.FOOD_TAN, F.FOOD_DAN, F.FOOD_GI, U.CATEGORY ,U.UPLOADDATE
+          FROM MEMBERS M
+          INNER JOIN NORMAL_MEM N ON M.ID = N.NORMAL_ID
+          INNER JOIN UPPHOTO U ON N.NNUM = U.NNUM
+          INNER JOIN FOOD F ON U.FOODNUM = F.FOODNUM
+          WHERE n.purpose = #{purpose} 
+          AND M.ROLE = 'NORMAL'
+          AND N.normal_id != #{userName}
+          ORDER BY U.UPLOADDATE DESC
+        )
+        WHERE ROWNUM <= 25
+    ]]>
+    </select>
+    <!-- 나이대 검색 별 검색 매퍼-->
+    <select id ="searchAge" resultType = "svo">
+    <![CDATA[
+        SELECT * FROM (
+          SELECT  N.NICKNAME,F.FOODIMG, F.FOODNAME, F.FOODCAL, F.FOOD_TAN, F.FOOD_DAN, F.FOOD_GI, U.CATEGORY ,U.UPLOADDATE
+          FROM MEMBERS M
+          INNER JOIN NORMAL_MEM N ON M.ID = N.NORMAL_ID
+          INNER JOIN UPPHOTO U ON N.NNUM = U.NNUM
+          INNER JOIN FOOD F ON U.FOODNUM = F.FOODNUM
+          WHERE FLOOR(MONTHS_BETWEEN(SYSDATE, M.BIRTH) / 12) BETWEEN #{age} AND #{agemax}
+          AND M.ROLE = 'NORMAL'
+          AND N.normal_id != #{userName}
+          ORDER BY U.UPLOADDATE DESC
+        )
+        WHERE ROWNUM <= 25
+    ]]>
+    </select>
+    
 </mapper>
