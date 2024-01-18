@@ -189,10 +189,15 @@ public class DietController {
         String userName = JwtUtil.getID(token);
         Map<String, Object> recommandTandnagi = Dservice.GetRecommandTandangi(userName);
         DailyTotalVO dailytotal = Dservice.getTotaldailyinfo(userName);
+        Map<String, Object> Consecutive_Dates = Dservice.getConsecutive_Dates(userName);
+
 
         Map<String, Object> response = new HashMap<>();
         response.put("recommandTandnagi", recommandTandnagi);
         response.put("totaldaily", dailytotal);
+        response.put("Consecutive_Dates",Consecutive_Dates);
+
+
         return response;
     }
 
