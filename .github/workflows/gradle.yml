@@ -30,6 +30,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: Set execute permissions on gradlew
+      run: chmod +x ./gradlew
+      
     # 2. Spring Boot 애플리케이션 빌드
     - name: Build with Gradle
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
@@ -51,6 +54,4 @@ jobs:
     - name: docker Hub push
       run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/chatpt-spring
 
-    - name: Set execute permissions on gradlew
-      run: chmod +x ./gradlew
 
