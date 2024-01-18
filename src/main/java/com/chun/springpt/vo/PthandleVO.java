@@ -27,4 +27,6 @@ public class PthandleVO {
   private Date PTEND;
   private String STATUS;
   private String USERID;
+  private DailyTotalVO dailyTotal; // 일일 영양 정보를 저장할 필드
+
 }
