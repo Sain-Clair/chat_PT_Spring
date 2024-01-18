@@ -25,5 +25,6 @@ public class UpPhotoVo {
     private int FOOD_TAN;
     private int FOOD_DAN;
     private int FOOD_GI;
+    private int foodweight;
 
 }

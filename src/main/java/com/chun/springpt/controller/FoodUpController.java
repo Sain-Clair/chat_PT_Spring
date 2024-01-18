@@ -19,10 +19,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @Slf4j
@@ -32,7 +29,10 @@ public class FoodUpController {
   private FoodUpService foodUpService;
 
   public FoodUpController(WebClient.Builder webClientBuilder) {
-    this.webClient = webClientBuilder.baseUrl("http://localhost:9000").build();
+    this.webClient = webClientBuilder
+            .baseUrl("http://localhost:9000")
+            .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024)) // 16MB로 증가
+            .build();
   }
 
   @PostMapping("/food_up")
@@ -43,9 +43,11 @@ public class FoodUpController {
 
     MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
     for (Map.Entry<String, String> entry : fileMap.entrySet()) {
+      String key = entry.getKey(); // 키 추출
+      log.info("Processing key: " + key); // 추출된 키 로깅
       String base64String = entry.getValue();
       if (base64String != null && !base64String.isEmpty()) {
-        formData.add(entry.getKey(), base64String);
+        formData.add(key, base64String);
       }
     }
     formData.add("userName", userName);
@@ -62,8 +64,8 @@ public class FoodUpController {
     List<Map<String, Object>> results = (List<Map<String, Object>>) responseFromDjango.get("results");
     if (results != null) {
       for (Map<String, Object> result : results) {
-        String category = (String) result.get("category");
         int upphotoid = foodUpService.getNextUpPhotoId();
+        log.info("upphotoid : " + upphotoid);
         FoodUpVO vo = new FoodUpVO();
         vo.setUpphotoid(upphotoid);
         vo.setNormalId(userName);
@@ -76,34 +78,17 @@ public class FoodUpController {
         vo.setCandidate1rate((Double) result.get("candidate1rate"));
         vo.setCandidate2rate((Double) result.get("candidate2rate"));
         vo.setCandidate3rate((Double) result.get("candidate3rate"));
-        vo.setNnum(foodUpService.getNnumByNormalId(vo.getNormalId()));
-        foodUpService.foodUpload(vo);
+        foodUpService.insertFoodData(vo);
 
-        foodUpService.insertMemberFood(vo);
-
-        // 이미지 데이터 키 생성 및 처리
-        for (Map.Entry<String, String> fileEntry : fileMap.entrySet()) {
-          String key = fileEntry.getKey();
-          if (key.startsWith(category + "[")) {
-            String base64Image = fileEntry.getValue();
-            if (base64Image != null && !base64Image.isEmpty()) {
-              String imageDataBytes = base64Image.substring(base64Image.indexOf(",") + 1);
-              byte[] imageBytes = Base64.getDecoder().decode(imageDataBytes);
-
-              String filePath = "E:/chat_PT_Spring/src/main/resources/static/images/upphoto/" + upphotoid + ".jpg";
-              try (FileOutputStream imageOutFile = new FileOutputStream(filePath)) {
-                imageOutFile.write(imageBytes);
-              } catch (IOException e) {
-                log.error("Error saving image file: " + e.getMessage());
-              }
-              break; // 이미지 처리 후 해당 category에 대한 반복 종료
-            }
-          }
+        byte[] imageBytes = Base64.getDecoder().decode((String)result.get("base64_encoded_data"));
+        String filePath = "E:/chat_PT_Spring/src/main/resources/static/images/upphoto/" + upphotoid + ".jpg";
+        try (FileOutputStream imageOutFile = new FileOutputStream(filePath)) {
+          imageOutFile.write(imageBytes);
+          log.info("Image written to file successfully"); // 이미지 파일 저장 성공 로깅
+        } catch (IOException e) {
+          log.error("Error saving image file: " + e.getMessage()); // 이미지 파일 저장 실패 로깅
         }
       }
-
-
-
     }
   }
 

@@ -5,9 +5,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface FoodUpDao {
-    void foodUpload(FoodUpVO vo);
     int getNextUpPhotoId();
-    void insertMemberFood(FoodUpVO vo);
-
-    int getNnumByNormalId(String normalId);
+    void insertFoodData(FoodUpVO vo);
 }

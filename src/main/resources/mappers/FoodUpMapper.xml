@@ -4,48 +4,14 @@
     <select id="getNextUpPhotoId" resultType="int">
         SELECT upphoto_seq.nextval FROM dual
     </select>
-
-    <insert id="foodUpload" parameterType="fuvo">
-        INSERT INTO upphoto (
-            upphotoid, nnum, foodnum, category, uploaddate, mass,
-            candidate1, candidate2, candidate3, predictrate, candidate1rate, candidate2rate, candidate3rate
-        )
-        SELECT
-            #{upphotoid},nm.nnum,#{foodnum},#{category},sysdate,
-            f.foodweight,#{candidate1},#{candidate2},#{candidate3},
-            #{predictrate},#{candidate1rate},#{candidate2rate},#{candidate3rate}
-        FROM
-            normal_mem nm
-                JOIN food f ON f.foodnum = #{foodnum}
-        WHERE
-            nm.normal_id = #{normalId}
+    <insert id="insertFoodData" parameterType="fuvo">
+        CALL InsertFoodData(
+            #{upphotoid}, #{foodnum}, #{category},
+            #{candidate1}, #{candidate2}, #{candidate3},
+            #{predictrate}, #{candidate1rate}, #{candidate2rate}, #{candidate3rate},
+            #{normalId}
+            )
     </insert>
 
-    <insert id="insertMemberFood" parameterType="fuvo">
-        INSERT INTO memberfood (rating, foodnum, nnum)
-        VALUES (
-                   (SELECT
-                        CASE
-                            WHEN TRUNC(uploaddate) = TRUNC(SYSDATE) THEN 10
-                            WHEN TRUNC(uploaddate) = TRUNC(SYSDATE - 1) THEN 9
-                            WHEN TRUNC(uploaddate) = TRUNC(SYSDATE - 2) THEN 8
-                            WHEN TRUNC(uploaddate) = TRUNC(SYSDATE - 3) THEN 7
-                            ELSE 6
-                            END
-                    FROM (
-                             SELECT uploaddate FROM (
-                                                        SELECT uploaddate, ROW_NUMBER() OVER (ORDER BY uploaddate DESC) AS rn
-                                                        FROM upphoto
-                                                        WHERE nnum = #{nnum}
-                                                    )
-                             WHERE rn = (SELECT COUNT(DISTINCT uploaddate) FROM upphoto
-                                         WHERE nnum = #{nnum} AND uploaddate >= (SELECT uploaddate FROM upphoto WHERE upphotoid = #{upphotoid}))
-                         )),
-                   #{foodnum}, #{nnum}
-               )
-    </insert>
 
-    <select id="getNnumByNormalId" parameterType="String" resultType="int">
-        SELECT nnum FROM normal_mem WHERE normal_id = #{normalId}
-    </select>
 </mapper>

@@ -3,7 +3,7 @@
 <mapper namespace="com.chun.springpt.dao.UpPhotoDao">
     <select id="todayPhotoList" resultType="uptvo">
         SELECT
-            UpPhoto.*, food.FOODCAL, food.FOOD_TAN, food.FOOD_DAN, food.FOOD_GI
+            UpPhoto.*, food.FOODCAL, food.FOOD_TAN, food.FOOD_DAN, food.FOOD_GI, food.foodweight
         FROM
             UpPhoto
                 JOIN normal_mem ON UpPhoto.nnum = normal_mem.nnum
@@ -12,11 +12,22 @@
             TRUNC(UpPhoto.uploaddate) = TRUNC(SYSDATE)
           AND normal_mem.normal_id = #{nnum}
     </select>
-    <delete id="deleteFood">
-        delete from upphoto
-        where upphotoid = #{upphotoid}
+    <delete id="deleteFoodData">
+        CALL DeleteFoodData(
+            #{upphotoid}
+            )
     </delete>
     <update id="updateQuantity" parameterType="uptvo">
         update upphoto set mass = #{mass} where upphotoid = #{upphotoid}
     </update>
+    <select id="selectFoodWeight" resultType="Map">
+        SELECT f.foodweight, f.foodcal, f.food_tan, f.food_dan, f.food_gi
+        FROM food f
+                 JOIN upphoto u ON f.foodnum = u.foodnum
+        WHERE u.upphotoid = #{upphotoid}
+    </select>
+    <insert id="insertRequestFood" parameterType="irvo">
+        insert into imgeditrequest(editrequestid, upphotoid, imgeditcomment, imgedit, editrequeststatus)
+        values(editrequestid_seq.nextval, #{upphotoid}, #{imgeditcomment}, sysdate,'no')
+    </insert>
 </mapper>
