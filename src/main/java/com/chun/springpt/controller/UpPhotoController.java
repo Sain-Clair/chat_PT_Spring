@@ -28,7 +28,8 @@ public class UpPhotoController {
     private HttpServletRequest request;
 
     @GetMapping("/todayPhoto")
-    private List<UpPhotoVo> getTodayPhotoList(HttpServletRequest request){
+    private List<UpPhotoVo> getTodayPhotoList(HttpServletRequest request)
+    {
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
         String user_id = JwtUtil.getID(token);

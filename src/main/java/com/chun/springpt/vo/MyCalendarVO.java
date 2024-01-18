@@ -11,7 +11,6 @@ public class MyCalendarVO
     private String eventNum;
     private String userid;
     private String title;
-    private String img;
     private String startStr;
     private String endStr;
 }

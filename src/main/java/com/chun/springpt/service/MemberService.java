@@ -9,13 +9,17 @@ import com.chun.springpt.dao.MemberDao;
 import com.chun.springpt.vo.MemberVO;
 
 @Service
-public class MemberService {
-	
+public class MemberService 
+{	
 	@Autowired
 	private MemberDao mdao;
 	
-	public List<MemberVO> selectMemberList(){
+	public List<MemberVO> selectMemberList()
+	{
 		return mdao.selectList();
 	}
+
+
+	
 
 }
