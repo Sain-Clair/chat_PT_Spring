@@ -3,6 +3,7 @@ package com.chun.springpt.controller;
 import com.chun.springpt.dto.UpPhotoRequest;
 import com.chun.springpt.service.UpPhotoService;
 import com.chun.springpt.utils.JwtUtil;
+import com.chun.springpt.vo.ImgRequestVO;
 import com.chun.springpt.vo.UpPhotoVo;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -36,24 +37,27 @@ public class UpPhotoController {
     }
 
     @PostMapping("/deleteFood")
-    private ResponseEntity<?> deleteFood(@RequestBody UpPhotoRequest food) {
+    private ResponseEntity<?> deleteFoodData(@RequestBody UpPhotoRequest food) {
         int upphotoid = food.getUpphotoid();
-        int deletedRows = upPhotoService.deleteFood(upphotoid);
-
-        if (deletedRows > 0) {
-            String imagePath = "E:\\chat_PT_Spring\\src\\main\\resources\\static\\images\\upphoto\\" + upphotoid + ".jpg";
+        int deletedRows = upPhotoService.deleteFoodData(upphotoid);
+        log.info("deletedRows : " + deletedRows);
+        if (deletedRows == -1) {
+            String imagePath = "E:/chat_PT_Spring/src/main/resources/static/images/upphoto/" + upphotoid + ".jpg";
+            log.info("imagePath : " + imagePath);
             File file = new File(imagePath);
             if (file.exists()) {
                 file.delete();
             }
+            log.info("성공");
             return ResponseEntity.ok().body("Deletion successful");
         } else {
+            log.info("실패");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Food not found");
         }
     }
 
     @PostMapping("/updateQuantity")
-    private void updateQuantity(@RequestBody Map<String, Object> requestData){
+    private Map<String,Object> updateQuantity(@RequestBody Map<String, Object> requestData){
         int upphotoid = (Integer) requestData.get("upphotoid");
         int newQuantity = (Integer) requestData.get("newQuantity");
 
@@ -62,5 +66,10 @@ public class UpPhotoController {
         vo.setMass(newQuantity);
 
         upPhotoService.updateQuantity(vo);
+        return upPhotoService.selectFoodWeight(upphotoid);
+    }
+    @PostMapping("/requestNameChange")
+    private void insertRequest(@RequestBody ImgRequestVO vo){
+        upPhotoService.insertRequestFood(vo);
     }
 }
