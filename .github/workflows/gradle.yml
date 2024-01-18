@@ -63,16 +63,16 @@ jobs:
     steps:
       # 1. 최신 이미지를 풀받습니다
       - name: docker pull
-        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chatpt-spring
+        run: sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/chatpt-spring
       
       # 2. 기존의 컨테이너를 중지시킵니다
       - name: docker stop container
-        run: docker stop mybatis || true
+        run: sudo docker stop mybatis || true
 
       # 3. 최신 이미지를 컨테이너화하여 실행시킵니다
       - name: docker run new container
-        run: docker run --name mybatis --rm -d -p 8888:8888 ${{ secrets.DOCKERHUB_USERNAME }}/chatpt-spring
+        run: sudo docker run --name mybatis --rm -d -p 8888:8888 ${{ secrets.DOCKERHUB_USERNAME }}/chatpt-spring
 
       # 4. 미사용 이미지를 정리합니다
       - name: delete old docker image
-        run: docker system prune -f
+        run: sudo docker system prune -f
