@@ -13,7 +13,7 @@ ENV TZ=Asia/Seoul
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 ENV HOST 0.0.0.0
-EXPOSE 8888
+EXPOSE 80
 
 
 # 실행 명령어
