@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 
 import com.chun.springpt.service.DietService;
 import com.chun.springpt.utils.JwtUtil;
+import com.chun.springpt.vo.DailyTotalVO;
 import com.chun.springpt.vo.DietVO;
 import com.chun.springpt.vo.NutritionVO;
 import com.chun.springpt.vo.SearchVO;
@@ -133,9 +134,6 @@ public class DietController {
     @GetMapping("/searchOption")
     public List<SearchVO> getSearchData(@RequestParam("selectedCategory")String selectedCategory,
     @RequestParam("selectedSubCategory")String selectedSubCategory) {
-        log.info("로깅 - 대분류 카테고리: {}", selectedCategory);
-        log.info("로깅 - 중분류 카테고리: {}", selectedSubCategory);
-
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
 
@@ -181,5 +179,21 @@ public class DietController {
 
     }
     
+    @GetMapping("/getRecommandDailyTandangi")
+    public Map<String, Object> getRecommandDailyTandangi() {
+
+        String authorizationHeader = request.getHeader("Authorization");
+        String token = JwtUtil.extractToken(authorizationHeader);
+
+        // 사용자 아이디
+        String userName = JwtUtil.getID(token);
+        Map<String, Object> recommandTandnagi = Dservice.GetRecommandTandangi(userName);
+        DailyTotalVO dailytotal = Dservice.getTotaldailyinfo(userName);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("recommandTandnagi", recommandTandnagi);
+        response.put("avgTanDanGi", dailytotal);
+        return response;
+    }
 
 }

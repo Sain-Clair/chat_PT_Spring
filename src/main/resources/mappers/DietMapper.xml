@@ -66,6 +66,18 @@
     <select id = "getTargetWeight" resultType = "dvo">
         select target_weight from normal_mem where normal_id = #{userName}
     </select>
+    <!-- 유저 일일 토탈 칼로리,탄수화물, 단백질, 지방 구하기-->
+    <select id = "getTotaldailyinfo" resultType = "dtvo">
+        SELECT  SUM(foodcal * (u.mass / f.foodweight)) as dailyTotalCal,
+            sum(food_tan * (u.mass / f.foodweight)) as dailyTotalTan,
+            sum(food_dan * (u.mass / f.foodweight)) as dailyTotalDan,
+            sum(food_gi * (u.mass / f.foodweight)) as dailyTotalGi
+        FROM upphoto u
+        INNER JOIN food f ON u.foodnum = f.foodnum
+        inner join normal_mem n on u.nnum =n.nnum
+        WHERE n.normal_id = #{userName}
+        AND TRUNC(u.uploaddate) = TRUNC(SYSDATE)
+    </select>
     <!-- 유저 권장 탄단지 구하기, (프로시저 이용)-->
     <select id="getRecommandTandangi" statementType="CALLABLE">
         {call get_recommand_tandangi(
