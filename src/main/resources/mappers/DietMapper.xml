@@ -202,5 +202,13 @@
         WHERE ROWNUM <= 25
     ]]>
     </select>
+
+    <!-- 연속 날짜 구하기 -->
+    <select id="getConsecutive_Dates" statementType="CALLABLE">
+        {call get_Consecutive_Dates(
+            #{userName, jdbcType=VARCHAR, mode=IN},
+            #{P_COUNT, jdbcType=NUMERIC, mode=OUT}
+        )}
+    </select>
     
 </mapper>
