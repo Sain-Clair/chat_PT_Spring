@@ -203,8 +203,12 @@
     ]]>
     </select>
 
-    <select id = "getFisrtdate" resultType = "String">
-    select Trunc(min(uploaddate)) from upphoto u inner join normal_mem n on  u.nnum = n.nnum where n.normal_id = #{userName} 
+    <!-- 연속 날짜 구하기 -->
+    <select id="getConsecutive_Dates" statementType="CALLABLE">
+        {call get_Consecutive_Dates(
+            #{userName, jdbcType=VARCHAR, mode=IN},
+            #{P_COUNT, jdbcType=NUMERIC, mode=OUT}
+        )}
     </select>
     
 </mapper>

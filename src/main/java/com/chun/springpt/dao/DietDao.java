@@ -41,4 +41,7 @@ public interface DietDao {
     List<SearchVO> searchAge(int age, int agemax, String userName);
 
     DailyTotalVO getTotaldailyinfo(String userName);
+    // 연속 날짜 가져오기
+    void getConsecutive_Dates(Map<String, Object> params);
+
     }
