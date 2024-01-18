@@ -12,18 +12,10 @@ public class FoodUpService {
     @Autowired
     private FoodUpDao foodUpDao;
 
-    public void foodUpload(FoodUpVO vo){
-        foodUpDao.foodUpload(vo);
-    }
     public int getNextUpPhotoId() {
         return foodUpDao.getNextUpPhotoId();
     }
-
-    public void insertMemberFood(FoodUpVO vo){
-        foodUpDao.insertMemberFood(vo);
-    }
-
-    public int getNnumByNormalId(String normalId){
-        return foodUpDao.getNnumByNormalId(normalId);
+    public void insertFoodData(FoodUpVO vo){
+        foodUpDao.insertFoodData(vo);
     }
 }

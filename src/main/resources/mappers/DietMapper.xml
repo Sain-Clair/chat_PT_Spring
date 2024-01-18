@@ -202,5 +202,9 @@
         WHERE ROWNUM <= 25
     ]]>
     </select>
+
+    <select id = "getFisrtdate" resultType = "String">
+    select Trunc(min(uploaddate)) from upphoto u inner join normal_mem n on  u.nnum = n.nnum where n.normal_id = #{userName} 
+    </select>
     
 </mapper>
