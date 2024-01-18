@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><!-- 왼쪽 구문(http://mybaits) 강제로 다운로드 -->
+<mapper namespace="com.chun.springpt.dao.MyCalendarDao">
+    <select id="selectCalendarList" resultType="mycalendar" parameterType="string">
+        select * from mycalendar where userid = #{userid}
+    </select>
+        
+ <insert id="insertMyCalendar" parameterType="mycalendar">
+    INSERT INTO MyCalendar (eventNum, userid, title, img, startStr, endStr)
+    VALUES (#{eventNum}, #{userid}, #{title}, #{img}, #{startStr}, #{endStr})
+  </insert>
+
+<delete id="deleteMyCalendar" parameterType="map">
+  DELETE FROM MyCalendar
+  WHERE eventNum = #{eventNum} AND userid = #{userid}
+</delete>
+
+</mapper>
