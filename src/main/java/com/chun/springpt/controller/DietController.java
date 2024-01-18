@@ -192,7 +192,7 @@ public class DietController {
 
         Map<String, Object> response = new HashMap<>();
         response.put("recommandTandnagi", recommandTandnagi);
-        response.put("avgTanDanGi", dailytotal);
+        response.put("totaldaily", dailytotal);
         return response;
     }
 
