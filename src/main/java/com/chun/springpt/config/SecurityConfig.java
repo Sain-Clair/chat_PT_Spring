@@ -30,7 +30,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000", "https://chunsik.shop", "http://www.chatpt.shop", "ws://localhost/springpt/ws-stomp/**"));
+        corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000", "https://chunsik.shop", "http://www.chatpt.shop", "http://3.37.155.116:8888", "ws://localhost/springpt/ws-stomp/**"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
