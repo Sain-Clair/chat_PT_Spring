@@ -51,8 +51,8 @@ public class DietService {
         params.put("userName", userName);
         dietDao.getRecommandTandangi(params); // 저장 프로시저 호출
         return params; // OUT 매개변수가 포함된 결과 맵 반환
-        
     }
+
     // 일주일 평균 탄단지 불러옴
     public NutritionVO getWeekAvgTandangi(String userName,String startPeriod, String endPeriod){
         return dietDao.getWeekAvgTandangi(userName, startPeriod, endPeriod);

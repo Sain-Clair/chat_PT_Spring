@@ -4,6 +4,7 @@ package com.chun.springpt.vo;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Alias("ptHandle")
@@ -29,4 +30,8 @@ public class PthandleVO {
   private String USERID;
   private DailyTotalVO dailyTotal; // 일일 영양 정보를 저장할 필드
 
+  private BigDecimal recommandTan; // 추천 탄수화물
+  private BigDecimal recommandDan; // 추천 단백질
+  private BigDecimal recommandGi; // 추천 지방
+  private BigDecimal recommandCal;
 }
