@@ -17,6 +17,7 @@ public class SignUpService {
     public int validCheckEmail(String email){
         // 0이면 가입가능, 1이면 불가능
         int checkEmail = dao.validCheckEmail(email);
+        System.out.println("서비스"+checkEmail);
         return checkEmail;
     }
 

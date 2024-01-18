@@ -119,17 +119,15 @@ public class AuthController {
     public ResponseEntity<String> changePw(@RequestBody Map<String, String> data) {
         String id = data.get("id");
         String newPassword = data.get("newPassword");
-
         authService.changePassword(id, newPassword);
-
         return ResponseEntity.ok().body("성공");
     }
     // 회원가입 email 인증 //y
-    @PostMapping("/service/authemail/{email}")
-    public int authemail(@PathVariable("email") String email) {
-        int number = mailService.sendEmailCheck(email);
+    @PostMapping("/service/authemail")
+    public ResponseEntity<String> authemail(@RequestBody Map<String, String> data) {
+        String email = data.get("email");
+        String number = String.valueOf(mailService.sendEmailCheck(email));
         log.info("number: {}", number);
-        return number;
+        return ResponseEntity.ok().body(number);
     }
-    
 }

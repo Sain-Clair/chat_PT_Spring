@@ -8,7 +8,7 @@ import java.util.Date;
 @Alias("uptvo")
 @Data
 public class UpPhotoVo {
-    private int UPPHOTOID;
+    private int upphotoid;
     private String CATEGORY;
     private Date UPLOADDATE;
     private int NNUM;
@@ -20,6 +20,10 @@ public class UpPhotoVo {
     private int CANDIDATE1RATE;
     private int CANDIDATE2RATE;
     private int CANDIDATE3RATE;
-
+    private int mass;
+    private double FOODCAL;
+    private int FOOD_TAN;
+    private int FOOD_DAN;
+    private int FOOD_GI;
 
 }

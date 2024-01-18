@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.chun.springpt.dao.DietDao;
 import com.chun.springpt.vo.DietVO;
 import com.chun.springpt.vo.NutritionVO;
+import com.chun.springpt.vo.SearchVO;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -65,4 +66,14 @@ public class DietService {
         return dietDao.getCalTop3();
     }
     
+    // 검색 
+    public List<SearchVO> SearchCategory(String category, String userName){
+        return dietDao.searchCategory(category,userName);
+    }
+    public List<SearchVO> SearchPurpose(int purpose, String userName){
+        return dietDao.searchPurpose(purpose,userName);
+    }
+    public List<SearchVO> SearchAge(int age, int agemax, String userName){
+        return dietDao.searchAge(age,agemax,userName);
+    }
 }
