@@ -2,8 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><!-- 왼쪽 구문(http://mybaits) 강제로 다운로드 -->
 <mapper namespace="com.chun.springpt.dao.UpPhotoDao">
     <select id="todayPhotoList" resultType="uptvo">
-        select UpPhoto.* from UpPhoto
-                                  join normal_mem on UpPhoto.nnum = normal_mem.nnum
-        where TRUNC(UpPhoto.uploaddate) = '24/01/13' and normal_mem.normal_id = #{nnum}
+        SELECT
+            UpPhoto.*, food.FOODCAL, food.FOOD_TAN, food.FOOD_DAN, food.FOOD_GI, food.foodweight
+        FROM
+            UpPhoto
+                JOIN normal_mem ON UpPhoto.nnum = normal_mem.nnum
+                JOIN food ON UpPhoto.foodnum = food.FOODNUM
+        WHERE
+            TRUNC(UpPhoto.uploaddate) = TRUNC(SYSDATE)
+          AND normal_mem.normal_id = #{nnum}
     </select>
+    <delete id="deleteFoodData">
+        CALL DeleteFoodData(
+            #{upphotoid}
+            )
+    </delete>
+    <update id="updateQuantity" parameterType="uptvo">
+        update upphoto set mass = #{mass} where upphotoid = #{upphotoid}
+    </update>
+    <select id="selectFoodWeight" resultType="Map">
+        SELECT f.foodweight, f.foodcal, f.food_tan, f.food_dan, f.food_gi
+        FROM food f
+                 JOIN upphoto u ON f.foodnum = u.foodnum
+        WHERE u.upphotoid = #{upphotoid}
+    </select>
+    <insert id="insertRequestFood" parameterType="irvo">
+        insert into imgeditrequest(editrequestid, upphotoid, imgeditcomment, imgedit, editrequeststatus)
+        values(editrequestid_seq.nextval, #{upphotoid}, #{imgeditcomment}, sysdate,'no')
+    </insert>
 </mapper>

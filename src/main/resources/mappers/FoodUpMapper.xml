@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><!-- 왼쪽 구문(http://mybaits) 강제로 다운로드 -->
+<mapper namespace="com.chun.springpt.dao.FoodUpDao">
+    <select id="getNextUpPhotoId" resultType="int">
+        SELECT upphoto_seq.nextval FROM dual
+    </select>
+    <insert id="insertFoodData" parameterType="fuvo">
+        CALL InsertFoodData(
+            #{upphotoid}, #{foodnum}, #{category},
+            #{candidate1}, #{candidate2}, #{candidate3},
+            #{predictrate}, #{candidate1rate}, #{candidate2rate}, #{candidate3rate},
+            #{normalId}
+            )
+    </insert>
+
+
+</mapper>

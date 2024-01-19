@@ -66,6 +66,18 @@
     <select id = "getTargetWeight" resultType = "dvo">
         select target_weight from normal_mem where normal_id = #{userName}
     </select>
+    <!-- 유저 일일 토탈 칼로리,탄수화물, 단백질, 지방 구하기-->
+    <select id = "getTotaldailyinfo" resultType = "dtvo">
+        SELECT  SUM(foodcal * (u.mass / f.foodweight)) as dailyTotalCal,
+            sum(food_tan * (u.mass / f.foodweight)) as dailyTotalTan,
+            sum(food_dan * (u.mass / f.foodweight)) as dailyTotalDan,
+            sum(food_gi * (u.mass / f.foodweight)) as dailyTotalGi
+        FROM upphoto u
+        INNER JOIN food f ON u.foodnum = f.foodnum
+        inner join normal_mem n on u.nnum =n.nnum
+        WHERE n.normal_id = #{userName}
+        AND TRUNC(u.uploaddate) = TRUNC(SYSDATE)
+    </select>
     <!-- 유저 권장 탄단지 구하기, (프로시저 이용)-->
     <select id="getRecommandTandangi" statementType="CALLABLE">
         {call get_recommand_tandangi(
@@ -94,10 +106,11 @@
             GROUP BY TRUNC(u.uploaddate)
         ) subquery
     </select>
+    <!-- 음식 상위 3순위 까지 구하기 -->
     <select id = "getTanTop3" resultType = "nvo">
     <![CDATA[
         SELECT * FROM (
-        SELECT food_tan/foodweight as ratio, foodname,foodimg
+        SELECT food_tan/foodweight as ratio, foodname,foodimg, foodcal,food_dan,food_gi,foodweight
         FROM food
         ORDER BY ratio DESC
         )
@@ -107,7 +120,7 @@
     <select id = "getDanTop3" resultType = "nvo">
     <![CDATA[
         SELECT * FROM (
-        SELECT food_dan/foodweight as ratio, foodname,foodimg
+        SELECT food_dan/foodweight as ratio, foodname,foodimg,foodcal,food_tan,food_gi,foodweight
         FROM food
         ORDER BY ratio DESC
         )
@@ -117,7 +130,7 @@
     <select id = "getGiTop3" resultType = "nvo">
     <![CDATA[
         SELECT * FROM (
-        SELECT food_gi/foodweight as ratio, foodname,foodimg
+        SELECT food_gi/foodweight as ratio, foodname,foodimg,foodcal,food_tan,food_dan,foodweight
         FROM food
         ORDER BY ratio DESC
         )
@@ -127,12 +140,77 @@
     <select id = "getCalTop3" resultType = "nvo">
     <![CDATA[
         SELECT * FROM (
-        SELECT foodcal/foodweight as ratio, foodname,foodimg
+        SELECT foodcal/foodweight as ratio, foodname,foodimg, food_tan,food_dan,food_gi,foodweight
         FROM food
         ORDER BY ratio DESC
         )
         WHERE ROWNUM <= 3
         ]]>
     </select>
+    <!-- 끝 -->
 
+
+    <!-- 검색 조건 별 매퍼-->
+    <!-- 카테고리 별 검색 매퍼-->
+    <select id ="searchCategory" resultType = "svo">
+    <![CDATA[
+        SELECT * FROM (
+          SELECT N.NICKNAME,F.FOODIMG, F.FOODNAME, F.FOODCAL, F.FOOD_TAN, F.FOOD_DAN, F.FOOD_GI, U.CATEGORY ,U.UPLOADDATE
+          FROM MEMBERS M
+          INNER JOIN NORMAL_MEM N ON M.ID = N.NORMAL_ID
+          INNER JOIN UPPHOTO U ON N.NNUM = U.NNUM
+          INNER JOIN FOOD F ON U.FOODNUM = F.FOODNUM
+          WHERE U.category = #{category} 
+          AND M.ROLE = 'NORMAL'
+          AND N.normal_id != #{userName}
+          ORDER BY U.UPLOADDATE DESC
+        )
+        WHERE ROWNUM <= 25
+    ]]>
+    </select>
+    <!--목적 검색 별 검색 매퍼-->
+    <select id ="searchPurpose" resultType = "svo">
+    <![CDATA[
+        SELECT * FROM (
+          SELECT  N.NICKNAME,F.FOODIMG, F.FOODNAME, F.FOODCAL, F.FOOD_TAN, F.FOOD_DAN, F.FOOD_GI, U.CATEGORY ,U.UPLOADDATE
+          FROM MEMBERS M
+          INNER JOIN NORMAL_MEM N ON M.ID = N.NORMAL_ID
+          INNER JOIN UPPHOTO U ON N.NNUM = U.NNUM
+          INNER JOIN FOOD F ON U.FOODNUM = F.FOODNUM
+          WHERE n.purpose = #{purpose} 
+          AND M.ROLE = 'NORMAL'
+          AND N.normal_id != #{userName}
+          ORDER BY U.UPLOADDATE DESC
+        )
+        WHERE ROWNUM <= 25
+    ]]>
+    </select>
+    <!-- 나이대 검색 별 검색 매퍼-->
+    <select id ="searchAge" resultType = "svo">
+    <![CDATA[
+        SELECT * FROM (
+          SELECT  N.NICKNAME,F.FOODIMG, F.FOODNAME, F.FOODCAL, F.FOOD_TAN, F.FOOD_DAN, F.FOOD_GI, U.CATEGORY ,U.UPLOADDATE
+          FROM MEMBERS M
+          INNER JOIN NORMAL_MEM N ON M.ID = N.NORMAL_ID
+          INNER JOIN UPPHOTO U ON N.NNUM = U.NNUM
+          INNER JOIN FOOD F ON U.FOODNUM = F.FOODNUM
+          WHERE FLOOR(MONTHS_BETWEEN(SYSDATE, M.BIRTH) / 12) BETWEEN #{age} AND #{agemax}
+          AND M.ROLE = 'NORMAL'
+          AND N.normal_id != #{userName}
+          ORDER BY U.UPLOADDATE DESC
+        )
+        WHERE ROWNUM <= 25
+    ]]>
+    </select>
+
+    <!-- 연속 날짜 구하기 -->
+    <select id="getConsecutive_Dates" statementType="CALLABLE">
+        {call get_Consecutive_Dates(
+            #{userName, jdbcType=VARCHAR, mode=IN},
+            #{P_COUNT, jdbcType=NUMERIC, mode=OUT}
+        )}
+    </select>
+    
+
+    
 </mapper>

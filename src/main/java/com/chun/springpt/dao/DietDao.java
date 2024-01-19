@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.chun.springpt.vo.DailyTotalVO;
 import com.chun.springpt.vo.DietVO;
 import com.chun.springpt.vo.NutritionVO;
+import com.chun.springpt.vo.SearchVO;
 
 import java.util.Map;
 
@@ -27,9 +29,19 @@ public interface DietDao {
     // 일주일 치 평균 탄,단,지 를 구해옴
     NutritionVO getWeekAvgTandangi(String userName, String startPeriod, String endPeriod);
 
+    // 가장 많이 함유된 영양소를 가져옴
     List<NutritionVO> getTanTop3();
     List<NutritionVO> getDanTop3();
     List<NutritionVO> getGiTop3();
     List<NutritionVO> getCalTop3();
+
+    // 검색 값 별로 각각 구해옴
+    List<SearchVO> searchCategory(String category, String userName);
+    List<SearchVO> searchPurpose(int purpose, String userName);
+    List<SearchVO> searchAge(int age, int agemax, String userName);
+
+    DailyTotalVO getTotaldailyinfo(String userName);
+    // 연속 날짜 가져오기
+    void getConsecutive_Dates(Map<String, Object> params);
 
     }
