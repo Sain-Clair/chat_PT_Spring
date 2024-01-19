@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,13 @@ import com.chun.springpt.vo.FoodVO;
 public class SignUpController {
     @Autowired
     private SignUpService signUpService;
+
+    // 회원 가입 완료
+    @PostMapping("/signUp/completeSignUp")
+    public int completeSignUp(@RequestBody Map<String, String> data) {
+        int result = signUpService.insertMembers(data);
+        return result;
+    }
 
     // id 중복 체크
     @PostMapping("/signUp/id")

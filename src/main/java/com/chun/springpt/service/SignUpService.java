@@ -1,8 +1,10 @@
 package com.chun.springpt.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.chun.springpt.dao.FoodDao;
@@ -15,6 +17,10 @@ public class SignUpService {
     private SignUpDao sdao;
     @Autowired
     private FoodDao fdao;
+
+    public int insertMembers(Map<String, String> data) {
+        return sdao.insertMembers(data);
+    }
 
     // 이미 존재하는 이메일인지 확인
     public int validCheckEmail(String email) {
@@ -33,4 +39,5 @@ public class SignUpService {
     public List<FoodVO> selectFoodList() {
         return fdao.selectFoodList();
     }
+
 }

@@ -3,13 +3,13 @@
 <mapper namespace="com.chun.springpt.dao.FoodDao">
 	<select id="selectFoodList" resultType="fvo">
 	<![CDATA[
-SELECT FOODIMG, FOODNUM, FOODNAME
-FROM (
-    SELECT FOODIMG, FOODNUM, FOODNAME
-    FROM FOOD
-    ORDER BY DBMS_RANDOM.VALUE
-)
-WHERE ROWNUM <= 50
+		SELECT FOODIMG, FOODNUM, FOODNAME
+		FROM (
+			SELECT FOODIMG, FOODNUM, FOODNAME
+			FROM FOOD
+			ORDER BY DBMS_RANDOM.VALUE
+		)
+		WHERE ROWNUM <= 50
 		]]>
 	</select>
 </mapper>
