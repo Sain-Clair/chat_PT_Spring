@@ -1,16 +1,18 @@
 package com.chun.springpt.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chun.springpt.service.SignUpService;
+import com.chun.springpt.vo.FoodVO;
 
 @RestController
 public class SignUpController {
@@ -28,6 +30,7 @@ public class SignUpController {
             return 1;
         }
     }
+
     // 이메일 중복 체크
     @PostMapping("/signUp/email")
     public int emailCheck(@RequestBody Map<String, String> data) {
@@ -38,5 +41,20 @@ public class SignUpController {
         } else {
             return 1;
         }
+    }
+
+    // 음식 리스트 가져오기
+    @GetMapping("/signUp/getfoodList")
+    public List<Map<String, String>> getfoodList() {
+        List<FoodVO> foodList = signUpService.selectFoodList();
+        List<Map<String, String>> resultMap = new ArrayList<>();
+        for (FoodVO food : foodList) {
+            Map<String, String> foodMap = new HashMap<>();
+            foodMap.put("FOODNUM", String.valueOf(food.getFOODNUM()));
+            foodMap.put("FOODIMG", food.getFOODIMG());
+            foodMap.put("FOODNAME", food.getFOODNAME());
+            resultMap.add(foodMap);
+        }
+        return resultMap;
     }
 }
