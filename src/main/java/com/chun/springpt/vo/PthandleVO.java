@@ -29,6 +29,8 @@ public class PthandleVO {
   private String STATUS;
   private String USERID;
   private DailyTotalVO dailyTotal; // 일일 영양 정보를 저장할 필드
+  private String NM_PROFILEIMG; //일반 유저 프로필이미지
+
 
   private BigDecimal recommandTan; // 추천 탄수화물
   private BigDecimal recommandDan; // 추천 단백질
