@@ -9,6 +9,7 @@ import java.util.List;
 @Mapper
 public interface PthandleDao {
   public List<PthandleVO> ptAllList(PthandleVO pthandleVO);
+  public List<PthandleVO> ptAllList2(PthandleVO pthandleVO);
 
   public void pthandleToLive(PthandleVO pthandleVO);
 

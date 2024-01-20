@@ -12,11 +12,27 @@
             TRUNC(UpPhoto.uploaddate) = TRUNC(SYSDATE)
           AND normal_mem.normal_id = #{nnum}
     </select>
-    <delete id="deleteFoodData">
-        CALL DeleteFoodData(
-            #{upphotoid}
-            )
+    <delete id="deleteMemberFood">
+        DELETE FROM upphoto WHERE upphotoid = #{upphotoid}
     </delete>
+    <select id="selectUpLoadDate" resultType="Date">
+        SELECT uploaddate
+        FROM memberfood m
+                 JOIN upphoto u ON m.upphotoid = u.upphotoid
+        WHERE TRUNC(u.uploaddate) = (SELECT TRUNC(uploaddate) FROM upphoto WHERE upphotoid = #{upphotoid})
+          AND m.nnum = (SELECT nnum FROM upphoto WHERE upphotoid = #{upphotoid})
+    </select>
+    <update id="updatePlusFood" parameterType="Date">
+        <![CDATA[
+        UPDATE memberfood m
+        SET m.rating = m.rating + 1
+        WHERE m.upphotoid IN (
+            SELECT u.upphotoid
+            FROM upphoto u
+            WHERE TRUNC(u.uploaddate) < TRUNC(#{uploaddate})
+        )
+        ]]>
+    </update>
     <update id="updateQuantity" parameterType="uptvo">
         update upphoto set mass = #{mass} where upphotoid = #{upphotoid}
     </update>
