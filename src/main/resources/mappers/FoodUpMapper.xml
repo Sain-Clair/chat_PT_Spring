@@ -12,6 +12,60 @@
             #{normalId}
             )
     </insert>
+    <select id="selectNnum" parameterType="String" resultType="int">
+        select nnum from normal_mem where normal_Id = #{normalId}
+    </select>
+    <insert id="insertUpPhoto" parameterType="fuvo">
+        INSERT INTO upphoto (
+            upphotoid, nnum, foodnum, category, uploaddate, mass,
+            candidate1, candidate2, candidate3, predictrate, candidate1rate, candidate2rate, candidate3rate
+        )
+        SELECT
+            #{upphotoid}, nm.nnum, #{foodnum}, #{category}, #{uploaddate}, f.foodweight,
+            #{candidate1}, #{candidate2}, #{candidate3}, #{predictrate}, #{candidate1rate},
+            #{candidate2rate}, #{candidate3rate}
+        FROM
+            normal_mem nm
+                JOIN food f ON f.foodnum = #{foodnum}
+        WHERE
+            nm.normal_id = #{normalId}
+    </insert>
+    <select id="selectRatingDate" parameterType="int" resultType="Map">
+        select rating, uploaddate from memberfood m
+                                           join upphoto u on m.upphotoid=u.upphotoid
+        where u.nnum = #{nnum}
+    </select>
+    <insert id="insertMemberFood" parameterType="Map">
+        INSERT INTO memberfood (rating, foodnum, nnum, upphotoid)
+        VALUES (#{rating}, #{foodnum}, #{nnum}, #{upphotoid})
+    </insert>
+    <update id="updateMemberFood" parameterType="Map">
+        UPDATE memberfood m
+        SET m.rating = #{rating}
+        WHERE m.upphotoid IN (
+            SELECT u.upphotoid
+            FROM upphoto u
+            WHERE TRUNC(u.uploaddate) = TRUNC(#{uploaddate})
+        )
+    </update>
+    <delete id="deleteMemberFood" parameterType="int">
+        <![CDATA[
+        delete from memberfood m
+               where rating <= 5 and upphotoid is not null and nnum = #{nnum}
+        ]]>
+    </delete>
+    <update id="updateSubtractFood" parameterType="Date">
+        <![CDATA[
+        UPDATE memberfood m
+        SET m.rating = m.rating - 1
+        WHERE m.upphotoid IN (
+            SELECT u.upphotoid
+            FROM upphoto u
+            WHERE TRUNC(u.uploaddate) < TRUNC(#{uploaddate})
+        )
+        ]]>
+    </update>
+
 
 
 </mapper>

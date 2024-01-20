@@ -1,5 +1,7 @@
 package com.chun.springpt.controller;
 
+import com.chun.springpt.service.PthandleService;
+import com.chun.springpt.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,10 +12,6 @@ import java.math.BigDecimal;
 
 import com.chun.springpt.service.DietService;
 import com.chun.springpt.utils.JwtUtil;
-import com.chun.springpt.vo.DailyTotalVO;
-import com.chun.springpt.vo.DietVO;
-import com.chun.springpt.vo.NutritionVO;
-import com.chun.springpt.vo.SearchVO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,6 +29,9 @@ public class DietController {
 
     @Autowired
     private DietService Dservice;
+
+    @Autowired
+    private PthandleService pthandleService;
 
     @Value("${django.base.url}")
     private String djangoBaseUrl;

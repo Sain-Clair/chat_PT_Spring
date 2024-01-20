@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,4 +34,15 @@ public class UpPhotoService {
         upPhotoDao.insertRequestFood(vo);
     }
 
+    public void deleteMemberFood(int upphotoid) {
+        upPhotoDao.deleteMemberFood(upphotoid);
+    }
+
+    public List<Date> selectUpLoadDate(int upphotoid) {
+        return upPhotoDao.selectUpLoadDate(upphotoid);
+    }
+
+    public void updatePlusFood(Date uploaddate) {
+        upPhotoDao.updatePlusFood(uploaddate);
+    }
 }
