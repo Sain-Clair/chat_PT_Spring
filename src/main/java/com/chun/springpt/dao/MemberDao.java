@@ -8,6 +8,6 @@ import com.chun.springpt.vo.MemberVO;
 
 @Mapper
 public interface MemberDao {
-    
 	public List<MemberVO> selectList();
+	public String getRegion(String userName);
 }
