@@ -10,4 +10,5 @@ import com.chun.springpt.vo.MemberVO;
 public interface MemberDao {
 	public List<MemberVO> selectList();
 	public String getRegion(String userName);
+    void changeWeight(String userName, Integer weight);
 }
