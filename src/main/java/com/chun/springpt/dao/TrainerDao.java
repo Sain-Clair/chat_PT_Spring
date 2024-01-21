@@ -16,7 +16,8 @@ public interface TrainerDao {
     public TrainerVO selectDetail(String id);
     // 지역 리스트 가져오기
     public List<TrainerVO> selectRegion();
-
+    
+    // 나의 지역에 있는 트레이너 리스트 가져오기
     public List<TrainerVO> selectRegionTrainer(String region);
     
 }

@@ -17,5 +17,8 @@ public class MemberService {
 	public List<MemberVO> selectMemberList(){
 		return mdao.selectList();
 	}
+	public String getRegion(String userName){
+		return mdao.getRegion(userName);
+	}
 
 }
