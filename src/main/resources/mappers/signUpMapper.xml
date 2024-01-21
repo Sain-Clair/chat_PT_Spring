@@ -2,13 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN"
  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.chun.springpt.dao.SignUpDao">
-     <insert id="insertMembers">
+    <insert id="insertMembers">
+    insert into members (id, email, password, name, gender, role, birth)
+    values (#{id}, #{email}, #{password}, #{name}, #{gender}, #{role}, #{birth})
+    </insert>
+    <insert id="insertNormal">
+    insert into normal_mem (nnum, normal_id, weight, height, purpose, activity, nickname, target_weight, nm_profileimg, region)
+    values (normal_mem_seq.nextval, #{id}, #{weight}, #{height}, #{purpose}, #{activity}, #{nickname}, #{target_weight}, #{nm_profileimg}, #{region})
+        <selectKey keyProperty="nnum" resultType="int" order="AFTER">
+        select normal_mem_seq.currval from dual
+        </selectKey>
+    </insert>
+    <insert id ="insertMemFood">
         INSERT ALL
-    INTO members (ID, EMAIL, PASSWORD, NAME, GENDER, ROLE, BIRTH)
-       VALUES (#{id}, #{email}, #{password}, #{name}, #{gender}, #{role}, #{birth})
-    INTO normal_mem (NNUM, NORMAL_ID, WEIGHT, HEIGHT, PURPOSE, ACTIVITY, NICKNAME, TARGET_WEIGHT, NM_PROFILEIMG)
-          VALUES (normal_mem_seq.nextVal, #{id}, #{weight}, #{height}, #{purpose}, #{activity}, #{nickname}, #{TARGET_WEIGHT}, #{NM_PROFILEIMG})
-    SELECT * FROM dual
+        <foreach collection="rating" item="ratingItem" index="index">
+            INTO memberfood (rating, foodnum, nnum) VALUES (#{index}+1, #{ratingItem}, #{nnum})
+        </foreach>
+        SELECT * FROM dual
+    </insert>
+    <insert id="insertTrainer">
+    insert into trainer_mem (tnum, TRAINER_ID, trainercomment, trainerintro, region, awards1, awards2, awards3, awards4, 
+    starttime, endtime, mainimage, subimage1, subimage2, isverified)
+    values (trainer_mem_seq.nextval, #{id}, #{trainercomment}, #{trainerintro}, #{region}, #{awards1}, #{awards2}, #{awards3}, #{awards4},
+    #{starttime}, #{endtime}, #{mainimage}, #{subimage1}, #{subimage2}, #{isverified})
     </insert>
     <select id="validCheckEmail" resultType="int">
         select count(*) from members where email = #{email}
@@ -16,5 +32,4 @@
     <select id="validCheckId" resultType="int">
         select count(*) from members where id = #{id}
     </select>
-
  </mapper>

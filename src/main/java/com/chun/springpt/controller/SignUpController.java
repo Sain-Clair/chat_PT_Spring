@@ -14,16 +14,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.chun.springpt.service.SignUpService;
 import com.chun.springpt.vo.FoodVO;
+import com.chun.springpt.vo.MemberVO;
 
 @RestController
 public class SignUpController {
     @Autowired
     private SignUpService signUpService;
 
-    // 회원 가입 완료
+    // 일반 회원 가입
     @PostMapping("/signUp/completeSignUp")
-    public int completeSignUp(@RequestBody Map<String, String> data) {
+    public int completeSignUp(@RequestBody Map<String, Object> data) {
         int result = signUpService.insertMembers(data);
+        System.out.println("여기는 회원가입 완료창:" + result);
+        return result;
+    }
+
+    // pt회원 가입
+    @PostMapping("/signUp/PTcompleteSignUp")
+    public int postMethodName(@RequestBody Map<String, Object> data) {
+        int result = signUpService.insertTrainerMembers(data);
+        System.out.println("트레이너 회원가입 완료창:" + result);
+
         return result;
     }
 

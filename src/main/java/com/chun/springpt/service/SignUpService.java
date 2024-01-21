@@ -1,11 +1,14 @@
 package com.chun.springpt.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.chun.springpt.dao.FoodDao;
 import com.chun.springpt.dao.SignUpDao;
@@ -18,8 +21,42 @@ public class SignUpService {
     @Autowired
     private FoodDao fdao;
 
-    public int insertMembers(Map<String, String> data) {
-        return sdao.insertMembers(data);
+    // 일반 회원가입
+    public int insertMembers(Map<String, Object> data) {
+        try {
+            int insertMemResult = sdao.insertMembers(data);
+            int insertNormalResult = sdao.insertNormal(data);
+            int nnum = (Integer) data.get("nnum");
+            data.put("nnum", nnum); // nnum 값을 data에 삽입
+            int insertMemFoodResult = sdao.insertMemFood(data);
+            int sum = insertMemResult + insertNormalResult + insertMemFoodResult;
+            if (sum > 3) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // PT 회원가입
+    public int insertTrainerMembers(Map<String, Object> data) {
+        try {
+            int insertMemResult = sdao.insertMembers(data);
+            int insertTrainerResult = sdao.insertTrainer(data);
+            // int tnum = (Integer) data.get("tnum");
+            // data.put("tnum", tnum);
+            int sum = insertMemResult + insertTrainerResult;
+            System.out.println("트레이너 회원가입 sum:" + sum);
+            if (sum >= 2) {
+                return 1;
+            } else {
+                return 0;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // 이미 존재하는 이메일인지 확인
