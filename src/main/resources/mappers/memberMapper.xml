@@ -16,4 +16,13 @@
    <select id ="getRegion" resultType="String">
       select region from normal_mem where normal_id = #{userName}
    </select>
+    <update id="changeWeight">
+        merge into memberdietlog m
+        using (select nnum from normal_mem where normal_id = #{userName}) n
+        on (m.nnum = n.nnum and m.dietlogdate = trunc(SYSDATE))
+        when matched then
+            update set m.dietlogkg = #{weight}
+        when not matched then
+            insert (nnum, dietlogkg, dietlogdate) values (n.nnum, #{weight}, trunc(SYSDATE))
+    </update>
 </mapper>

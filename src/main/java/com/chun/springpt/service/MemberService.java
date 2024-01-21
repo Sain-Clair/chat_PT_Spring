@@ -21,4 +21,7 @@ public class MemberService {
 		return mdao.getRegion(userName);
 	}
 
+    public void changeWeight(String userName, Integer weight) {
+		mdao.changeWeight(userName, weight);
+    }
 }
