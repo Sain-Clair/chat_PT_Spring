@@ -8,7 +8,7 @@
     </insert>
     <insert id="insertNormal">
     insert into normal_mem (nnum, normal_id, weight, height, purpose, activity, nickname, target_weight, nm_profileimg, region)
-    values (normal_mem_seq.nextval, #{id}, #{weight}, #{height}, #{purpose}, #{activity}, #{nickname}, #{target_weight}, #{nm_profileimg}, #{region})
+    values (normal_mem_seq.nextval, #{id}, #{weight}, #{height}, #{purpose}, #{activity}, #{nickname}, #{target_weight}, #{nm_profileimg.name}, #{region})
         <selectKey keyProperty="nnum" resultType="int" order="AFTER">
             select normal_mem_seq.currval from dual
         </selectKey>

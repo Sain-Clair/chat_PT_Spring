@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chun.springpt.service.SignUpService;
@@ -23,7 +24,7 @@ public class SignUpController {
 
     // 일반 회원 가입
     @PostMapping("/signUp/completeSignUp")
-    public int completeSignUp(@RequestBody Map<String, Object> data) {
+    public int completeSignUp(@RequestPart Map<String, Object> data) {
         int result = signUpService.insertMembers(data);
         System.out.println("여기는 회원가입 완료창:" + result);
         return result;

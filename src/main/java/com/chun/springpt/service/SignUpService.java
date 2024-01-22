@@ -20,6 +20,8 @@ public class SignUpService {
     private SignUpDao sdao;
     @Autowired
     private FoodDao fdao;
+    @Autowired
+    private S3uploadService ssservice;
 
     // 일반 회원가입
     public int insertMembers(Map<String, Object> data) {
@@ -28,6 +30,8 @@ public class SignUpService {
             int insertNormalResult = sdao.insertNormal(data);
             int nnum = (Integer) data.get("nnum");
             data.put("nnum", nnum); // nnum 값을 data에 삽입
+            Map<String, Object> mainimagename = (Map<String, Object>) data.get("nm_profileimg");
+            System.out.println("메인이미지" + mainimagename);
             int insertMemFoodResult = sdao.insertMemFood(data);
             int sum = insertMemResult + insertNormalResult + insertMemFoodResult;
             if (sum > 3) {
@@ -52,6 +56,7 @@ public class SignUpService {
             for (int i = awards.size(); i < 5; i++) {
                 data.put("awards" + (i + 1), "");
             }
+
             int insertMemResult = sdao.insertMembers(data);
             int insertTrainerResult = sdao.insertTrainer(data);
             int tnum = (Integer) data.get("tnum");

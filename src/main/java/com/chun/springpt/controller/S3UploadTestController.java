@@ -21,4 +21,5 @@ public class S3UploadTestController {
 
         return s3uploadService.saveFile("test/", uploadImgs);
     }
+
 }
