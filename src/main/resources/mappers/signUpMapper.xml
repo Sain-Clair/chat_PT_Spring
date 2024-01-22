@@ -21,10 +21,10 @@
         SELECT * FROM dual
     </insert>
     <insert id="insertTrainer">
-    insert into trainer_mem (tnum, TRAINER_ID, trainercomment, trainerintro, region, awards1, awards2, awards3, awards4, 
-    starttime, endtime, mainimage, subimage1, subimage2, isverified)
-    values (trainer_mem_seq.nextval, #{id}, #{trainercomment}, #{trainerintro}, #{region}, #{awards1}, #{awards2}, #{awards3}, #{awards4},
-    #{starttime}, #{endtime}, #{mainimage}, #{subimage1}, #{subimage2}, #{isverified})
+        insert into trainer_mem (tnum, TRAINER_ID, trainercomment, trainerintro, region, awards1, awards2, awards3, awards4, awards5,
+        starttime, endtime, mainimage, subimage1, subimage2, isverified)
+        values (trainer_mem_seq.nextval, #{id}, #{trainercomment}, #{trainerintro}, #{region}, #{awards1}, #{awards2}, #{awards3}, #{awards4}, #{awards5},
+        #{starttime}, #{endtime}, #{mainimage.url}, #{subimage1}, #{subimage2}, #{isverified})
     </insert>
     <select id="validCheckEmail" resultType="int">
         select count(*) from members where email = #{email}

@@ -43,11 +43,20 @@ public class SignUpService {
     // PT 회원가입
     public int insertTrainerMembers(Map<String, Object> data) {
         try {
+
+            List<Map<String, String>> awards = (List<Map<String, String>>) data.get("awards");
+            // awards 리스트를 awards1~5에 맞게 변환합니다.
+            for (int i = 0; i < awards.size(); i++) {
+                data.put("awards" + (i + 1), awards.get(i).get("name"));
+            }
+            // awards 리스트에 빈 값을 채웁니다.
+            for (int i = awards.size(); i < 5; i++) {
+                data.put("awards" + (i + 1), "");
+            }
             int insertMemResult = sdao.insertMembers(data);
             int insertTrainerResult = sdao.insertTrainer(data);
-            // int tnum = (Integer) data.get("tnum");
-            // data.put("tnum", tnum);
             int sum = insertMemResult + insertTrainerResult;
+
             System.out.println("트레이너 회원가입 sum:" + sum);
             if (sum >= 2) {
                 return 1;
