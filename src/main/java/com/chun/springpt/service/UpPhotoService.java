@@ -17,8 +17,8 @@ public class UpPhotoService {
     @Autowired
     private UpPhotoDao upPhotoDao;
 
-    public List<UpPhotoVo> selectTodayPhotoList(String user_id){
-        return upPhotoDao.todayPhotoList(user_id);
+    public List<UpPhotoVo> selectTodayPhotoList(String user_id, String date){
+        return upPhotoDao.todayPhotoList(user_id, date);
     }
 
     public int deleteFoodData(int upphotoid) {
