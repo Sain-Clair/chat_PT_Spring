@@ -31,11 +31,12 @@ public class UpPhotoController {
     private HttpServletRequest request;
 
     @GetMapping("/todayPhoto")
-    private List<UpPhotoVo> getTodayPhotoList(HttpServletRequest request){
+    private List<UpPhotoVo> getTodayPhotoList(HttpServletRequest request, @RequestParam String date){
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
         String user_id = JwtUtil.getID(token);
-        return upPhotoService.selectTodayPhotoList(user_id);
+        log.info("date : " + date);
+        return upPhotoService.selectTodayPhotoList(user_id, date);
     }
 
     @PostMapping("/deleteFood")

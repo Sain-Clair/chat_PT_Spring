@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Mapper
 public interface UpPhotoDao {
-    List<UpPhotoVo> todayPhotoList(String user_id);
+    List<UpPhotoVo> todayPhotoList(String user_id, String date);
     int deleteFoodData(int upphotoid);
     void updateQuantity(UpPhotoVo vo);
 

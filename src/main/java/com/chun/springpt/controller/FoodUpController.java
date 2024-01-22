@@ -6,6 +6,7 @@ import com.chun.springpt.vo.FoodUpVO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.util.LinkedMultiValueMap;
@@ -18,6 +19,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -28,9 +30,12 @@ public class FoodUpController {
   @Autowired
   private FoodUpService foodUpService;
 
+  @Value("${django.base.url}")
+  private String djangoBaseUrl;
+
   public FoodUpController(WebClient.Builder webClientBuilder) {
     this.webClient = webClientBuilder
-            .baseUrl("http://localhost:9000")
+            .baseUrl(djangoBaseUrl)
             .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024)) // 16MB로 증가
             .build();
   }
@@ -45,15 +50,28 @@ public class FoodUpController {
     calendar.set(2024, Calendar.JANUARY, 19, 0, 0, 0);
     calendar.set(Calendar.MILLISECOND, 0);
 
-    Date date = calendar.getTime();
+    Date date = null;
 
     MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
     for (Map.Entry<String, String> entry : fileMap.entrySet()) {
       String key = entry.getKey(); // 키 추출
-      log.info("Processing key: " + key); // 추출된 키 로깅
-      String base64String = entry.getValue();
-      if (base64String != null && !base64String.isEmpty()) {
-        formData.add(key, base64String);
+      if ("date".equals(key)){
+        String dateStr = entry.getValue();
+        if (dateStr != null) {
+          SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
+          try {
+            date = dateFormat.parse(dateStr);
+          } catch (ParseException e) {
+            log.error("날짜 파싱 오류", e);
+            // 적절한 예외 처리 또는 반환
+          }
+        }
+      }else {
+        log.info("Processing key: " + key); // 추출된 키 로깅
+        String base64String = entry.getValue();
+        if (base64String != null && !base64String.isEmpty()) {
+          formData.add(key, base64String);
+        }
       }
     }
     formData.add("userName", userName);
@@ -87,7 +105,7 @@ public class FoodUpController {
         vo.setNnum(foodUpService.selectNnum(vo.getNormalId()));
 
         //sql처리
-        transactionInsertUpdate(vo);
+        foodUpService.transactionInsertUpdate(vo);
 
         //이미지처리
         byte[] imageBytes = Base64.getDecoder().decode((String)result.get("base64_encoded_data"));
@@ -101,72 +119,4 @@ public class FoodUpController {
       }
     }
   }
-
-  public void transactionInsertUpdate(FoodUpVO vo){
-    log.info("transactionInsertUpdate 실행");
-    //insert
-    foodUpService.insertUpPhoto(vo);
-
-    //select
-    int nnum = vo.getNnum();
-    Date inputDate = vo.getUploaddate();
-    log.info("Input Date: " + inputDate);
-
-    // 날짜 정보만 비교하기 위해 시간 부분 제거
-    inputDate = removeTime(inputDate);
-    log.info("Input Calendar Date: " + inputDate);
-
-    List<Map<String,Object>> ratingList = foodUpService.selectRatingDate(nnum);
-
-    // 입력된 날짜보다 최신인 날짜들의 개수를 계산하기 위한 변수
-    int newerDatesCount = 0;
-
-    boolean isUpdate = true;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yy-MM-dd");
-    Set<String> countedDates = new HashSet<>();
-
-    // 기존 데이터와 입력된 날짜를 비교
-    for (Map<String, Object> rating : ratingList) {
-      Date existingDate = removeTime((Date) rating.get("UPLOADDATE"));
-
-      // 날짜를 문자열로 변환
-      String dateString = dateFormat.format(existingDate.getTime());
-
-      // 입력된 날짜보다 최신이면서 아직 카운트되지 않은 날짜를 카운트
-      if (existingDate.equals(inputDate)) {
-        isUpdate = false;
-        break;
-      }else if (existingDate.after(inputDate) && !countedDates.contains(dateString)){
-        newerDatesCount++;
-        countedDates.add(dateString); // 이미 카운트된 날짜 추가
-      }
-    }
-    // 새로운 데이터의 평점 계산
-    int newRating = 10 - newerDatesCount;
-    log.info("New Rating: " + newRating);
-
-    // 새로운 데이터를 위한 맵 객체 생성 및 데이터 추가
-    Map<String, Object> mfMap = new HashMap<>();
-    mfMap.put("foodnum", vo.getFoodnum());
-    mfMap.put("nnum", vo.getNnum());
-    mfMap.put("upphotoid", vo.getUpphotoid());
-    mfMap.put("rating", newRating);
-    foodUpService.insertMemberFood(mfMap); // DB에 데이터 추가
-
-    if(isUpdate) {
-      //입력 날짜 이전 날짜의 데이터 모두 rating - 1 하고 5이하 삭제
-      foodUpService.updateSubtractFood(inputDate);
-      foodUpService.deleteMemberFood(nnum);
-    }
-  }
-  private Date removeTime(Date date) {
-    Calendar calendar = Calendar.getInstance();
-    calendar.setTime(date);
-    calendar.set(Calendar.HOUR_OF_DAY, 0);
-    calendar.set(Calendar.MINUTE, 0);
-    calendar.set(Calendar.SECOND, 0);
-    calendar.set(Calendar.MILLISECOND, 0);
-    return calendar.getTime();
-  }
-
 }

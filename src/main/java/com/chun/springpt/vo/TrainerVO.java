@@ -32,4 +32,5 @@ public class TrainerVO {
    private String SUBIMAGE1;
    private String SUBIMAGE2;
    private int ISVERIFIED;
+   private String GYM;
 }
