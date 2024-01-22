@@ -34,6 +34,17 @@ public class PthandleControl {
     System.out.println(userName);
     return pthandleService.ptAllList(pthandleVO);
   }
+
+  @GetMapping("/pthandleAll2")
+  @ResponseBody
+  public List<PthandleVO> pthandleAll2(){
+    String authorizationHeader = request.getHeader("Authorization");
+    String token = JwtUtil.extractToken(authorizationHeader);
+    String userName = JwtUtil.getID(token);
+    System.out.println(userName);
+
+    return pthandleService.pthandleAll2(userName);
+  }
 //
   @PostMapping("/pthandleToLive")
   public ResponseEntity<?> pthandleToLive(@RequestBody PthandleVO pthandleVO) {

@@ -17,5 +17,11 @@ public class MemberService {
 	public List<MemberVO> selectMemberList(){
 		return mdao.selectList();
 	}
+	public String getRegion(String userName){
+		return mdao.getRegion(userName);
+	}
 
+    public void changeWeight(String userName, Integer weight) {
+		mdao.changeWeight(userName, weight);
+    }
 }
