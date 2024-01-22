@@ -30,7 +30,7 @@ public class FoodUpController {
   @Autowired
   private FoodUpService foodUpService;
 
-  @Value("${django.Base.Url}")
+  @Value("${django.base.url}")
   private String djangoBaseUrl;
 
   public FoodUpController(WebClient.Builder webClientBuilder) {
