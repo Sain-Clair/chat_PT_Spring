@@ -41,6 +41,7 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'org.springframework.boot:spring-boot-starter-mail' // 메일 인증을 위한 의존성
     implementation 'org.springframework.boot:spring-boot-starter-webflux:3.2.1'
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // aws s3
 	
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
