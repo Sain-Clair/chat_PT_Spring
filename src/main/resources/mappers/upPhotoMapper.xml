@@ -9,8 +9,8 @@
                 JOIN normal_mem ON UpPhoto.nnum = normal_mem.nnum
                 JOIN food ON UpPhoto.foodnum = food.FOODNUM
         WHERE
-            TRUNC(UpPhoto.uploaddate) = TRUNC(SYSDATE)
-          AND normal_mem.normal_id = #{nnum}
+            TRUNC(UpPhoto.uploaddate) = TRUNC(TO_DATE(#{date}, 'YYYY-MM-DD'))
+          AND normal_mem.normal_id = #{user_id}
     </select>
     <delete id="deleteMemberFood">
         DELETE FROM upphoto WHERE upphotoid = #{upphotoid}
