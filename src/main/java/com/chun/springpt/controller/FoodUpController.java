@@ -42,7 +42,7 @@ public class FoodUpController {
     String userName = JwtUtil.getID(token);
 
     Calendar calendar = Calendar.getInstance();
-    calendar.set(2024, Calendar.JANUARY, 16, 0, 0, 0);
+    calendar.set(2024, Calendar.JANUARY, 19, 0, 0, 0);
     calendar.set(Calendar.MILLISECOND, 0);
 
     Date date = calendar.getTime();
@@ -128,11 +128,9 @@ public class FoodUpController {
     // 기존 데이터와 입력된 날짜를 비교
     for (Map<String, Object> rating : ratingList) {
       Date existingDate = removeTime((Date) rating.get("UPLOADDATE"));
-      log.info("Existing Date: " + existingDate);
 
       // 날짜를 문자열로 변환
       String dateString = dateFormat.format(existingDate.getTime());
-      log.info("Existing Date: " + dateString);
 
       // 입력된 날짜보다 최신이면서 아직 카운트되지 않은 날짜를 카운트
       if (existingDate.equals(inputDate)) {
@@ -142,7 +140,6 @@ public class FoodUpController {
         newerDatesCount++;
         countedDates.add(dateString); // 이미 카운트된 날짜 추가
       }
-      log.info("newerDatesCount : " + newerDatesCount);
     }
     // 새로운 데이터의 평점 계산
     int newRating = 10 - newerDatesCount;
