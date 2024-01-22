@@ -16,6 +16,8 @@ public interface SignUpDao {
 
     int insertTrainer(Map<String, Object> data);
 
+    int updatePTimage(Map<String, Object> data);
+
     // 이미 존재하는 이메일인지 확인
     int validCheckEmail(@Param("email") String email);
 

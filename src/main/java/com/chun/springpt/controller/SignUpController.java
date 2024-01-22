@@ -34,7 +34,6 @@ public class SignUpController {
     public int postMethodName(@RequestBody Map<String, Object> data) {
         int result = signUpService.insertTrainerMembers(data);
         System.out.println("트레이너 회원가입 완료창:" + result);
-
         return result;
     }
 
