@@ -19,6 +19,7 @@ public class S3uploadService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    // 저장할 경로와, 저장할 파일들을 받아서, 파일들의 url을 반환한다.
     public List<String> saveFile(String path, List<MultipartFile> uploadImgs) throws IOException {
         List<String> fileUrls = new ArrayList<>();
 
