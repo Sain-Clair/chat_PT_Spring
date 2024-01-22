@@ -1,21 +1,42 @@
 package com.chun.springpt.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chun.springpt.service.SignUpService;
+import com.chun.springpt.vo.FoodVO;
+import com.chun.springpt.vo.MemberVO;
 
 @RestController
 public class SignUpController {
     @Autowired
     private SignUpService signUpService;
+
+    // 일반 회원 가입
+    @PostMapping("/signUp/completeSignUp")
+    public int completeSignUp(@RequestBody Map<String, Object> data) {
+        int result = signUpService.insertMembers(data);
+        System.out.println("여기는 회원가입 완료창:" + result);
+        return result;
+    }
+
+    // pt회원 가입
+    @PostMapping("/signUp/PTcompleteSignUp")
+    public int postMethodName(@RequestBody Map<String, Object> data) {
+        int result = signUpService.insertTrainerMembers(data);
+        System.out.println("트레이너 회원가입 완료창:" + result);
+
+        return result;
+    }
 
     // id 중복 체크
     @PostMapping("/signUp/id")
@@ -28,6 +49,7 @@ public class SignUpController {
             return 1;
         }
     }
+
     // 이메일 중복 체크
     @PostMapping("/signUp/email")
     public int emailCheck(@RequestBody Map<String, String> data) {
@@ -38,5 +60,20 @@ public class SignUpController {
         } else {
             return 1;
         }
+    }
+
+    // 음식 리스트 가져오기
+    @GetMapping("/signUp/getfoodList")
+    public List<Map<String, String>> getfoodList() {
+        List<FoodVO> foodList = signUpService.selectFoodList();
+        List<Map<String, String>> resultMap = new ArrayList<>();
+        for (FoodVO food : foodList) {
+            Map<String, String> foodMap = new HashMap<>();
+            foodMap.put("FOODNUM", String.valueOf(food.getFOODNUM()));
+            foodMap.put("FOODIMG", food.getFOODIMG());
+            foodMap.put("FOODNAME", food.getFOODNAME());
+            resultMap.add(foodMap);
+        }
+        return resultMap;
     }
 }
