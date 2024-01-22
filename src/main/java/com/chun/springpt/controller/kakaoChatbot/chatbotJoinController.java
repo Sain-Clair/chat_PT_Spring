@@ -31,7 +31,7 @@ public class chatbotJoinController {
                     Map.of(
                         "textCard", Map.of(
                             "title", "카카오톡채널 연동 코드 :\n" + plusfriendUserKey,
-                            "description", "코드를 회원가입시 입력해주세요.\n",
+                            "description", "코드를 회원가입시 또는 회원정보수정 페이지에서 입력해주세요.\n",
                             "buttons", List.of(
                                 Map.of(
                                     "action", "webLink",
