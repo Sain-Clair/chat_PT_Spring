@@ -47,7 +47,7 @@ public class MsgController {
 
   @MessageMapping("/chat/message")
   //public void message(@Payload MessageVO messageVO) {
-  public void message(HttpServletRequest request, @Payload MessageVO messageVO) {
+  public void message(@Payload MessageVO messageVO) {
     // 메시지 타입이 ENTER(입장)인 경우, 입장 알림 메시지를 설정합니다.
       if (MessageVO.MessageType.ENTER.equals(messageVO.getType())) {
       messageVO.setLogdate(new Date());
