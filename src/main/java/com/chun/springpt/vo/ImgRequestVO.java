@@ -8,4 +8,6 @@ import org.apache.ibatis.type.Alias;
 public class ImgRequestVO {
     private int upphotoid;
     private String imgeditcomment;
+    private int before;
+    private int after;
 }
