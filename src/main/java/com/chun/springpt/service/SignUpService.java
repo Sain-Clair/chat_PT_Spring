@@ -61,10 +61,10 @@ public class SignUpService {
             int insertTrainerResult = sdao.insertTrainer(data);
             int tnum = (Integer) data.get("tnum");
             data.put("tnum", tnum); //
-            int insertPTimage = sdao.updatePTimage(data);
-            int sum = insertMemResult + insertTrainerResult + insertPTimage;
+            // int insertPTimage = sdao.updatePTimage(data);
+            int sum = insertMemResult + insertTrainerResult;
             System.out.println("트레이너 회원가입 sum:" + sum);
-            if (sum >= 3) {
+            if (sum >= 2) {
                 return 1;
             } else {
                 return 0;

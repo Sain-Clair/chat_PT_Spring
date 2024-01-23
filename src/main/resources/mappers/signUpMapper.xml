@@ -30,11 +30,11 @@
         </selectKey>
     </insert>
 
-    <update id = "updatePTimage">
+    <!-- <update id = "updatePTimage">
         update trainer_mem
         set mainimage = tnum||'.png'
         where tnum = #{tnum}
-    </update>
+    </update> -->
     <select id="validCheckEmail" resultType="int">
         select count(*) from members where email = #{email}
     </select>
