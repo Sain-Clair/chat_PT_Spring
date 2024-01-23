@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><!-- 왼쪽 구문(http://mybaits) 강제로 다운로드 -->
+<mapper namespace="com.chun.springpt.dao.ptCalendarDao">
+
+
+
+    <select id="getMyPtList" resultType="ptCalendar">
+        SELECT pc.scnum, nm.nickname as title, m.PTSTART, m.PTEND
+        FROM ptCalendar pc
+        JOIN trainer_mem tm ON pc.tnum = tm.TNUM
+        JOIN NORMAL_MEM nm ON pc.nnum = nm.NNUM
+        JOIN matching m ON tm.TRAINER_ID = m.TRAINERID AND nm.NORMAL_ID = m.USERID
+        WHERE tm.TRAINER_ID = #{userid}
+    </select>
+
+
+
+
+
+</mapper>

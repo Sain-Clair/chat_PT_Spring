@@ -1,19 +1,17 @@
 package com.chun.springpt.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.chun.springpt.dto.NutritionDTO;
 import com.chun.springpt.vo.MyCalendarVO;
 
 @Mapper
 public interface MyCalendarDao 
 {
-    public List<MyCalendarVO> selectCalendarList(String userid);
-    public void insertCalendar(MyCalendarVO my);
+    public List<MyCalendarVO> selectCalendarList(Map<String , Object> params);
     public void delMyCalendar(int num);
-    public String getUserReal(int num);
-    List<NutritionDTO> selectNutritionDataByUserId(String userid);
+    public List<MyCalendarVO> sameDataByNnum(List<MyCalendarVO> vo);
 }  
 

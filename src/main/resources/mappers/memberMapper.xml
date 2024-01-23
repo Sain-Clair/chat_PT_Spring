@@ -4,6 +4,10 @@
 	<select id="selectList" resultType="mvo">
 		select * from Members
 	</select>
+
+   <!-- <select id="findMyNum" resultType="int" parameterType="String">
+      select nnum from members where id = #{id}
+   </select> -->
    
 	<!-- 	<select id="selectList" resultType="bvo">
       select * from board

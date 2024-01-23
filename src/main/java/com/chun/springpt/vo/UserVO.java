@@ -21,6 +21,7 @@ import java.util.Collections;
 @Builder
 public class UserVO implements UserDetails {
 
+    private int nnum;
     private String id;
     private String email;
     private String password;

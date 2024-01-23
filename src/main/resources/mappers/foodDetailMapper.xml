@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><!-- 왼쪽 구문(http://mybaits) 강제로 다운로드 -->
+<mapper namespace="com.chun.springpt.dao.foodDetailDao">
+
+    <!-- <select id="selectNutritionDataByUserId" resultType="fvo">
+            SELECT 
+                f.foodimg AS foodimg,
+                f.FOOD_TAN AS carbohydrate,
+                f.FOOD_DAN AS protein,
+                f.FOOD_GI AS fat
+            FROM 
+                MyCalendar mc
+            JOIN 
+                UPPHOTO u ON mc.UPPHOTOID = u.UPPHOTOID
+            JOIN 
+                FOOD f ON u.FOODNUM = f.FOODNUM
+            WHERE 
+                u.nnum = #{num}
+    </select> -->
+<!-- 
+
+    <select id="selectNutritionDataByUserId" resultType="fvo">
+            select f.foodimg, f.food_tan, f.food_dan, f.food_gi, f.foodcal from mycalendar m
+            inner join upphoto u on u.upphotoid = m.upphotoid
+            inner join normal_mem n on u.nnum = n.nnum
+            inner join food f on u.foodnum = f.foodnum
+            where n.normal_id = #{userid}
+    </select> -->
+
+    <select id="selectedFoodDetails" resultType="fvo" parameterType="map">
+  SELECT
+    m.eventnum,
+     m.title,
+    f.foodimg,
+    f.food_tan,
+    f.food_dan,
+    f.food_gi,
+    f.foodcal
+  FROM
+    mycalendar m
+  INNER JOIN
+    upphoto u ON u.upphotoid = m.upphotoid
+  INNER JOIN
+    normal_mem n ON u.nnum = n.nnum
+  INNER JOIN
+    food f ON u.foodnum = f.foodnum
+  WHERE
+    n.normal_id = #{userid}
+    AND u.category = #{category}
+    AND m.startStr = TO_DATE(#{date}, 'YYYY-MM-DD')
+</select>
+
+
+
+
+    
+
+</mapper>
+    

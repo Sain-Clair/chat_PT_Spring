@@ -18,5 +18,8 @@ public interface TrainerDao {
     public List<TrainerVO> selectRegion();
 
     public List<TrainerVO> selectRegionTrainer(String region);
+
+
+    public int getIsBoolTrainer(String id);
     
 }

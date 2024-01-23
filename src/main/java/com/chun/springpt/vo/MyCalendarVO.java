@@ -1,5 +1,7 @@
 package com.chun.springpt.vo;
 
+import java.util.Date;
+
 import org.apache.ibatis.type.Alias;
 
 import lombok.Data;
@@ -8,8 +10,8 @@ import lombok.Data;
 @Data
 public class MyCalendarVO 
 {
-    private String eventNum;
-    private String userid;
+    private int eventNum;
+    private int upphotoid;
     private String title;
     private String startStr;
     private String endStr;

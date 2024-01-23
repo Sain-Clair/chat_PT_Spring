@@ -19,6 +19,8 @@ public class MemberService
 		return mdao.selectList();
 	}
 
+	
+
 
 	
 

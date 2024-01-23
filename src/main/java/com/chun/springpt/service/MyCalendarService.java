@@ -7,10 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.chun.springpt.dao.MyCalendarDao;
-import com.chun.springpt.dto.NutritionDTO;
 import com.chun.springpt.vo.MyCalendarVO;
 
-import lombok.extern.java.Log;
 
 @Service
 public class MyCalendarService 
@@ -18,14 +16,9 @@ public class MyCalendarService
     @Autowired
     private MyCalendarDao dao;
 
-    public List<MyCalendarVO> selectCalendarList(String userid)
+    public List<MyCalendarVO> selectCalendarList(Map<String , Object> params)
     {
-        return dao.selectCalendarList(userid);
-    }
-
-    public void insertMyCalendar(MyCalendarVO my)
-    {
-       dao.insertCalendar(my);
+        return dao.selectCalendarList(params);
     }
 
     public void deleteMyCalendar(int num)
@@ -33,14 +26,11 @@ public class MyCalendarService
         dao.delMyCalendar(num);
     }
 
-    public String getUserReal(int number)
-	{
-		return dao.getUserReal(number);
-	}
-
-    public List<NutritionDTO> getNutritionDataByUserId(String userid) 
+    public List<MyCalendarVO> sameDataByNnum(List<MyCalendarVO> vo)
     {
-        return dao.selectNutritionDataByUserId(userid);
+        return dao.sameDataByNnum(vo);
     }
+    
+
 
 }
