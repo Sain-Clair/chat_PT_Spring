@@ -24,7 +24,7 @@ public class ChatbotTestController {
                 "outputs", new Object[]{
                     Map.of(
                         "simpleText", Map.of(
-                            "text", "연결됨."
+                            "text", "서버와 연결됨"
                         )
                     )
                 }

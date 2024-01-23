@@ -19,7 +19,7 @@ public class S3UploadTestController {
     @PostMapping("/s3upload")
     public List<String> s3upload(@RequestPart(required = false) List<MultipartFile> uploadImgs) throws IOException {
 
-        return s3uploadService.saveFile("test/", uploadImgs);
+        return s3uploadService.saveFile("test/", uploadImgs); // 파일이 저장된 url을 반환받는다.
     }
 
 }
