@@ -105,7 +105,8 @@ public class ChatbotRecommendController {
                     Map.of("title", "탄수화물", "description", foodlist.get(i).get("FOOD_TAN").toString() + "(g)"),
                     Map.of("title", "단백질", "description", foodlist.get(i).get("FOOD_DAN").toString() + "(g)"),
                     Map.of("title", "지방", "description", foodlist.get(i).get("FOOD_GI").toString() + "(g)")
-                )
+                ),
+                "itemListAlignment", "right"
             );
             carouselItems.add(item);
         }
@@ -134,8 +135,7 @@ public class ChatbotRecommendController {
                         "carousel", Map.of(
                             "type", "itemCard",
                             // 캐루셀 5개
-                            "items", carouselItems,
-                            "itemListAlignment", "right"
+                            "items", carouselItems
                         )
                     )
                 )
