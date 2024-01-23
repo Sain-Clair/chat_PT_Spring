@@ -159,8 +159,6 @@ public class AnalysisPictureService {
             )
         );
 
-        System.out.println("result: " + new JSONObject(result));
-
         // HttpClient 인스턴스 생성
         HttpClient client = HttpClient.newHttpClient();
 
@@ -174,7 +172,6 @@ public class AnalysisPictureService {
         try {
             // 요청 보내기 및 응답 받기
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("카카오로부터 온 응답 : " + response.body());
         } catch (Exception e) {
             e.printStackTrace();
         }
