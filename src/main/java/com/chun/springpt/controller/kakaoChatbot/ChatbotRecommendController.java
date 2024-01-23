@@ -1,10 +1,8 @@
 package com.chun.springpt.controller.kakaoChatbot;
 
-import com.chun.springpt.service.KakaoChatbotService;
+import com.chun.springpt.service.kakaoChatbot.KakaoChatbotService;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,8 +20,6 @@ public class ChatbotRecommendController {
 
     @Autowired
     private KakaoChatbotService kakaoChatbotService;
-
-    private final String djangoBaseUrl = "http://43.201.156.237:9000";
 
     @RequestMapping(value = "/recommend_menu")
     @ResponseBody
@@ -65,7 +61,7 @@ public class ChatbotRecommendController {
 
         // 연동된 회원임이 확인되면 식단 추천을 해준다.
         // 장고로부터 데이터 가져오기
-        String url = djangoBaseUrl + "/dlmodel/getCal?id=" + userName;
+        String url = kakaoChatbotService.djangoBaseUrl + "/dlmodel/getCal?id=" + userName;
         RestTemplate restTemplate = new RestTemplate();
         Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 
@@ -78,6 +74,7 @@ public class ChatbotRecommendController {
 
         // 캐루셀 5개
         List<Map<String, Object>> carouselItems = new ArrayList<>();
+        // 음식 리스트
         List<Map<String, Object>> foodlist = (List<Map<String, Object>>)response.get("recomandfood");
         for (int i = 0; i < 5; i++) {
             Map<String, Object> item = Map.of(
@@ -108,11 +105,6 @@ public class ChatbotRecommendController {
                 "outputs", List.of(
                     Map.of(
                         "simpleText", Map.of(
-                            "text", "식단 추천을 해드릴게요!"
-                        )
-                    ),
-                    Map.of(
-                        "simpleText", Map.of(
                             "text", nickname + "님의 하루 식단을 분석한 결과" +
                                 " 하루 권장 섭취량 기준, \n\n" +
                                 "칼로리 : " + calorie + "%\n" +
@@ -120,6 +112,11 @@ public class ChatbotRecommendController {
                                 "단백질 : " + dan + "%\n" +
                                 "지방 : " + gi + "%\n\n" +
                                 "섭취하셨습니다."
+                        )
+                    ),
+                    Map.of(
+                        "simpleText", Map.of(
+                            "text", "아래 식단 추천을 해드릴게요!"
                         )
                     ),
                     Map.of(
