@@ -6,6 +6,7 @@ import com.chun.springpt.vo.UpPhotoVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -44,5 +45,17 @@ public class UpPhotoService {
 
     public void updatePlusFood(Date uploaddate) {
         upPhotoDao.updatePlusFood(uploaddate);
+    }
+
+    public void updateUpphotoFoodnum(ImgRequestVO vo){ upPhotoDao.updateUpphotoFoodnum(vo);}
+
+    @Transactional
+    public void transactionRequestFood(ImgRequestVO vo){
+        insertRequestFood(vo);
+        updateUpphotoFoodnum(vo);
+    }
+
+    public String getRequestFoodName(int upphotoid){
+        return upPhotoDao.getRequestFoodName(upphotoid);
     }
 }

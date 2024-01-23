@@ -24,4 +24,8 @@ public interface UpPhotoDao {
     List<Date> selectUpLoadDate(int upphotoid);
 
     void updatePlusFood(Date uploaddate);
+
+    void updateUpphotoFoodnum(ImgRequestVO vo);
+
+    String getRequestFoodName(int upphotoid);
 }
