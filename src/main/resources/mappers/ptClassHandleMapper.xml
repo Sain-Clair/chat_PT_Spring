@@ -11,6 +11,7 @@
         N.WEIGHT,
         N.HEIGHT,
         N.TARGET_WEIGHT,
+        N.NM_PROFILEIMG,
         MT.USERID,
         MT.PTSTART,
         MT.PTEND,

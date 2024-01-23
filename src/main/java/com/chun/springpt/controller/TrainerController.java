@@ -5,14 +5,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chun.springpt.service.TrainerService;
 import com.chun.springpt.vo.TrainerVO;
 
+import lombok.extern.slf4j.Slf4j;
+
 
 
 @RestController
+@Slf4j
 public class TrainerController {
     @Autowired
     private TrainerService Tservice;
@@ -33,9 +37,9 @@ public class TrainerController {
         selectRegion();
     }
     // 지역 선택 후, 지역에 맞는 트레이너
-    @GetMapping("/regionTrainer/{region}")
-    public List<TrainerVO> getRegionTrainer(@PathVariable("region") String region) {
-        System.out.println("지역" + region);
+    @GetMapping("/regionTrainer")
+    public List<TrainerVO> getRegionTrainer(@RequestParam("region") String region) {
+        log.info("로깅 - 지역: {}", region);
         return Tservice.selectRegionTrainer(region);
     }
     

@@ -1,17 +1,15 @@
 # This workflow uses actions that are not certified by GitHub.
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
-# documentation.
+# documentation!!!
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle!
 
 name: Java CI with Gradle
 
-# 동작 조건 설정 : main 브랜치에 push 혹은 pull request가 발생할 경우 동작한다.
+# 동작 조건 설정 : main 브랜치에 push가 발생할 경우 동작한다.
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
     branches: [ "master" ]
 
 permissions:
@@ -33,7 +31,12 @@ jobs:
     - name: Set execute permissions on gradlew
       run: chmod +x ./gradlew
       
-    # 2. Spring Boot 애플리케이션 빌드
+    # 2-1. Spring Boot 애플리케이션 빌드 전에 application.yml 파일 생성
+    - name: Create application.yml file
+      run: |
+        echo "${{ secrets.APPLICATION_YML }}" > src/main/resources/application.yml
+      
+    # 2-2. Spring Boot 애플리케이션 빌드
     - name: Build with Gradle
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
       with:

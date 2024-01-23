@@ -17,4 +17,4 @@ EXPOSE 80
 
 
 # 실행 명령어
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=prod"]

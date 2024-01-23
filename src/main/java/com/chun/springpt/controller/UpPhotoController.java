@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,19 +31,21 @@ public class UpPhotoController {
     private HttpServletRequest request;
 
     @GetMapping("/todayPhoto")
-    private List<UpPhotoVo> getTodayPhotoList(HttpServletRequest request){
+    private List<UpPhotoVo> getTodayPhotoList(HttpServletRequest request, @RequestParam String date){
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
         String user_id = JwtUtil.getID(token);
-        return upPhotoService.selectTodayPhotoList(user_id);
+        log.info("date : " + date);
+        return upPhotoService.selectTodayPhotoList(user_id, date);
     }
 
     @PostMapping("/deleteFood")
     private ResponseEntity<?> deleteFoodData(@RequestBody UpPhotoRequest food) {
         int upphotoid = food.getUpphotoid();
-        int deletedRows = upPhotoService.deleteFoodData(upphotoid);
-        log.info("deletedRows : " + deletedRows);
-        if (deletedRows == -1) {
+        log.info("upphotoid : " + upphotoid);
+        boolean isDeleteImg = transactionDeleteUpdate(upphotoid);
+        log.info("isDeleteImg : " + isDeleteImg);
+        if (isDeleteImg) {
             String imagePath = "E:/chat_PT_Spring/src/main/resources/static/images/upphoto/" + upphotoid + ".jpg";
             log.info("imagePath : " + imagePath);
             File file = new File(imagePath);
@@ -53,6 +57,26 @@ public class UpPhotoController {
         } else {
             log.info("실패");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Food not found");
+        }
+    }
+
+    private boolean transactionDeleteUpdate(int upphotoid) {
+        //select
+        List<Date> uploaddate = upPhotoService.selectUpLoadDate(upphotoid);
+
+        if (uploaddate.isEmpty()){
+            return false;
+        }
+        else if(uploaddate.size() == 1) {
+            //delete
+            upPhotoService.deleteMemberFood(upphotoid);
+            //update
+            upPhotoService.updatePlusFood(uploaddate.get(0));
+            return true;
+        }else {
+            //delete
+            upPhotoService.deleteMemberFood(upphotoid);
+            return true;
         }
     }
 

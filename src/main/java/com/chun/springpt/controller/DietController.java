@@ -1,6 +1,9 @@
 package com.chun.springpt.controller;
 
+import com.chun.springpt.service.PthandleService;
+import com.chun.springpt.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -9,10 +12,6 @@ import java.math.BigDecimal;
 
 import com.chun.springpt.service.DietService;
 import com.chun.springpt.utils.JwtUtil;
-import com.chun.springpt.vo.DailyTotalVO;
-import com.chun.springpt.vo.DietVO;
-import com.chun.springpt.vo.NutritionVO;
-import com.chun.springpt.vo.SearchVO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,6 +30,12 @@ public class DietController {
     @Autowired
     private DietService Dservice;
 
+    @Autowired
+    private PthandleService pthandleService;
+
+    @Value("${django.base.url}")
+    private String djangoBaseUrl;
+
     @GetMapping("/food_recommand")
     public Map<String, Object> foodRecommand() {
         // 헤더에서 토큰 추출
@@ -42,7 +47,7 @@ public class DietController {
         log.info("로깅 - 요청아이디: {}", userName);
 
         // 외부 URL로부터 데이터 가져오기
-        String url = "http://localhost:9000/dlmodel/getCal?id=" + userName;
+        String url = djangoBaseUrl + "/dlmodel/getCal?id=" + userName;
         RestTemplate restTemplate = new RestTemplate();
         Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 
