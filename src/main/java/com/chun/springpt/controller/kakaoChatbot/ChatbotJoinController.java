@@ -1,8 +1,9 @@
 package com.chun.springpt.controller.kakaoChatbot;
 
-import com.google.gson.JsonObject;
+import com.chun.springpt.service.KakaoChatbotService;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,15 +15,16 @@ import java.util.Map;
 @RestController
 @Slf4j
 @RequestMapping(value = "/chatbot")
-public class chatbotJoinController {
+public class ChatbotJoinController {
+
+    @Autowired
+    private KakaoChatbotService kakaoChatbotService;
+
     @RequestMapping(value = "/join")
     @ResponseBody
     public Map<String, Object> join(@RequestBody String body) {
-        JSONObject loadJson = new JSONObject(body);
 
-        String plusfriendUserKey = loadJson.optJSONObject("userRequest").optJSONObject("user").optJSONObject("properties").optString("plusfriend_user_key");
-        System.out.println("바디" + loadJson);
-        System.out.println("플플" + plusfriendUserKey);
+        String plusfriendUserKey = kakaoChatbotService.getPlusfriendUserKey(body);
         
         return Map.of(
             "version", "2.0",
