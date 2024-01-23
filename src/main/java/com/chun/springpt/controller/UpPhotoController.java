@@ -50,6 +50,7 @@ public class UpPhotoController {
         log.info("isDeleteImg : " + isDeleteImg);
         if (isDeleteImg) {
             String imagePath = "user_upload_food/" + upphotoid + ".jpg";
+            log.info("imagePath : " + imagePath);
             s3uploadService.deleteFileFromS3(imagePath);
             log.info("성공");
             return ResponseEntity.ok().body("Deletion successful");
