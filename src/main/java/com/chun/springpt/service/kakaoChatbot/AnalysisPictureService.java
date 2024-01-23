@@ -80,7 +80,7 @@ public class AnalysisPictureService {
             Map<String, Object> item = Map.of(
                 "imageTitle", Map.of(
                     "title", foodVOList.get(i).getFOODNAME(),
-                    "description", foodVOList.get(i).getFOODNAME() + "일 확률이 " + results.get(i).get("predictrate").toString() + "%입니다. \n"
+                    "description", foodVOList.get(i).getFOODNAME() + "일 확률이 " + results.get(i).get("predictrate").toString() + "%입니다."
                 ),
                 "title", "<분석 결과 후보>",
                 "description",
@@ -90,18 +90,18 @@ public class AnalysisPictureService {
                 "thumbnail", Map.of(
                     "imageUrl", secureUrlsList.get(i),
                     "width", "800",
-                    "height", "800"
+                    "height", "400"
                 ),
                 "profile", Map.of(
                     "title", meal_time + "식단 분석"
                 ),
                 "itemList", List.of(
-                    Map.of("title", "기준", "description", foodVOList.get(i).getFOODWEIGHT()) + "(g)",
+                    Map.of("title", "기준", "description", foodVOList.get(i).getFOODWEIGHT()+ "(g)"),
                     Map.of("title", ".", "description", "."),
-                    Map.of("title", "칼로리", "description", foodVOList.get(i).getFOODCAL()) + "kcal",
-                    Map.of("title", "탄수화물", "description", foodVOList.get(i).getFOOD_TAN()) + "(g)",
-                    Map.of("title", "단백질", "description", foodVOList.get(i).getFOOD_DAN()) + "(g)",
-                    Map.of("title", "지방", "description", foodVOList.get(i).getFOOD_GI()) + "(g)"
+                    Map.of("title", "칼로리", "description", foodVOList.get(i).getFOODCAL() + "kcal"),
+                    Map.of("title", "탄수화물", "description", foodVOList.get(i).getFOOD_TAN() + "(g)"),
+                    Map.of("title", "단백질", "description", foodVOList.get(i).getFOOD_DAN() + "(g)"),
+                    Map.of("title", "지방", "description", foodVOList.get(i).getFOOD_GI() + "(g)")
                 ),
                 "buttons", List.of(
                     Map.of(
@@ -133,8 +133,7 @@ public class AnalysisPictureService {
                         )
                     )
                 ),
-                "itemListAlignment", "right",
-                "buttonLayout", "vertical"
+                "itemListAlignment", "right"
             );
             carouselItems.add(item);
         }
@@ -160,11 +159,10 @@ public class AnalysisPictureService {
             )
         );
 
-        System.out.println("result: " + result);
+        System.out.println("result: " + new JSONObject(result));
 
         // HttpClient 인스턴스 생성
         HttpClient client = HttpClient.newHttpClient();
-        System.out.println("HttpClient 인스턴스 생성");
 
         // HttpRequest 인스턴스 생성
         HttpRequest request = HttpRequest.newBuilder()
@@ -172,7 +170,6 @@ public class AnalysisPictureService {
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(new JSONObject(result).toString()))
             .build();
-        System.out.println("HttpRequest 인스턴스 생성");
 
         try {
             // 요청 보내기 및 응답 받기
