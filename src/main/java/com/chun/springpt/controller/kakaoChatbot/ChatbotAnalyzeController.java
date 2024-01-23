@@ -31,7 +31,7 @@ public class ChatbotAnalyzeController {
     @Autowired
     private AnalysisPictureService analysisPictureService;
 
-    @RequestMapping("/record_meal")
+    @RequestMapping("/analyze_meal")
     @ResponseBody
     public Map<String, Object> recordMeal(@RequestBody String body) {
 
