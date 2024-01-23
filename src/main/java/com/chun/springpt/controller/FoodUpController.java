@@ -30,10 +30,8 @@ public class FoodUpController {
   @Autowired
   private FoodUpService foodUpService;
 
-  @Value("${django.base.url}")
-  private String djangoBaseUrl;
-
-  public FoodUpController(WebClient.Builder webClientBuilder) {
+  public FoodUpController(WebClient.Builder webClientBuilder,
+                          @Value("${django.base.url}") String djangoBaseUrl) {
     this.webClient = webClientBuilder
             .baseUrl(djangoBaseUrl)
             .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024)) // 16MB로 증가
@@ -109,7 +107,7 @@ public class FoodUpController {
 
         //이미지처리
         byte[] imageBytes = Base64.getDecoder().decode((String)result.get("base64_encoded_data"));
-        String filePath = "E:/chat_PT_Spring/src/main/resources/static/images/upphoto/" + upphotoid + ".jpg";
+        String filePath = "/src/main/resources/static/images/upphoto/" + upphotoid + ".jpg";
         try (FileOutputStream imageOutFile = new FileOutputStream(filePath)) {
           imageOutFile.write(imageBytes);
           log.info("Image written to file successfully"); // 이미지 파일 저장 성공 로깅
