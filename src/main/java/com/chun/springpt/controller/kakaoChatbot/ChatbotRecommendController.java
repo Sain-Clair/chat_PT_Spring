@@ -67,20 +67,31 @@ public class ChatbotRecommendController {
 
         //// 하루 식단을 분석한 결과
         // 칼로리
-        String calorie = String.valueOf(Math.round((Double.parseDouble(response.get("now_cal").toString()) / Double.parseDouble(response.get("recommand_cal").toString()))*100));
-        String tan = String.valueOf(Math.round((((List<Double>)response.get("now_nutrition")).get(0) / ((List<Double>)response.get("recomand_nutrition")).get(0))*100));
-        String dan = String.valueOf(Math.round((((List<Double>)response.get("now_nutrition")).get(1) / ((List<Double>)response.get("recomand_nutrition")).get(1))*100));
-        String gi = String.valueOf(Math.round((((List<Double>)response.get("now_nutrition")).get(2) / ((List<Double>)response.get("recomand_nutrition")).get(2))*100));
+        String calorie = "0";
+        String tan = "0";
+        String dan = "0";
+        String gi = "0";
+
+        try {
+            calorie = String.valueOf(Math.round((Double.parseDouble(response.get("now_cal").toString()) / Double.parseDouble(response.get("recommand_cal").toString())) * 100));
+            tan = String.valueOf(Math.round((((List<Double>) response.get("now_nutrition")).get(0) / ((List<Double>) response.get("recomand_nutrition")).get(0)) * 100));
+            dan = String.valueOf(Math.round((((List<Double>) response.get("now_nutrition")).get(1) / ((List<Double>) response.get("recomand_nutrition")).get(1)) * 100));
+            gi = String.valueOf(Math.round((((List<Double>) response.get("now_nutrition")).get(2) / ((List<Double>) response.get("recomand_nutrition")).get(2)) * 100));
+
+        } catch (Exception ignored) {
+
+        }
+
 
         // 캐루셀 5개
         List<Map<String, Object>> carouselItems = new ArrayList<>();
         // 음식 리스트
-        List<Map<String, Object>> foodlist = (List<Map<String, Object>>)response.get("recomandfood");
+        List<Map<String, Object>> foodlist = (List<Map<String, Object>>) response.get("recomandfood");
         for (int i = 0; i < 5; i++) {
             Map<String, Object> item = Map.of(
                 "imageTitle", Map.of(
                     "title", foodlist.get(i).get("FOODNAME").toString(),
-                    "description", "기준" +  foodlist.get(i).get("FOODWEIGHT").toString() + "(g)"
+                    "description", "기준" + foodlist.get(i).get("FOODWEIGHT").toString() + "(g)"
                 ),
                 "title", "",
                 "description", "",

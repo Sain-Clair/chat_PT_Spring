@@ -50,7 +50,7 @@ public class SecurityConfig {
                 // .authorizeHttpRequests((auth) -> auth.anyRequest().permitAll())
                 .authorizeHttpRequests((auth) -> auth
                         // 토큰 검증을 하지 않을 요청
-                        .requestMatchers("/","/hello","/login", "/checkToken", "/images/**", "/ws-stomp/**", "/service/**", "/signUp/**", "/validCheckEmail/**", "/kakao/**", "https://kauth.kakao.com/**", "https://kapi/kakao.com/**" ,"/chatbot/**","/v2/user/me/", "/s3upload")
+                        .requestMatchers("/","/hello","/login", "/checkToken", "/images/**", "/ws-stomp/**", "/service/**", "/signUp/**", "/validCheckEmail/**", "/kakao/**", "https://kauth.kakao.com/**", "https://kapi/kakao.com/**" ,"/chatbot/**","/v2/user/me/", "/s3upload", "/s3Delete")
                         .permitAll()
                         // 그 외의 모든 요청은 토큰이 있어야 접근 가능
                         .anyRequest().authenticated())
