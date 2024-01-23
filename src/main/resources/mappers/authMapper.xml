@@ -20,7 +20,19 @@
     <select id="checkEmailReturnId" resultType="String">
         SELECT id FROM members WHERE email = #{email}
     </select>
+    <!--카카오 로그인 - 이메일만으로 로그인-->
     <select id="loginCheckWithEmail" resultType="user">
         SELECT * FROM members WHERE email = #{email}
+    </select>
+    <!--카카오 연동코드로 닉네임 뽑기-->
+    <select id="getNicknameByPlusfriendUserKey" resultType="String">
+        SELECT n.nickname
+        FROM members m join normal_mem n
+        on m.id = n.normal_id
+        WHERE m.kakaocode = #{plusfriendUserKey}
+    </select>
+    <!--카카오 연동코드로 ID 뽑기-->
+    <select id="getUserNameByPlusfriendUserKey" resultType="String">
+        SELECT id FROM members WHERE kakaocode = #{plusfriendUserKey}
     </select>
 </mapper>

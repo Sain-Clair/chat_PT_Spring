@@ -30,4 +30,10 @@ public interface AuthDao {
     String findId(@Param("name")String name, @Param("email")String email);
 
     // 회원 탈퇴
+
+    // 카카오 연동코드로 회원의 닉네임 뽑아오기
+    String getNicknameByPlusfriendUserKey(@Param("plusfriendUserKey") String plusfriendUserKey);
+
+    // 카카오 연동코드로 회원의 ID 뽑아오기
+    String getUserNameByPlusfriendUserKey(@Param("plusfriendUserKey") String plusfriendUserKey);
 }
