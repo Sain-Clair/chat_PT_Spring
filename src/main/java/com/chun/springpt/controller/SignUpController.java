@@ -1,21 +1,20 @@
 package com.chun.springpt.controller;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.chun.springpt.service.SignUpService;
 import com.chun.springpt.vo.FoodVO;
-import com.chun.springpt.vo.MemberVO;
+
 
 @RestController
 public class SignUpController {
@@ -23,9 +22,13 @@ public class SignUpController {
     private SignUpService signUpService;
 
     // 일반 회원 가입
-    @PostMapping("/signUp/completeSignUp")
-    public int completeSignUp(@RequestPart Map<String, Object> data) {
+    @PostMapping("/signUp/completeSignUp" )
+    public int completeSignUp(@RequestBody Map<String, Object> data) {
+        //이미지 파일
+        Object file = data.get("nm_profileimg");
+        System.out.println("파일들어옴?"+file);
         int result = signUpService.insertMembers(data);
+        System.out.println("전체 데이터 뿌리기: " + data.get("nm_profileimg"));
         System.out.println("여기는 회원가입 완료창:" + result);
         return result;
     }

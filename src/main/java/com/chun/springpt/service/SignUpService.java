@@ -9,6 +9,8 @@ import javax.management.RuntimeErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.chun.springpt.dao.FoodDao;
 import com.chun.springpt.dao.SignUpDao;
@@ -30,8 +32,6 @@ public class SignUpService {
             int insertNormalResult = sdao.insertNormal(data);
             int nnum = (Integer) data.get("nnum");
             data.put("nnum", nnum); // nnum 값을 data에 삽입
-            Map<String, Object> mainimagename = (Map<String, Object>) data.get("nm_profileimg");
-            System.out.println("메인이미지" + mainimagename);
             int insertMemFoodResult = sdao.insertMemFood(data);
             int sum = insertMemResult + insertNormalResult + insertMemFoodResult;
             if (sum > 3) {
