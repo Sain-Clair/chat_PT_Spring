@@ -37,6 +37,7 @@ public class DietController {
     private String djangoBaseUrl;
 
     @GetMapping("/food_recommand")
+
     public Map<String, Object> foodRecommand() {
         // 헤더에서 토큰 추출
         String authorizationHeader = request.getHeader("Authorization");
