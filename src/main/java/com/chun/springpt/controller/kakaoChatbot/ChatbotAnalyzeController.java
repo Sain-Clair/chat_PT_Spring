@@ -36,7 +36,6 @@ public class ChatbotAnalyzeController {
     public Map<String, Object> recordMeal(@RequestBody String body) {
 
         JSONObject loadJson = new JSONObject(body);
-        System.out.println("loadJson: " + loadJson);
 
         String callbackUrl = kakaoChatbotService.getCallbackUrl(body);
         String plusfriendUserKey = kakaoChatbotService.getPlusfriendUserKey(body);

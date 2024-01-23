@@ -160,8 +160,11 @@ public class AnalysisPictureService {
             )
         );
 
+        System.out.println("result: " + result);
+
         // HttpClient 인스턴스 생성
         HttpClient client = HttpClient.newHttpClient();
+        System.out.println("HttpClient 인스턴스 생성");
 
         // HttpRequest 인스턴스 생성
         HttpRequest request = HttpRequest.newBuilder()
@@ -169,10 +172,12 @@ public class AnalysisPictureService {
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(new JSONObject(result).toString()))
             .build();
+        System.out.println("HttpRequest 인스턴스 생성");
 
         try {
             // 요청 보내기 및 응답 받기
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("카카오로부터 온 응답 : " + response.body());
         } catch (Exception e) {
             e.printStackTrace();
         }
