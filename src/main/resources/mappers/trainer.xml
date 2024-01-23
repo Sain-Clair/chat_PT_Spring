@@ -18,6 +18,8 @@
         <result property="STATUS" column="STATUS"/>
         <result property="MAINIMAGE" column="MAINIMAGE"/>
         <result property="GYM" column="GYM"/>
+        <result property="SUBIMAGE1" column="SUBIMAGE1"/>
+        <result property="SUBIMAGE2" column="SUBIMAGE2"/>
         <!-- MemberVO의 필드와 컬럼 매핑 -->
         <association property="memberVO" javaType="com.chun.springpt.vo.MemberVO">
         <id property="ID" column="ID"/>
@@ -28,6 +30,7 @@
         <result property="ROLE" column="ROLE"/>
         <result property="BIRTH" column="BIRTH"/>
         <result property="MEMBER_EMAIL" column="MEMBER_EMAIL"/>
+
         </association>
     </resultMap>
         <!-- ! resultType을 잘 설정하자...-->
@@ -61,7 +64,7 @@
     </select>
     <!-- 트레이너 상세정보-->
     <select id="selectDetail" resultMap="TrainerMemberResultMap">
-        SELECT m.name, m.gender, m.email, t.trainercomment, t.trainerintro, t.region, t.awards1, t.awards2, t.awards3, t.awards4, t.awards5, t.starttime, t.endtime, t.trainer_id, t.mainimage, t.gym
+        SELECT m.name, m.gender, m.email, t.trainercomment, t.trainerintro, t.region, t.awards1, t.awards2, t.awards3, t.awards4, t.awards5, t.starttime, t.endtime, t.trainer_id, t.mainimage, t.gym,  t.subimage1, t.subimage2
         FROM trainer_mem t INNER JOIN members m ON t.trainer_id = m.id WHERE t.trainer_id = #{trainer_id}
     </select>
 </mapper>

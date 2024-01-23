@@ -3,6 +3,7 @@ package com.chun.springpt.controller;
 import java.util.Date;
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -48,10 +49,9 @@ public class MsgController {
   //public void message(@Payload MessageVO messageVO) {
   public void message(@Payload MessageVO messageVO) {
     // 메시지 타입이 ENTER(입장)인 경우, 입장 알림 메시지를 설정합니다.
-    if (MessageVO.MessageType.ENTER.equals(messageVO.getType())) {
+      if (MessageVO.MessageType.ENTER.equals(messageVO.getType())) {
       messageVO.setLogdate(new Date());
       messageVO.setMessage(messageVO.getSender() + " 님이 온라인 상태입니다.");
-
     }
 
     // 해당 채팅방 구독자들에게 메시지를 전송
@@ -78,7 +78,7 @@ public class MsgController {
 
   }
   @GetMapping("/chat/rooms/{roomId}/messages")
-  public List<MessageVO> getMessageById(@PathVariable String roomId) {
+  public List<MessageVO> getMessageById(HttpServletRequest request, @PathVariable String roomId) {
     return chatRoomRepository.getMessageById(roomId);
   }
 }

@@ -1,6 +1,7 @@
 package com.chun.springpt.controller;
 
 import com.chun.springpt.dto.UpPhotoRequest;
+import com.chun.springpt.service.S3uploadService;
 import com.chun.springpt.service.UpPhotoService;
 import com.chun.springpt.utils.JwtUtil;
 import com.chun.springpt.vo.ImgRequestVO;
@@ -29,6 +30,8 @@ public class UpPhotoController {
     }
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private S3uploadService s3uploadService;
 
     @GetMapping("/todayPhoto")
     private List<UpPhotoVo> getTodayPhotoList(HttpServletRequest request, @RequestParam String date){
@@ -46,12 +49,9 @@ public class UpPhotoController {
         boolean isDeleteImg = transactionDeleteUpdate(upphotoid);
         log.info("isDeleteImg : " + isDeleteImg);
         if (isDeleteImg) {
-            String imagePath = "E:/chat_PT_Spring/src/main/resources/static/images/upphoto/" + upphotoid + ".jpg";
+            String imagePath = "user_upload_food/" + upphotoid + ".jpg";
             log.info("imagePath : " + imagePath);
-            File file = new File(imagePath);
-            if (file.exists()) {
-                file.delete();
-            }
+            s3uploadService.deleteFileFromS3(imagePath);
             log.info("성공");
             return ResponseEntity.ok().body("Deletion successful");
         } else {
@@ -94,6 +94,12 @@ public class UpPhotoController {
     }
     @PostMapping("/requestNameChange")
     private void insertRequest(@RequestBody ImgRequestVO vo){
-        upPhotoService.insertRequestFood(vo);
+        upPhotoService.transactionRequestFood(vo);
+    }
+
+    @GetMapping("/getRequestFoodName")
+    private String getRequestFoodName(@RequestParam int upphotoid){
+        log.info("getRequestFoodName upphotoid : " + upphotoid);
+        return upPhotoService.getRequestFoodName(upphotoid);
     }
 }
