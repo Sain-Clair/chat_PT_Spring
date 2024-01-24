@@ -29,7 +29,7 @@
             where n.normal_id = #{userid}
     </select> -->
 
-    <select id="selectedFoodDetails" resultType="fdvo" >
+    <select id="selectedFoodDetails" resultType="fvo" >
     select 
         u.upphotoid , u.category as title , u.uploaddate as eatdate , f.foodcal  , f.food_tan as carbohydrate,f.food_dan as protein ,f.food_gi as fat, f.foodimg as img
     from 

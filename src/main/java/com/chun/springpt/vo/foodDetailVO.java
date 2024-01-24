@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@Alias("fdvo")
+@Alias("fvo")
 @AllArgsConstructor
 public class foodDetailVO 
 
