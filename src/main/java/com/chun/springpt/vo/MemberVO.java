@@ -16,4 +16,6 @@ public class MemberVO {
 	private String ROLE;
 	private Date BIRTH;
 	private String MEMBER_EMAIL;
+	private String KAKAOCODE;
+	private String WITHOAUTH;
 }

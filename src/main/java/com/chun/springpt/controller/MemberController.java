@@ -35,12 +35,15 @@ public class MemberController {
 
     // 특정 한명에 대한 정보 가져오기
     @GetMapping("/getuserInfo")
-    public List<MemberVO> getuserInfo() {
+    @ResponseBody
+    public List<MemberVO> getuserInfo(MemberVO memberVO) {
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
         String userName = JwtUtil.getID(token);
 
-        return Mservice.getuserInfo(userName);
+        memberVO.setID(userName);
+
+        return Mservice.getuserInfo(memberVO);
     }
 
 

@@ -23,7 +23,7 @@ public class MemberService {
     public void changeWeight(String userName, Integer weight) {
 		mdao.changeWeight(userName, weight);
     }
-	public List<MemberVO> getuserInfo(String userName){
-		return mdao.getuserInfo(userName);
+	public List<MemberVO> getuserInfo(MemberVO memberVO){
+		return mdao.getuserInfo(memberVO);
 	}
 }

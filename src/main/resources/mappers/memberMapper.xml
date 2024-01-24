@@ -9,9 +9,14 @@
       select region from normal_mem where normal_id = #{userName}
    </select>
 
-    <select id ="getuserInfo" resultType="String">
-        select * from members where id = #{userName}
+    <select id ="getuserInfo" resultType="mvo">
+        select * from MEMBERS full outer join NORMAL_MEM on members.id = normal_mem.normal_id
+        where members.id = #{ID}
+
+<!--        select * from MEMBERS full outer join NORMAL_MEM on members.id = normal_mem.normal_id-->
+<!--        where members.id = #{ID}-->
     </select>
+
     <update id="changeWeight">
         merge into memberdietlog m
         using (select nnum from normal_mem where normal_id = #{userName}) n
