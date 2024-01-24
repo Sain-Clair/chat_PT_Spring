@@ -172,6 +172,7 @@ public class AnalysisPictureService {
         try {
             // 요청 보내기 및 응답 받기
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println("response: " + response.body());
         } catch (Exception e) {
             e.printStackTrace();
         }
