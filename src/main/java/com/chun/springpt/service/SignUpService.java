@@ -25,21 +25,21 @@ public class SignUpService {
     @Transactional
     public int insertMembers(Map<String, Object> data) {
         try {
-            String imgbase64 = (String)data.get("nm_profileimg");
-            byte[] imageBytes =  Base64.getDecoder().decode(imgbase64.split(",")[1]);
+            String imgbase64 = (String) data.get("nm_profileimg");
+            byte[] imageBytes = Base64.getDecoder().decode(imgbase64.split(",")[1]);
             int insertMemResult = sdao.insertMembers(data);
-            System.out.println("여기 MemberResult insert문" +insertMemResult);
+            System.out.println("여기 MemberResult insert문" + insertMemResult);
             int insertNormalResult = sdao.insertNormal(data);
-            System.out.println("여기 노말Result insert문" +insertMemResult);
+            System.out.println("여기 노말Result insert문" + insertMemResult);
             int nnum = (int) data.get("nnum");
             data.put("nnum", nnum); // nnum 값을 data에 삽입
             int insertMemFoodResult = sdao.insertMemFood(data);
             int sum = insertMemResult + insertNormalResult + insertMemFoodResult;
-            
+
             String filePath = "normal_user/" + nnum + ".png";
             System.out.println(filePath);
             s3uploadService.saveFilewithName(filePath, imageBytes);
-            
+
             if (sum > 3) {
                 return 1;
             } else {
@@ -49,6 +49,7 @@ public class SignUpService {
             throw new RuntimeException(e);
         }
     }
+
     // PT 회원가입
     // @Transactional
     public int insertTrainerMembers(Map<String, Object> data) {
