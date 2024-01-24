@@ -24,13 +24,13 @@
     insert into trainer_mem (tnum, TRAINER_ID, trainercomment, trainerintro, region, awards1, awards2, awards3, awards4, awards5,
     starttime, endtime, mainimage, subimage1, subimage2, isverified)
     values (trainer_mem_seq.nextval, #{id}, #{trainercomment}, #{trainerintro}, #{region}, #{awards1}, #{awards2}, #{awards3}, #{awards4}, #{awards5},
-    #{starttime}, #{endtime}, #{mainimage}, #{subimage1}, #{subimage2}, #{isverified})
+    #{starttime}, #{endtime}, trainer_mem_seq.currval||'.png', trainer_mem_seq.currval||'_sub1.png', trainer_mem_seq.currval||'_sub2.png', trainer_mem_seq.currval||'_sub3.png')
         <selectKey keyProperty="tnum" resultType="int" order="AFTER">
             select trainer_mem_seq.nextval from dual
         </selectKey>
     </insert>
     <select id="validCheckEmail" resultType="int">
-        select count(*) from members where email = #{email}
+        select count(*) from members where email = #{email} 
     </select>
     <select id="validCheckId" resultType="int">
         select count(*) from members where id = #{id}
