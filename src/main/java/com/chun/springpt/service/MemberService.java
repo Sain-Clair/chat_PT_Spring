@@ -9,19 +9,22 @@ import com.chun.springpt.dao.MemberDao;
 import com.chun.springpt.vo.MemberVO;
 
 @Service
-public class MemberService {
-	
+public class MemberService 
+{	
 	@Autowired
 	private MemberDao mdao;
 	
-	public List<MemberVO> selectMemberList(){
+	public List<MemberVO> selectMemberList()
+	{
 		return mdao.selectList();
 	}
 	public String getRegion(String userName){
 		return mdao.getRegion(userName);
 	}
 
+
     public void changeWeight(String userName, Integer weight) {
 		mdao.changeWeight(userName, weight);
     }
+
 }

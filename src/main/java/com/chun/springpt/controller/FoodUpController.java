@@ -1,6 +1,7 @@
 package com.chun.springpt.controller;
 
 import com.chun.springpt.service.FoodUpService;
+import com.chun.springpt.service.S3uploadService;
 import com.chun.springpt.utils.JwtUtil;
 import com.chun.springpt.vo.FoodUpVO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,10 +31,11 @@ public class FoodUpController {
   @Autowired
   private FoodUpService foodUpService;
 
-  @Value("${django.base.url}")
-  private String djangoBaseUrl;
+  @Autowired
+  private S3uploadService s3uploadService;
 
-  public FoodUpController(WebClient.Builder webClientBuilder) {
+  public FoodUpController(WebClient.Builder webClientBuilder,
+                          @Value("${django.base.url}") String djangoBaseUrl) {
     this.webClient = webClientBuilder
             .baseUrl(djangoBaseUrl)
             .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024)) // 16MB로 증가
@@ -109,13 +111,11 @@ public class FoodUpController {
 
         //이미지처리
         byte[] imageBytes = Base64.getDecoder().decode((String)result.get("base64_encoded_data"));
-        String filePath = "E:/chat_PT_Spring/src/main/resources/static/images/upphoto/" + upphotoid + ".jpg";
-        try (FileOutputStream imageOutFile = new FileOutputStream(filePath)) {
-          imageOutFile.write(imageBytes);
-          log.info("Image written to file successfully"); // 이미지 파일 저장 성공 로깅
-        } catch (IOException e) {
-          log.error("Error saving image file: " + e.getMessage()); // 이미지 파일 저장 실패 로깅
-        }
+        String filePath = "user_upload_food/" + upphotoid + ".jpg";
+
+        String img_url =  s3uploadService.saveFilewithName(filePath,imageBytes);
+        log.info("img_url : " + img_url);
+
       }
     }
   }
