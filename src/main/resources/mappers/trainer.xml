@@ -65,6 +65,7 @@
     <!-- 트레이너 상세정보-->
     <select id="selectDetail" resultMap="TrainerMemberResultMap">
         SELECT m.name, m.gender, m.email, t.trainercomment, t.trainerintro, t.region, t.awards1, t.awards2, t.awards3, t.awards4, t.awards5, t.starttime, t.endtime, t.trainer_id, t.mainimage, t.gym,  t.subimage1, t.subimage2
+
         FROM trainer_mem t INNER JOIN members m ON t.trainer_id = m.id WHERE t.trainer_id = #{trainer_id}
     </select>
 </mapper>

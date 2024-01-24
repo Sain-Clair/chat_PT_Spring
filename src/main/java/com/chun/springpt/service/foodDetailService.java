@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.chun.springpt.dao.foodDetailDao;
 import com.chun.springpt.vo.foodDetailVO;
-
 @Service
 public class foodDetailService 
 {

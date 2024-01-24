@@ -13,5 +13,4 @@ public interface PthandleDao {
 
   public void pthandleToLive(PthandleVO pthandleVO);
 
-
 }
