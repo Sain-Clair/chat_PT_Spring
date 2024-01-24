@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.util.StringInputStream;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,6 +62,28 @@ public class S3uploadService {
         }
 
         return fileUrls;
+    }
+
+    public List<String> saveWithImageInputStream(String path, String fileName, InputStream imageInputStream) {
+        try {
+            List<String> fileUrls = new ArrayList<>();
+
+            String fullPath = path + fileName;
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType("image/jpg");
+
+            amazonS3.putObject(new PutObjectRequest(bucket, fullPath, imageInputStream, metadata));
+
+            fileUrls.add(amazonS3.getUrl(bucket, fullPath).toString());
+
+            // InputStream을 닫는 것은 메소드 호출자의 책임.
+            // imageInputStream.close();
+
+            return fileUrls;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void deleteFileFromS3(String filePath) {

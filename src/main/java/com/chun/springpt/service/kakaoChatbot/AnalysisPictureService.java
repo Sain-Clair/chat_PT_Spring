@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Map.entry;
+
 @Service
 @Slf4j
 @SuppressWarnings("unchecked")
@@ -96,7 +98,7 @@ public class AnalysisPictureService {
                     "title", meal_time + "식단 분석"
                 ),
                 "itemList", List.of(
-                    Map.of("title", "기준", "description", foodVOList.get(i).getFOODWEIGHT()+ "(g)"),
+                    Map.of("title", "기준", "description", foodVOList.get(i).getFOODWEIGHT() + "(g)"),
                     Map.of("title", ".", "description", "."),
                     Map.of("title", "칼로리", "description", foodVOList.get(i).getFOODCAL() + "kcal"),
                     Map.of("title", "탄수화물", "description", foodVOList.get(i).getFOOD_TAN() + "(g)"),
@@ -108,28 +110,40 @@ public class AnalysisPictureService {
                         "action", "message",
                         "label", "이대로 기록",
                         "messageText", "식단 기록하기",
-                        "extra", Map.of(
-                            "userName", userName,
-                            "식사시간", meal_time,
-                            "음식식별번호", results.get(i).get("foodnum").toString(),
-                            "음식명", foodVOList.get(i).getFOODNAME(),
-                            "기준", foodVOList.get(i).getFOODWEIGHT() ,
-                            "칼로리", foodVOList.get(i).getFOODCAL(),
-                            "탄수화물", foodVOList.get(i).getFOOD_TAN(),
-                            "단백질", foodVOList.get(i).getFOOD_DAN(),
-                            "지방", foodVOList.get(i).getFOOD_GI()
+                        "extra", Map.ofEntries(
+                            entry("userName", userName),
+                            entry("식사시간", meal_time),
+                            entry("받은사진", secureUrlsList.get(i)),
+                            entry("음식식별번호", results.get(i).get("foodnum").toString()),
+                            entry("음식명", foodVOList.get(i).getFOODNAME()),
+                            entry("기준", foodVOList.get(i).getFOODWEIGHT()),
+                            entry("칼로리", foodVOList.get(i).getFOODCAL()),
+                            entry("탄수화물", foodVOList.get(i).getFOOD_TAN()),
+                            entry("단백질", foodVOList.get(i).getFOOD_DAN()),
+                            entry("지방", foodVOList.get(i).getFOOD_GI()),
+                            entry("확률", results.get(i).get("predictrate").toString()),
+                            entry("후보1", results.get(i).get("candidate1").toString()),
+                            entry("후보2", results.get(i).get("candidate2").toString()),
+                            entry("후보3", results.get(i).get("candidate3").toString()),
+                            entry("후보1확률", results.get(i).get("candidate1rate").toString()),
+                            entry("후보2확률", results.get(i).get("candidate2rate").toString()),
+                            entry("후보3확률", results.get(i).get("candidate3rate").toString())
                         )
                     ),
                     Map.of(
                         "action", "message",
                         "label", "다른 후보로 기록",
                         "messageText", "다른 후보로 기록",
-                        "extra", Map.of(
-                            "userName", userName,
-                            "식사시간", meal_time,
-                            "1", results.get(i).get("candidate1").toString(),
-                            "2", results.get(i).get("candidate2").toString(),
-                            "3", results.get(i).get("candidate3").toString()
+                        "extra", Map.ofEntries(
+                            entry("userName", userName),
+                            entry("식사시간", meal_time),
+                            entry("받은사진", secureUrlsList.get(i)),
+                            entry("후보1", results.get(i).get("candidate1").toString()),
+                            entry("후보2", results.get(i).get("candidate2").toString()),
+                            entry("후보3", results.get(i).get("candidate3").toString()),
+                            entry("후보1확률", results.get(i).get("candidate1rate").toString()),
+                            entry("후보2확률", results.get(i).get("candidate2rate").toString()),
+                            entry("후보3확률", results.get(i).get("candidate3rate").toString())
                         )
                     )
                 ),
