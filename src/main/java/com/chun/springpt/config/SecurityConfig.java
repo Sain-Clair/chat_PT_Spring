@@ -32,6 +32,7 @@ public class SecurityConfig {
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000", "https://chunsik.shop", "http://www.chatpt.shop", "http://chatpt.shop", "http://chatpt.shop:8888/", "http://www.chatpt.shop:8888","http://3.37.155.116:8888", "ws://localhost/springpt/ws-stomp/**"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
+
         corsConfiguration.setAllowedHeaders(List.of("*"));
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
@@ -50,7 +51,7 @@ public class SecurityConfig {
                 // .authorizeHttpRequests((auth) -> auth.anyRequest().permitAll())
                 .authorizeHttpRequests((auth) -> auth
                         // 토큰 검증을 하지 않을 요청
-                        .requestMatchers("/","/hello","/login", "/checkToken", "/images/**", "/ws-stomp/**", "/service/**", "/signUp/**", "/validCheckEmail/**", "/kakao/**", "https://kauth.kakao.com/**", "https://kapi/kakao.com/**" ,"/chatbot/**","/v2/user/me/", "/s3upload")
+                        .requestMatchers("/","/hello","/login", "/checkToken", "/images/**", "/ws-stomp/**", "/service/**", "/signUp/**", "/validCheckEmail/**", "/kakao/**", "https://kauth.kakao.com/**", "https://kapi/kakao.com/**" ,"/chatbot/**","/v2/user/me/", "/s3upload", "/s3Delete")
                         .permitAll()
                         // 그 외의 모든 요청은 토큰이 있어야 접근 가능
                         .anyRequest().authenticated())

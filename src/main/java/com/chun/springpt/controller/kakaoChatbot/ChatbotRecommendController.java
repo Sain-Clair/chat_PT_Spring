@@ -1,10 +1,8 @@
 package com.chun.springpt.controller.kakaoChatbot;
 
-import com.chun.springpt.service.KakaoChatbotService;
+import com.chun.springpt.service.kakaoChatbot.KakaoChatbotService;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,8 +20,6 @@ public class ChatbotRecommendController {
 
     @Autowired
     private KakaoChatbotService kakaoChatbotService;
-
-    private final String djangoBaseUrl = "http://43.201.156.237:9000";
 
     @RequestMapping(value = "/recommend_menu")
     @ResponseBody
@@ -65,25 +61,37 @@ public class ChatbotRecommendController {
 
         // 연동된 회원임이 확인되면 식단 추천을 해준다.
         // 장고로부터 데이터 가져오기
-        String url = djangoBaseUrl + "/dlmodel/getCal?id=" + userName;
+        String url = kakaoChatbotService.djangoBaseUrl + "/dlmodel/getCal?id=" + userName;
         RestTemplate restTemplate = new RestTemplate();
         Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 
         //// 하루 식단을 분석한 결과
         // 칼로리
-        String calorie = String.valueOf(Math.round((Double.parseDouble(response.get("now_cal").toString()) / Double.parseDouble(response.get("recommand_cal").toString()))*100));
-        String tan = String.valueOf(Math.round((((List<Double>)response.get("now_nutrition")).get(0) / ((List<Double>)response.get("recomand_nutrition")).get(0))*100));
-        String dan = String.valueOf(Math.round((((List<Double>)response.get("now_nutrition")).get(1) / ((List<Double>)response.get("recomand_nutrition")).get(1))*100));
-        String gi = String.valueOf(Math.round((((List<Double>)response.get("now_nutrition")).get(2) / ((List<Double>)response.get("recomand_nutrition")).get(2))*100));
+        String calorie = "0";
+        String tan = "0";
+        String dan = "0";
+        String gi = "0";
+
+        try {
+            calorie = String.valueOf(Math.round((Double.parseDouble(response.get("now_cal").toString()) / Double.parseDouble(response.get("recommand_cal").toString())) * 100));
+            tan = String.valueOf(Math.round((((List<Double>) response.get("now_nutrition")).get(0) / ((List<Double>) response.get("recomand_nutrition")).get(0)) * 100));
+            dan = String.valueOf(Math.round((((List<Double>) response.get("now_nutrition")).get(1) / ((List<Double>) response.get("recomand_nutrition")).get(1)) * 100));
+            gi = String.valueOf(Math.round((((List<Double>) response.get("now_nutrition")).get(2) / ((List<Double>) response.get("recomand_nutrition")).get(2)) * 100));
+
+        } catch (Exception ignored) {
+
+        }
+
 
         // 캐루셀 5개
         List<Map<String, Object>> carouselItems = new ArrayList<>();
-        List<Map<String, Object>> foodlist = (List<Map<String, Object>>)response.get("recomandfood");
+        // 음식 리스트
+        List<Map<String, Object>> foodlist = (List<Map<String, Object>>) response.get("recomandfood");
         for (int i = 0; i < 5; i++) {
             Map<String, Object> item = Map.of(
                 "imageTitle", Map.of(
                     "title", foodlist.get(i).get("FOODNAME").toString(),
-                    "description", "기준" +  foodlist.get(i).get("FOODWEIGHT").toString() + "(g)"
+                    "description", "기준" + foodlist.get(i).get("FOODWEIGHT").toString() + "(g)"
                 ),
                 "title", "",
                 "description", "",
@@ -97,7 +105,8 @@ public class ChatbotRecommendController {
                     Map.of("title", "탄수화물", "description", foodlist.get(i).get("FOOD_TAN").toString() + "(g)"),
                     Map.of("title", "단백질", "description", foodlist.get(i).get("FOOD_DAN").toString() + "(g)"),
                     Map.of("title", "지방", "description", foodlist.get(i).get("FOOD_GI").toString() + "(g)")
-                )
+                ),
+                "itemListAlignment", "right"
             );
             carouselItems.add(item);
         }
@@ -106,11 +115,6 @@ public class ChatbotRecommendController {
             "version", "2.0",
             "template", Map.of(
                 "outputs", List.of(
-                    Map.of(
-                        "simpleText", Map.of(
-                            "text", "식단 추천을 해드릴게요!"
-                        )
-                    ),
                     Map.of(
                         "simpleText", Map.of(
                             "text", nickname + "님의 하루 식단을 분석한 결과" +
@@ -123,11 +127,15 @@ public class ChatbotRecommendController {
                         )
                     ),
                     Map.of(
+                        "simpleText", Map.of(
+                            "text", "아래 식단 추천을 해드릴게요!"
+                        )
+                    ),
+                    Map.of(
                         "carousel", Map.of(
                             "type", "itemCard",
                             // 캐루셀 5개
-                            "items", carouselItems,
-                            "itemListAlignment", "right"
+                            "items", carouselItems
                         )
                     )
                 )

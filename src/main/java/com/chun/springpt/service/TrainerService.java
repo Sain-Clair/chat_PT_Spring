@@ -37,4 +37,9 @@ public class TrainerService {
     public List<TrainerVO> selectRegionTrainer(String region) {
         return dao.selectRegionTrainer(region);
     }
+
+    public int getIsBoolTrainer(String trainer_id)
+    {
+        return 0;
+    }
 }

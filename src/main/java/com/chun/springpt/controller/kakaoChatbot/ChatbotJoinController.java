@@ -1,8 +1,7 @@
 package com.chun.springpt.controller.kakaoChatbot;
 
-import com.chun.springpt.service.KakaoChatbotService;
+import com.chun.springpt.service.kakaoChatbot.KakaoChatbotService;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

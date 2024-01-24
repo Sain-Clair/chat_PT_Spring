@@ -26,4 +26,15 @@ public class UserService {
     public String getName(String userName) {
         return userDao.getName(userName);
     }
+
+    public int getMyNum(String id)
+    {
+        return userDao.getMyNum(id);
+    }
+    // 트레이너 승인 조회
+    public int getIsBool(String id)
+    {
+        return userDao.getisBool(id);
+    }
+
 }
