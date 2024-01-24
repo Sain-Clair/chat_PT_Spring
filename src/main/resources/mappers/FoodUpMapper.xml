@@ -21,7 +21,7 @@
             candidate1, candidate2, candidate3, predictrate, candidate1rate, candidate2rate, candidate3rate
         )
         SELECT
-            #{upphotoid}, nm.nnum, #{foodnum}, #{category}, #{uploaddate}, f.foodweight,
+            #{upphotoid}, nm.nnum, #{foodnum}, #{category}, #{uploaddate}, COALESCE(#{mass}, f.foodweight),
             #{candidate1}, #{candidate2}, #{candidate3}, #{predictrate}, #{candidate1rate},
             #{candidate2rate}, #{candidate3rate}
         FROM
