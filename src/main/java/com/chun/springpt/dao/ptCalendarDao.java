@@ -13,6 +13,4 @@ public interface ptCalendarDao
     public List<ptCalendarVO> getMyPtList(String userid);
     public void delMySchedule(String userid);
 
-
-    
 }
