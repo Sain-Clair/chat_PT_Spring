@@ -117,6 +117,10 @@ public class ChatbotDailyRecord {
                                     "description", String.format("%.0f%%", ((double)totalCal / recommandCal) * 100 )
                                 ),
                                 Map.of(
+                                    "title", ".",
+                                    "description", "."
+                                ),
+                                Map.of(
                                     "title", "탄수화물",
                                     "description",  totalTan + " / " + recommandTan + " (g)"
                                 ),
