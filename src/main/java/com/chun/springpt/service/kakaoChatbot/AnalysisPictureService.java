@@ -1,6 +1,5 @@
 package com.chun.springpt.service.kakaoChatbot;
 
-import com.chun.springpt.dao.AuthDao;
 import com.chun.springpt.dao.FoodDao;
 import com.chun.springpt.vo.FoodVO;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -49,6 +47,7 @@ public class AnalysisPictureService {
     @Async
     @ResponseBody
     public void analysis_picture(String callbackUrl, List<String> secureUrlsList, String userName, String meal_time) {
+
         // `formData`를 생성하여 userName과 URL 리스트를 포함시킨다.
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
         formData.add("userName", userName);
@@ -77,35 +76,20 @@ public class AnalysisPictureService {
         List<Map<String, Object>> results = (List<Map<String, Object>>) responseFromDjango.get("results");
         // foodnum을 통해 음식 정보를 가져오기
         List<FoodVO> foodVOList = new ArrayList<>();
+        Object button;
         for (int i = 0; i < results.size(); i++) {
             foodVOList.add(foodDao.selecOnetFood(Integer.parseInt(results.get(i).get("foodnum").toString())));
-            Map<String, Object> item = Map.of(
-                "imageTitle", Map.of(
-                    "title", foodVOList.get(i).getFOODNAME(),
-                    "description", foodVOList.get(i).getFOODNAME() + "일 확률이 " + results.get(i).get("predictrate").toString() + "%입니다."
-                ),
-                "title", "<분석 결과 후보>",
-                "description",
-                foodDao.selecOnetFood(Integer.parseInt(results.get(i).get("candidate1").toString())).getFOODNAME() + ", "
-                    + foodDao.selecOnetFood(Integer.parseInt(results.get(i).get("candidate2").toString())).getFOODNAME() + ", "
-                    + foodDao.selecOnetFood(Integer.parseInt(results.get(i).get("candidate3").toString())).getFOODNAME(),
-                "thumbnail", Map.of(
-                    "imageUrl", secureUrlsList.get(i),
-                    "width", "800",
-                    "height", "400"
-                ),
-                "profile", Map.of(
-                    "title", meal_time + "식단 분석"
-                ),
-                "itemList", List.of(
-                    Map.of("title", "기준", "description", foodVOList.get(i).getFOODWEIGHT() + "(g)"),
-                    Map.of("title", ".", "description", "."),
-                    Map.of("title", "칼로리", "description", foodVOList.get(i).getFOODCAL() + "kcal"),
-                    Map.of("title", "탄수화물", "description", foodVOList.get(i).getFOOD_TAN() + "(g)"),
-                    Map.of("title", "단백질", "description", foodVOList.get(i).getFOOD_DAN() + "(g)"),
-                    Map.of("title", "지방", "description", foodVOList.get(i).getFOOD_GI() + "(g)")
-                ),
-                "buttons", List.of(
+            // 유저 정보가 없으면 버튼 없음
+            if(userName == null) {
+                button = List.of(
+                    Map.of(
+                        "action", "message",
+                        "label", "기록를 위해 회원가입",
+                        "messageText", "회원가입"
+                    )
+                );
+            } else {
+                button = List.of(
                     Map.of(
                         "action", "message",
                         "label", "이대로 기록",
@@ -146,7 +130,36 @@ public class AnalysisPictureService {
                             entry("후보3확률", results.get(i).get("candidate3rate").toString())
                         )
                     )
+                );
+            }
+
+            Map<String, Object> item = Map.of(
+                "imageTitle", Map.of(
+                    "title", foodVOList.get(i).getFOODNAME(),
+                    "description", foodVOList.get(i).getFOODNAME() + "일 확률이 " + results.get(i).get("predictrate").toString() + "%입니다."
                 ),
+                "title", "<분석 결과 후보>",
+                "description",
+                foodDao.selecOnetFood(Integer.parseInt(results.get(i).get("candidate1").toString())).getFOODNAME() + ", "
+                    + foodDao.selecOnetFood(Integer.parseInt(results.get(i).get("candidate2").toString())).getFOODNAME() + ", "
+                    + foodDao.selecOnetFood(Integer.parseInt(results.get(i).get("candidate3").toString())).getFOODNAME(),
+                "thumbnail", Map.of(
+                    "imageUrl", secureUrlsList.get(i),
+                    "width", "800",
+                    "height", "400"
+                ),
+                "profile", Map.of(
+                    "title", meal_time + "식단 분석"
+                ),
+                "itemList", List.of(
+                    Map.of("title", "기준", "description", foodVOList.get(i).getFOODWEIGHT() + "(g)"),
+                    Map.of("title", ".", "description", "."),
+                    Map.of("title", "칼로리", "description", foodVOList.get(i).getFOODCAL() + "kcal"),
+                    Map.of("title", "탄수화물", "description", foodVOList.get(i).getFOOD_TAN() + "(g)"),
+                    Map.of("title", "단백질", "description", foodVOList.get(i).getFOOD_DAN() + "(g)"),
+                    Map.of("title", "지방", "description", foodVOList.get(i).getFOOD_GI() + "(g)")
+                ),
+                "buttons", button,
                 "itemListAlignment", "right"
             );
             carouselItems.add(item);
