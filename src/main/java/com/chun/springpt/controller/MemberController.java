@@ -46,4 +46,17 @@ public class MemberController {
         return "success";
     }
 
+    // 특정 한명에 대한 정보 가져오기
+    @GetMapping("/getuserInfo")
+    @ResponseBody
+    public List<MemberVO> getuserInfo(MemberVO memberVO) {
+        String authorizationHeader = request.getHeader("Authorization");
+        String token = JwtUtil.extractToken(authorizationHeader);
+        String userName = JwtUtil.getID(token);
+
+        memberVO.setID(userName);
+
+        return Mservice.getuserInfo(memberVO);
+    }
+
 }

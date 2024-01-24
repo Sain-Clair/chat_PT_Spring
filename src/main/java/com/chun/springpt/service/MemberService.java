@@ -27,4 +27,9 @@ public class MemberService
 		mdao.changeWeight(userName, weight);
     }
 
+	// 특정 유저 정보 전부 가져오기
+	public List<MemberVO> getuserInfo(MemberVO memberVO){
+		return mdao.getuserInfo(memberVO);
+	}
+
 }

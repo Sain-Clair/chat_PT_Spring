@@ -14,4 +14,8 @@ public interface MemberDao {
     void changeWeight(String userName, Integer weight);
 	public int getMyNum(String id);
 
+	//유저 정보 전부 가져오기
+	public List<MemberVO> getuserInfo(MemberVO memberVO);
+
+
 }

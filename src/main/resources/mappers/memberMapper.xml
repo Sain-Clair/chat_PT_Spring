@@ -29,4 +29,7 @@
         when not matched then
             insert (nnum, dietlogkg, dietlogdate) values (n.nnum, #{weight}, trunc(SYSDATE))
     </update>
+
+
+
 </mapper>
