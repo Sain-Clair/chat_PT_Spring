@@ -34,8 +34,7 @@ public class UpPhotoController {
     private S3uploadService s3uploadService;
 
     @GetMapping("/todayPhoto")
-
-    private List<UpPhotoVo> getTodayPhotoList(HttpServletRequest request)
+    private List<UpPhotoVo> getTodayPhotoList(HttpServletRequest request, @RequestParam String date)
     {
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
