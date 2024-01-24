@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><!-- 왼쪽 구문(http://mybaits) 강제로 다운로드 -->
 <mapper namespace="com.chun.springpt.dao.MyCalendarDao">
-    <select id="selectCalendarList" resultType="mycalendar" parameterType="string">
-        select * from mycalendar where userid = #{userid}
+    
+    <select id="selectCalendarList"  resultType="mycalendar">
+select 
+    u.UPPHOTOID as id , u.category as title, u.uploaddate as eatdate
+from 
+    upphoto u
+join
+    normal_mem m on m.nnum = u.nnum
+join
+    food f on u.foodnum = f.foodnum
+where 
+    m.normal_id = #{userid}
     </select>
-        
- <insert id="insertMyCalendar" parameterType="mycalendar">
-    INSERT INTO MyCalendar (eventNum, userid, title, img, startStr, endStr)
-    VALUES (#{eventNum}, #{userid}, #{title}, #{img}, #{startStr}, #{endStr})
-  </insert>
 
-<delete id="deleteMyCalendar" parameterType="map">
-  DELETE FROM MyCalendar
-  WHERE eventNum = #{eventNum} AND userid = #{userid}
-</delete>
+
+    
+
+    <!-- MyCalendar에서 특정 이벤트 삭제 -->
+    <delete id="delMyCalendar">
+        DELETE FROM MyCalendar WHERE id = #{num}
+    </delete>
+
 
 </mapper>

@@ -9,6 +9,9 @@ import com.chun.springpt.vo.MemberVO;
 @Mapper
 public interface MemberDao {
 	public List<MemberVO> selectList();
+
 	public String getRegion(String userName);
     void changeWeight(String userName, Integer weight);
+	public int getMyNum(String id);
+
 }
