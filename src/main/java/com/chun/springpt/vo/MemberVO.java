@@ -16,4 +16,16 @@ public class MemberVO {
 	private String ROLE;
 	private Date BIRTH;
 	private String MEMBER_EMAIL;
+	private String KAKAOCODE;
+	private String WITHOAUTH;
+
+	private float WEIGHT;
+	private float HEIGHT;
+	private int PURPOSE; //"운동목적 0 : 다이어트 1: 체중유지 2: 벌크업"
+	private float ACTIVITY;
+	private String NICKNAME;
+	private float TARGET_WEIGHT;
+	private String NM_PROFILEIMG;
+	private String REGION;
+
 }

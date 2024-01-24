@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.chun.springpt.service.MemberService;
@@ -57,6 +58,25 @@ public class MemberController {
         memberVO.setID(userName);
 
         return Mservice.getuserInfo(memberVO);
+    }
+    // 회원 정보 수정
+    @PostMapping("/updateUserInfo")
+    public ResponseEntity<?> updateUserInfo(@RequestBody MemberVO memberVO) {
+        String authorizationHeader = request.getHeader("Authorization");
+        String token = JwtUtil.extractToken(authorizationHeader);
+        String userName = JwtUtil.getID(token);
+
+        memberVO.setID(userName); // 토큰에서 추출한 사용자 ID 설정
+        System.out.println("유저 업데이트 요청! " + memberVO);
+
+        try {
+            Mservice.updateMemberInfo(memberVO); // 서비스 계층에서 회원 정보 업데이트
+            System.out.println("유저 업데이트 완료: " + memberVO.getID());
+            return ResponseEntity.ok().body("유저 업데이트 요청 완료 📀");
+        } catch (Exception e) {
+            System.err.println("유저 업데이트 실패: " + e.getMessage());
+            return ResponseEntity.badRequest().body("유저 업데이트 요청 불가 ❌");
+        }
     }
 
 }

@@ -9,27 +9,32 @@ import com.chun.springpt.dao.MemberDao;
 import com.chun.springpt.vo.MemberVO;
 
 @Service
-public class MemberService 
-{	
-	@Autowired
-	private MemberDao mdao;
-	
-	public List<MemberVO> selectMemberList()
-	{
-		return mdao.selectList();
-	}
-	public String getRegion(String userName){
-		return mdao.getRegion(userName);
-	}
+public class MemberService {
+    @Autowired
+    private MemberDao mdao;
+
+    public List<MemberVO> selectMemberList() {
+        return mdao.selectList();
+    }
+
+    public String getRegion(String userName) {
+        return mdao.getRegion(userName);
+    }
 
 
     public void changeWeight(String userName, Integer weight) {
-		mdao.changeWeight(userName, weight);
+        mdao.changeWeight(userName, weight);
     }
 
-	// 특정 유저 정보 전부 가져오기
-	public List<MemberVO> getuserInfo(MemberVO memberVO){
-		return mdao.getuserInfo(memberVO);
-	}
+    // 특정 유저 정보 전부 가져오기
+    public List<MemberVO> getuserInfo(MemberVO memberVO) {
+        return mdao.getuserInfo(memberVO);
+    }
+
+
+    public void updateMemberInfo(MemberVO memberVO) {
+		mdao.updateMember(memberVO);
+    }
+
 
 }

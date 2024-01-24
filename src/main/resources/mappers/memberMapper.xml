@@ -30,6 +30,40 @@
             insert (nnum, dietlogkg, dietlogdate) values (n.nnum, #{weight}, trunc(SYSDATE))
     </update>
 
+    <!--    특정 유저아이디에 대한 정보 유저 정보가져오기-->
+    <select id ="getuserInfo" resultType="mvo">
+        select * from MEMBERS full outer join NORMAL_MEM on members.id = normal_mem.normal_id
+        where members.id = #{ID}
+
+        <!--        select * from MEMBERS full outer join NORMAL_MEM on members.id = normal_mem.normal_id-->
+        <!--        where members.id = #{ID}-->
+    </select>
+
+
+
+    <!-- 회원 정보 수정 | 일부만 수정해야 될 경우를 상정해야 되서 아래처럼 됨 -->
+    <update id="updateMemberInfo" parameterType="mvo">
+        UPDATE MEMBERS
+        SET
+        <if test="EMAIL != null">EMAIL = #{EMAIL},</if>
+        <if test="PASSWORD != null">PASSWORD = #{PASSWORD},</if>
+        <if test="NAME != null">NAME = #{NAME},</if>
+        <if test="GENDER != null">GENDER = #{GENDER},</if>
+        <if test="ROLE != null">ROLE = #{ROLE},</if>
+        <if test="BIRTH != null">BIRTH = #{BIRTH},</if>
+        <if test="MEMBER_EMAIL != null">MEMBER_EMAIL = #{MEMBER_EMAIL},</if>
+        <if test="KAKAOCODE != null">KAKAOCODE = #{KAKAOCODE},</if>
+        <if test="WITHOAUTH != null">WITHOAUTH = #{WITHOAUTH},</if>
+        <if test="WEIGHT != null">WEIGHT = #{WEIGHT},</if>
+        <if test="HEIGHT != null">HEIGHT = #{HEIGHT},</if>
+        <if test="PURPOSE != null">PURPOSE = #{PURPOSE},</if>
+        <if test="ACTIVITY != null">ACTIVITY = #{ACTIVITY},</if>
+        <if test="NICKNAME != null">NICKNAME = #{NICKNAME},</if>
+        <if test="TARGET_WEIGHT != null">TARGET_WEIGHT = #{TARGET_WEIGHT},</if>
+        <if test="NM_PROFILEIMG != null">NM_PROFILEIMG = #{NM_PROFILEIMG},</if>
+        <if test="REGION != null">REGION = #{REGION}</if>
+        WHERE ID = #{ID}
+    </update>
 
 
 </mapper>
