@@ -10,9 +10,7 @@ import lombok.Data;
 @Data
 public class MyCalendarVO 
 {
-    private int eventNum;
-    private int upphotoid;
+    private int id;
     private String title;
-    private String startStr;
-    private String endStr;
+    private String eatdate;
 }

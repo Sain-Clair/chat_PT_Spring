@@ -2,23 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"><!-- 왼쪽 구문(http://mybaits) 강제로 다운로드 -->
 <mapper namespace="com.chun.springpt.dao.MyCalendarDao">
     
-    <select id="selectCalendarList" parameterType="map" resultType="mycalendar">
-SELECT 
-    m.title, 
-    MIN(m.eventnum) AS eventnum, 
-    MIN(m.img) AS img, 
-    m.startstr, 
-    m.endstr
-FROM 
-    mycalendar m
-    INNER JOIN upphoto u ON u.upphotoid = m.upphotoid
-    INNER JOIN normal_mem n ON u.nnum = n.nnum
-    INNER JOIN food f ON u.foodnum = f.foodnum
-WHERE 
-    n.normal_id = #{userid}
-    AND u.category = #{category}
-GROUP BY 
-    m.title, m.startstr, m.endstr
+    <select id="selectCalendarList"  resultType="mycalendar">
+select 
+    u.UPPHOTOID as id , u.category as title, u.uploaddate as eatdate
+from 
+    upphoto u
+join
+    normal_mem m on m.nnum = u.nnum
+join
+    food f on u.foodnum = f.foodnum
+where 
+    m.normal_id = #{userid}
     </select>
 
 
@@ -26,7 +20,7 @@ GROUP BY
 
     <!-- MyCalendar에서 특정 이벤트 삭제 -->
     <delete id="delMyCalendar">
-        DELETE FROM MyCalendar WHERE eventNum = #{num}
+        DELETE FROM MyCalendar WHERE id = #{num}
     </delete>
 
 

@@ -1,5 +1,6 @@
 package com.chun.springpt.vo;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.type.Alias;
@@ -12,11 +13,14 @@ import lombok.Data;
 @AllArgsConstructor
 public class foodDetailVO 
 {
-    private int id;
+    private int upphotoid;
     private String title;
-    private String foodImgs;
-    private Double cal;
-    private Double carbohydrate;
-    private Double protein;
-    private Double fat;
+    private Date eatedate;
+    private double foodcal;
+    private double carbohydrate;
+    private double protein;
+    private double fat;
+    private String img;    
+
 }
+

@@ -16,9 +16,9 @@ public class MyCalendarService
     @Autowired
     private MyCalendarDao dao;
 
-    public List<MyCalendarVO> selectCalendarList(Map<String , Object> params)
+    public List<MyCalendarVO> selectCalendarList(String userid)
     {
-        return dao.selectCalendarList(params);
+        return dao.selectCalendarList(userid);
     }
 
     public void deleteMyCalendar(int num)

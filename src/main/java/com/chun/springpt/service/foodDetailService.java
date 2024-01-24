@@ -21,9 +21,11 @@ public class foodDetailService
     }
 
 
-    public List<foodDetailVO> selectedFoodDetails(Map<String, Object> tmap)
+    public List<foodDetailVO> selectedFoodDetails(Map<String , Object> parameters)
     {
-        return dao.selectedFoodDetails(tmap);
+
+        System.out.println("parameters : " + parameters);
+        return dao.selectedFoodDetails(parameters);
     }
 
 

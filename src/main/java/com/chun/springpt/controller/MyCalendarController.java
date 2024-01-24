@@ -22,6 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -38,7 +40,7 @@ public class MyCalendarController
     private foodDetailService nuservice;
 
     @GetMapping("/myCalendarList")
-    public List<MyCalendarVO> getMyCalendarList(@Param("category") String category) 
+    public List<MyCalendarVO> getMyCalendarList() 
     {
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
@@ -46,12 +48,7 @@ public class MyCalendarController
         // 사용자 아이디
         String userid = JwtUtil.getID(token);
 
-        Map<String , Object> params = new HashMap<String , Object>();
-        params.put("userid", userid);
-        params.put("category", category);
-        
-
-        return mservice.selectCalendarList(params);
+        return mservice.selectCalendarList(userid);
     }
 
     @DeleteMapping("/delteCalendarInfo/{num}")
@@ -70,19 +67,22 @@ public class MyCalendarController
     }
 
     @GetMapping("/selectedFoodDetails")
-    public List<foodDetailVO> getNutritionData(    @Param("category") String category, 
-                                                   @Param("date") String date) 
+    public List<foodDetailVO> getNutritionData(@RequestParam Map<String ,Object> params) 
     {
+    
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
         
         // 사용자 아이디
         String userid = JwtUtil.getID(token);
-        Map<String, Object> tmap = new HashMap<String, Object>();
-        tmap.put("userid", userid);
-        tmap.put("date", date);
-        tmap.put("category", category);
+        params.put("userid",userid);
 
-        return nuservice.selectedFoodDetails(tmap);
+        
+
+
+        List<foodDetailVO> response = nuservice.selectedFoodDetails(params);
+        
+
+        return response;
     }
 }

@@ -27,27 +27,19 @@
             where n.normal_id = #{userid}
     </select> -->
 
-    <select id="selectedFoodDetails" resultType="fvo" parameterType="map">
-  SELECT
-    m.eventnum,
-     m.title,
-    f.foodimg,
-    f.food_tan,
-    f.food_dan,
-    f.food_gi,
-    f.foodcal
-  FROM
-    mycalendar m
-  INNER JOIN
-    upphoto u ON u.upphotoid = m.upphotoid
-  INNER JOIN
-    normal_mem n ON u.nnum = n.nnum
-  INNER JOIN
-    food f ON u.foodnum = f.foodnum
-  WHERE
-    n.normal_id = #{userid}
-    AND u.category = #{category}
-    AND m.startStr = TO_DATE(#{date}, 'YYYY-MM-DD')
+    <select id="selectedFoodDetails" resultType="fvo" >
+    select 
+        u.upphotoid , u.category as title , u.uploaddate as eatdate , f.foodcal  , f.food_tan as carbohydrate,f.food_dan as protein ,f.food_gi as fat, f.foodimg as img
+    from 
+        upphoto u
+    join
+        normal_mem m on m.nnum = u.nnum
+    join
+        food f on u.foodnum = f.foodnum
+    where 
+        m.normal_id = #{userid}
+    and u.category = #{title}
+    and Trunc(u.uploaddate) = to_Date(#{eatdate} , 'YY/MM/DD')
 </select>
 
 
