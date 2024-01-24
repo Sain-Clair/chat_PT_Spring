@@ -1,10 +1,8 @@
 package com.chun.springpt.service;
 
-import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-
-import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,16 +18,28 @@ public class SignUpService {
     private SignUpDao sdao;
     @Autowired
     private FoodDao fdao;
+    @Autowired
+    private S3uploadService s3uploadService;
 
     // 일반 회원가입
+    @Transactional
     public int insertMembers(Map<String, Object> data) {
         try {
+            String imgbase64 = (String) data.get("nm_profileimg");
+            byte[] imageBytes = Base64.getDecoder().decode(imgbase64.split(",")[1]);
             int insertMemResult = sdao.insertMembers(data);
+            System.out.println("여기 MemberResult insert문" + insertMemResult);
             int insertNormalResult = sdao.insertNormal(data);
-            int nnum = (Integer) data.get("nnum");
+            System.out.println("여기 노말Result insert문" + insertMemResult);
+            int nnum = (int) data.get("nnum");
             data.put("nnum", nnum); // nnum 값을 data에 삽입
             int insertMemFoodResult = sdao.insertMemFood(data);
             int sum = insertMemResult + insertNormalResult + insertMemFoodResult;
+
+            String filePath = "normal_user/" + nnum + ".png";
+            System.out.println(filePath);
+            s3uploadService.saveFilewithName(filePath, imageBytes);
+
             if (sum > 3) {
                 return 1;
             } else {
@@ -41,12 +51,23 @@ public class SignUpService {
     }
 
     // PT 회원가입
+    // @Transactional
     public int insertTrainerMembers(Map<String, Object> data) {
         try {
+            List<Map<String, String>> awards = (List<Map<String, String>>) data.get("awards");
+            // award 처리
+            for (int i = 0; i < awards.size(); i++) {
+                data.put("awards" + (i + 1), awards.get(i).get("name"));
+            }
+            for (int i = awards.size(); i < 5; i++) {
+                data.put("awards" + (i + 1), "");
+            }
+
             int insertMemResult = sdao.insertMembers(data);
             int insertTrainerResult = sdao.insertTrainer(data);
-            // int tnum = (Integer) data.get("tnum");
-            // data.put("tnum", tnum);
+            int tnum = (Integer) data.get("tnum");
+            data.put("tnum", tnum); //
+            // int insertPTimage = sdao.updatePTimage(data);
             int sum = insertMemResult + insertTrainerResult;
             System.out.println("트레이너 회원가입 sum:" + sum);
             if (sum >= 2) {

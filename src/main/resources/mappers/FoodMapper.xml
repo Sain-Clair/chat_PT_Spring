@@ -12,4 +12,7 @@
 		WHERE ROWNUM <= 50
 		]]>
 	</select>
+	<select id="selecOnetFood" resultType="fvo">
+		select * from food where foodnum=#{foodnum}
+	</select>
 </mapper>

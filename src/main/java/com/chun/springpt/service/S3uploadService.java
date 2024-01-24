@@ -4,7 +4,9 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.util.StringInputStream;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class S3uploadService {
     private final AmazonS3 amazonS3;
 
@@ -38,7 +41,6 @@ public class S3uploadService {
             amazonS3.putObject(bucket, fullPath, multipartFile.getInputStream(), metadata);
             fileUrls.add(amazonS3.getUrl(bucket, fullPath).toString());
         }
-
         return fileUrls;
     }
 
@@ -61,7 +63,38 @@ public class S3uploadService {
         return fileUrls;
     }
 
+    public List<String> saveWithImageInputStream(String path, String fileName, InputStream imageInputStream) {
+        try {
+            List<String> fileUrls = new ArrayList<>();
+
+            String fullPath = path + fileName;
+
+            ObjectMetadata metadata = new ObjectMetadata();
+            metadata.setContentType("image/jpg");
+
+            amazonS3.putObject(new PutObjectRequest(bucket, fullPath, imageInputStream, metadata));
+
+            fileUrls.add(amazonS3.getUrl(bucket, fullPath).toString());
+
+            // InputStream을 닫는 것은 메소드 호출자의 책임.
+            // imageInputStream.close();
+
+            return fileUrls;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public void deleteFileFromS3(String filePath) {
-        amazonS3.deleteObject(new DeleteObjectRequest(bucket, filePath));
+// S3 버킷 이름과 파일 경로를 결합하여 전체 경로를 로그로 출력
+        String fullFilePath = "s3://" + bucket + "/" + filePath;
+        log.info("Attempting to delete file from S3 at full path: {}", fullFilePath);
+
+        try {
+            amazonS3.deleteObject(new DeleteObjectRequest(bucket, filePath));
+        } catch (Exception e) {
+            log.error("Error deleting file from S3: {}", e.getMessage());
+            throw e; // 추가적인 예외 처리가 필요할 수 있음
+        }
     }
 }

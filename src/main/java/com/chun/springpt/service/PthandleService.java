@@ -28,8 +28,6 @@ public class PthandleService {
   }
 
   public void pthandleToLive(PthandleVO pthandleVO) {
-    System.out.println(pthandleVO.getUSERID());
-    System.out.println(pthandleVO.getPTSTART());
     pthandleDao.pthandleToLive(pthandleVO);
   }
 

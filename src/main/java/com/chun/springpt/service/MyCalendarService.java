@@ -1,6 +1,7 @@
 package com.chun.springpt.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,18 +17,19 @@ public class MyCalendarService
 
     public List<MyCalendarVO> selectCalendarList(String userid)
     {
-        return dao.getMyCalendarList(userid);
+        return dao.selectCalendarList(userid);
     }
 
-    public void insertMyCalendar(MyCalendarVO my)
+    public void deleteMyCalendar(int num)
     {
-       dao.insertCalendar(my);
+        dao.delMyCalendar(num);
     }
 
-    public void deleteMyCalendar(MyCalendarVO my)
+    public List<MyCalendarVO> sameDataByNnum(List<MyCalendarVO> vo)
     {
-        dao.delMyCalendar(my);
+        return dao.sameDataByNnum(vo);
     }
+    
 
 
 }

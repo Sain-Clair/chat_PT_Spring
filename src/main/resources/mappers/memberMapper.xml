@@ -3,7 +3,16 @@
 <mapper namespace="com.chun.springpt.dao.MemberDao">
 	<select id="selectList" resultType="mvo">
 		select * from Members
-    </select>
+	</select>
+
+    <select id="findMyNum" resultType="int" parameterType="String">
+      select nnum from members where id = #{id}
+   </select>
+   
+	<select id="selectList" resultType="bvo">
+      select * from board
+   </select>
+
     
    <select id ="getRegion" resultType="String">
       select region from normal_mem where normal_id = #{userName}

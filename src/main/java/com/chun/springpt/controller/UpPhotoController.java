@@ -34,7 +34,9 @@ public class UpPhotoController {
     private S3uploadService s3uploadService;
 
     @GetMapping("/todayPhoto")
-    private List<UpPhotoVo> getTodayPhotoList(HttpServletRequest request, @RequestParam String date){
+
+    private List<UpPhotoVo> getTodayPhotoList(HttpServletRequest request)
+    {
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
         String user_id = JwtUtil.getID(token);
@@ -46,36 +48,26 @@ public class UpPhotoController {
     private ResponseEntity<?> deleteFoodData(@RequestBody UpPhotoRequest food) {
         int upphotoid = food.getUpphotoid();
         log.info("upphotoid : " + upphotoid);
-        boolean isDeleteImg = transactionDeleteUpdate(upphotoid);
-        log.info("isDeleteImg : " + isDeleteImg);
-        if (isDeleteImg) {
-            String imagePath = "user_upload_food/" + upphotoid + ".jpg";
-            s3uploadService.deleteFileFromS3(imagePath);
-            log.info("성공");
-            return ResponseEntity.ok().body("Deletion successful");
-        } else {
-            log.info("실패");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Food not found");
-        }
+        transactionDeleteUpdate(upphotoid);
+        String imagePath = "user_upload_food/" + upphotoid + ".jpg";
+        log.info("imagePath : " + imagePath);
+        s3uploadService.deleteFileFromS3(imagePath);
+        log.info("성공");
+        return ResponseEntity.ok().body("Deletion successful");
     }
 
-    private boolean transactionDeleteUpdate(int upphotoid) {
+    private void transactionDeleteUpdate(int upphotoid) {
         //select
         List<Date> uploaddate = upPhotoService.selectUpLoadDate(upphotoid);
 
-        if (uploaddate.isEmpty()){
-            return false;
-        }
-        else if(uploaddate.size() == 1) {
+        if(uploaddate.size() == 1) {
             //delete
             upPhotoService.deleteMemberFood(upphotoid);
             //update
             upPhotoService.updatePlusFood(uploaddate.get(0));
-            return true;
         }else {
             //delete
             upPhotoService.deleteMemberFood(upphotoid);
-            return true;
         }
     }
 

@@ -21,4 +21,5 @@ public class FoodUpVO {
     private Double candidate2rate;
     private Double candidate3rate;
     private Date uploaddate;
+    private int mass;
 }

@@ -9,12 +9,13 @@ import com.chun.springpt.dao.MemberDao;
 import com.chun.springpt.vo.MemberVO;
 
 @Service
-public class MemberService {
-	
+public class MemberService 
+{	
 	@Autowired
 	private MemberDao mdao;
 	
-	public List<MemberVO> selectMemberList(){
+	public List<MemberVO> selectMemberList()
+	{
 		return mdao.selectList();
 	}
 	public String getRegion(String userName){
@@ -26,4 +27,5 @@ public class MemberService {
 	public List<MemberVO> getuserInfo(MemberVO memberVO){
 		return mdao.getuserInfo(memberVO);
 	}
+
 }

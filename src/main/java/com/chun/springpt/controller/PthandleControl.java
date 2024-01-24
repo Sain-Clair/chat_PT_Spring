@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 public class PthandleControl {
   @Autowired
@@ -31,7 +32,6 @@ public class PthandleControl {
     PthandleVO pthandleVO = new PthandleVO();
     pthandleVO.setTRAINERID(userName); // username을 TRAINERID 필드에 설정
 
-    System.out.println(userName);
     return pthandleService.ptAllList(pthandleVO);
   }
 

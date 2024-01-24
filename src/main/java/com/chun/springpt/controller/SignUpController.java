@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.chun.springpt.service.SignUpService;
 import com.chun.springpt.vo.FoodVO;
-import com.chun.springpt.vo.MemberVO;
 
 @RestController
 public class SignUpController {
@@ -24,6 +25,8 @@ public class SignUpController {
     // 일반 회원 가입
     @PostMapping("/signUp/completeSignUp")
     public int completeSignUp(@RequestBody Map<String, Object> data) {
+        // System.out.println("이미지 여기"+data.get("nm_profileimg"));
+        // 시퀀스 가져오기
         int result = signUpService.insertMembers(data);
         System.out.println("여기는 회원가입 완료창:" + result);
         return result;
@@ -34,7 +37,6 @@ public class SignUpController {
     public int postMethodName(@RequestBody Map<String, Object> data) {
         int result = signUpService.insertTrainerMembers(data);
         System.out.println("트레이너 회원가입 완료창:" + result);
-
         return result;
     }
 

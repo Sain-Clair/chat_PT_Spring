@@ -10,5 +10,4 @@
     <select id="getName" resultType="String">
         SELECT name FROM members WHERE id = #{id}
     </select>
-
 </mapper>
