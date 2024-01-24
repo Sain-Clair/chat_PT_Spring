@@ -8,11 +8,11 @@
     </insert>
     <insert id="insertNormal">
     insert into normal_mem (nnum, normal_id, weight, height, purpose, activity, nickname, target_weight, nm_profileimg, region)
-    values (normal_mem_seq.nextval, #{id}, #{weight}, #{height}, #{purpose}, #{activity}, #{nickname}, #{target_weight}, #{nm_profileimg.name}, #{region})
+    values (normal_mem_seq.nextval, #{id}, #{weight}, #{height}, #{purpose}, #{activity}, #{nickname}, #{target_weight}, normal_mem_seq.currval+'.png', #{region})
         <selectKey keyProperty="nnum" resultType="int" order="AFTER">
             select normal_mem_seq.currval from dual
         </selectKey>
-    </insert>
+    </insert>  
     <insert id ="insertMemFood">
         INSERT ALL
         <foreach collection="rating" item="ratingItem" index="index">
@@ -29,12 +29,6 @@
             select trainer_mem_seq.nextval from dual
         </selectKey>
     </insert>
-
-    <!-- <update id = "updatePTimage">
-        update trainer_mem
-        set mainimage = tnum||'.png'
-        where tnum = #{tnum}
-    </update> -->
     <select id="validCheckEmail" resultType="int">
         select count(*) from members where email = #{email}
     </select>

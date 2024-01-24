@@ -11,6 +11,8 @@ public interface SignUpDao {
     int insertMembers(Map<String, Object> data);
 
     int insertNormal(Map<String, Object> data);
+    // 시퀀스 가져오기
+    int selectSeq(Map<String, Object> data);
 
     int insertMemFood(Map<String, Object> data);
 
@@ -23,5 +25,6 @@ public interface SignUpDao {
 
     // 아이디 중복체크
     int validCheckId(@Param("id") String id);
+    
 
 }

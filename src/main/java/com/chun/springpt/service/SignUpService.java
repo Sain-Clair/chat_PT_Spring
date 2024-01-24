@@ -1,16 +1,12 @@
 package com.chun.springpt.service;
 
-import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-
-import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.chun.springpt.dao.FoodDao;
 import com.chun.springpt.dao.SignUpDao;
@@ -23,17 +19,27 @@ public class SignUpService {
     @Autowired
     private FoodDao fdao;
     @Autowired
-    private S3uploadService ssservice;
+    private S3uploadService s3uploadService;
 
     // 일반 회원가입
+    @Transactional
     public int insertMembers(Map<String, Object> data) {
         try {
+            String imgbase64 = (String)data.get("nm_profileimg");
+            byte[] imageBytes =  Base64.getDecoder().decode(imgbase64.split(",")[1]);
             int insertMemResult = sdao.insertMembers(data);
+            System.out.println("여기 MemberResult insert문" +insertMemResult);
             int insertNormalResult = sdao.insertNormal(data);
-            int nnum = (Integer) data.get("nnum");
+            System.out.println("여기 노말Result insert문" +insertMemResult);
+            int nnum = (int) data.get("nnum");
             data.put("nnum", nnum); // nnum 값을 data에 삽입
             int insertMemFoodResult = sdao.insertMemFood(data);
             int sum = insertMemResult + insertNormalResult + insertMemFoodResult;
+            
+            String filePath = "normal_user/" + nnum + ".png";
+            System.out.println(filePath);
+            s3uploadService.saveFilewithName(filePath, imageBytes);
+            
             if (sum > 3) {
                 return 1;
             } else {
@@ -43,7 +49,6 @@ public class SignUpService {
             throw new RuntimeException(e);
         }
     }
-
     // PT 회원가입
     // @Transactional
     public int insertTrainerMembers(Map<String, Object> data) {
