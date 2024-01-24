@@ -11,6 +11,5 @@ import com.chun.springpt.vo.foodDetailVO;
 public interface foodDetailDao 
 {
     List<foodDetailVO> selectNutritionDataByUserId(String userid);
-
     List<foodDetailVO> selectedFoodDetails(Map<String,Object> parameters);
 }

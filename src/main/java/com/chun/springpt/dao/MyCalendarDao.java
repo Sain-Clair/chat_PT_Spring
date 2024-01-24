@@ -12,5 +12,6 @@ public interface MyCalendarDao
     public List<MyCalendarVO> selectCalendarList(String userid);
     public void delMyCalendar(int num);
     public List<MyCalendarVO> sameDataByNnum(List<MyCalendarVO> vo);
+    
 }  
 

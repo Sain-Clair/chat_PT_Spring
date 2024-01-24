@@ -19,6 +19,8 @@
     </select> -->
 <!-- 
 
+
+
     <select id="selectNutritionDataByUserId" resultType="fvo">
             select f.foodimg, f.food_tan, f.food_dan, f.food_gi, f.foodcal from mycalendar m
             inner join upphoto u on u.upphotoid = m.upphotoid

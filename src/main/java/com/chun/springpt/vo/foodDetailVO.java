@@ -12,6 +12,8 @@ import lombok.Data;
 @Alias("fvo")
 @AllArgsConstructor
 public class foodDetailVO 
+
+
 {
     private int upphotoid;
     private String title;

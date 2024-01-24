@@ -13,6 +13,8 @@
         WHERE tm.TRAINER_ID = #{userid}
     </select>
 
+    
+
 
     <!-- <insert id="insertPt" resultType="ptCalendar">
 
