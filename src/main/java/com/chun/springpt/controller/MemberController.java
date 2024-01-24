@@ -33,6 +33,19 @@ public class MemberController {
         return Mservice.getRegion(userName);
     }
 
+    // 특정 한명에 대한 정보 가져오기
+    @GetMapping("/getuserInfo")
+    public List<MemberVO> getuserInfo() {
+        String authorizationHeader = request.getHeader("Authorization");
+        String token = JwtUtil.extractToken(authorizationHeader);
+        String userName = JwtUtil.getID(token);
+
+        return Mservice.getuserInfo(userName);
+    }
+
+
+
+
     // 몸무게 수정
     @PostMapping("/changeWeight")
     @ResponseBody

@@ -20,8 +20,10 @@ public class MemberService {
 	public String getRegion(String userName){
 		return mdao.getRegion(userName);
 	}
-
     public void changeWeight(String userName, Integer weight) {
 		mdao.changeWeight(userName, weight);
     }
+	public List<MemberVO> getuserInfo(String userName){
+		return mdao.getuserInfo(userName);
+	}
 }
