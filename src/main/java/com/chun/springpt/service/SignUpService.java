@@ -1,6 +1,5 @@
 package com.chun.springpt.service;
 
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,11 @@ public class SignUpService {
     public int insertMembers(Map<String, Object> data) {
         try {
             String imgbase64 = (String) data.get("nm_profileimg");
-            System.out.println("뭐야이거"+(imgbase64));
+            if (imgbase64 instanceof String) {
+                System.out.println("타입: String");
+            } else {
+                System.out.println("타입: " + imgbase64.getClass().getName());
+            }
             byte[] imageBytes = Base64.getDecoder().decode(imgbase64.split(",")[1]);
             int insertMemResult = sdao.insertMembers(data);
             int insertNormalResult = sdao.insertNormal(data);
@@ -36,7 +39,6 @@ public class SignUpService {
             int insertMemFoodResult = sdao.insertMemFood(data);
             int sum = insertMemResult + insertNormalResult + insertMemFoodResult;
             String filePath = "normal_user/" + nnum + ".png";
-            System.out.println(filePath);
             s3uploadService.saveFilewithName(filePath, imageBytes);
 
             if (sum > 3) {
