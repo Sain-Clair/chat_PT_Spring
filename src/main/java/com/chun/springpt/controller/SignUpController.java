@@ -25,8 +25,6 @@ public class SignUpController {
     // 일반 회원 가입
     @PostMapping("/signUp/completeSignUp")
     public int completeSignUp(@RequestBody Map<String, Object> data) {
-        // System.out.println("이미지 여기"+data.get("nm_profileimg"));
-        // 시퀀스 가져오기
         int result = signUpService.insertMembers(data);
         System.out.println("여기는 회원가입 완료창:" + result);
         return result;
