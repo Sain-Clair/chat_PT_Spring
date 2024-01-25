@@ -4,7 +4,7 @@
  <mapper namespace="com.chun.springpt.dao.SignUpDao">
     <insert id="insertMembers" >
     insert into members (id, email, password, name, gender, role, birth, kakaocode)
-    values (#{id}, #{email}, #{password}, #{name}, #{gender}, #{role}, sysdate ,#{kakaocode})
+    values (#{id}, #{email}, #{password}, #{name}, #{gender}, #{role}, to_date(#{birth}) ,#{kakaocode})
     </insert>
     <insert id="insertNormal">
     insert into normal_mem (nnum, normal_id, weight, height, purpose, activity, nickname, target_weight, nm_profileimg, region)
