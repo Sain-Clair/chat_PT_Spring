@@ -21,14 +21,23 @@
         SELECT * FROM dual
     </insert>
     <insert id="insertTrainer">
-    insert into trainer_mem (tnum, TRAINER_ID, trainercomment, trainerintro, region, awards1, awards2, awards3, awards4, awards5,
-    starttime, endtime, mainimage, subimage1, subimage2, isverified)
-    values (trainer_mem_seq.nextval, #{id}, #{trainercomment}, #{trainerintro}, #{region}, #{awards1}, #{awards2}, #{awards3}, #{awards4}, #{awards5},
-    #{starttime}, #{endtime}, trainer_mem_seq.currval||'.png', trainer_mem_seq.currval||'_sub1.png', trainer_mem_seq.currval||'_sub2.png', trainer_mem_seq.currval||'_sub3.png')
-        <selectKey keyProperty="tnum" resultType="int" order="AFTER">
-            select trainer_mem_seq.nextval from dual
+        <!-- 먼저 시퀀스 값을 가져옵니다 -->
+        <selectKey keyProperty="tnum" resultType="int" order="BEFORE">
+            SELECT trainer_mem_seq.nextval FROM dual
         </selectKey>
+
+        <!-- 가져온 시퀀스 값을 사용하여 행을 삽입합니다 -->
+        INSERT INTO trainer_mem (
+        tnum, TRAINER_ID, trainercomment, trainerintro, region, awards1, awards2, awards3, awards4, awards5,
+        starttime, endtime, mainimage, subimage1, subimage2, isverified, gym
+        ) VALUES (
+        #{tnum}, #{id}, #{trainercomment}, #{trainerintro}, #{region}, #{awards1}, #{awards2}, #{awards3}, #{awards4}, #{awards5},
+        #{starttime}, #{endtime}, #{tnum}||'_0.png', #{tnum}||'_1.png', #{tnum}||'_2.png', 0, #{gym}
+        )
     </insert>
+    <select id="select_trainer_mem_seq" resultType="int">
+        SELECT trainer_mem_seq.currval FROM dual
+    </select>
     <select id="validCheckEmail" resultType="int">
         select count(*) from members where email = #{email} 
     </select>

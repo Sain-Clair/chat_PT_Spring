@@ -25,6 +25,7 @@ public interface SignUpDao {
 
     // 아이디 중복체크
     int validCheckId(@Param("id") String id);
-    
 
+
+    int select_trainer_mem_seq();
 }

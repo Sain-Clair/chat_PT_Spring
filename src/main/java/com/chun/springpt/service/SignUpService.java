@@ -1,5 +1,6 @@
 package com.chun.springpt.service;
 
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -48,42 +49,56 @@ public class SignUpService {
         }
     }
 
+    public int select_trainer_mem_seq(){
+        return sdao.select_trainer_mem_seq();
+    }
+
     // PT 회원가입
     @Transactional
     public int insertTrainerMembers(Map<String, Object> data) {
         try {
-            // 이미지 처리
-            
-            String imgbase64 = (String) data.get("nm_profileimg");
-            byte[] imageBytes = Base64.getDecoder().decode(imgbase64.split(",")[1]);
-            // tnum seq 받고 넣기
-            int tnum = (int) data.get("tnum");
-            data.put("tnum", tnum);
-            String mainfilePath = "trainer/" + tnum + ".png";
-            s3uploadService.saveFilewithName(mainfilePath, imageBytes);
-            
-            List<Map<String, String>> awards = (List<Map<String, String>>) data.get("awards");
-            // award 처리
-            for (int i = 0; i < awards.size(); i++) {
-                data.put("awards" + (i + 1), awards.get(i).get("name"));
+
+
+            // awards의 타입을 확인하고 처리
+            List<String> awardsList = (List<String>) data.get("awards");
+            int i = 1;
+            for(String awards : awardsList){
+                data.put("awards"+i, awards);
+                i++;
             }
-            for (int i = awards.size(); i < 5; i++) {
-                data.put("awards" + (i + 1), "");
-            }
+
             int insertMemResult = sdao.insertMembers(data);
+
             int insertTrainerResult = sdao.insertTrainer(data);
-            // int insertPTimage = sdao.updatePTimage(data);
+            int seqNum = select_trainer_mem_seq();
             int sum = insertMemResult + insertTrainerResult;
             System.out.println("트레이너 회원가입 sum:" + sum);
-            if (sum >= 2) {
-                return 1;
-            } else {
-                return 0;
+
+            // 이미지 처리
+            List<Object> imgbase64List = (List<Object>) data.get("imgs");
+            i = 0;
+            for (Object imgbase64Object : imgbase64List) {
+
+                String imgbase64 = imgbase64Object.toString();
+                byte[] imageBytes = Base64.getDecoder().decode(imgbase64.split(",")[1]);
+
+                // tnum 값 처리
+                String imgName = seqNum + "_" + i;
+
+                String mainfilePath = "trainer/profile_img/" + imgName + ".png";
+                s3uploadService.saveFilewithName(mainfilePath, imageBytes);
+                i++;
             }
+
+
+
+
+            return sum >= 2 ? 1 : 0;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
 
     // 이미 존재하는 이메일인지 확인
     public int validCheckEmail(String email) {
