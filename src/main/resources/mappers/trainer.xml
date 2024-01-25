@@ -75,7 +75,7 @@
 
     <!--   트레이너 상세정보(자기 자신 토큰값 사용)-->
     <select id ="gettrainerInfo" resultType="String">
-        select MAINIMAGE from TRAINER_MEM where TRAINER_MEM.id = #{TRAINER_ID}
+        select MAINIMAGE from TRAINER_MEM where TRAINER_ID = #{TRAINER_ID}
 
         <!--        select * from MEMBERS full outer join NORMAL_MEM on members.id = normal_mem.normal_id-->
         <!--        where members.id = #{ID}-->
