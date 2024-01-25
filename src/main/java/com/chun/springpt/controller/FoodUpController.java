@@ -38,7 +38,7 @@ public class FoodUpController {
                           @Value("${django.base.url}") String djangoBaseUrl) {
     this.webClient = webClientBuilder
             .baseUrl(djangoBaseUrl)
-            .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024)) // 16MB로 증가
+            .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(200 * 1024 * 1024)) // 200MB로 증가
             .build();
   }
 

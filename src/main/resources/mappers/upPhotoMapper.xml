@@ -43,7 +43,7 @@
         WHERE u.upphotoid = #{upphotoid}
     </select>
     <insert id="insertRequestFood" parameterType="irvo">
-        insert into imgediterequest(EDIT_REQUEST_ID, AFTER_DATA,BEFORE_DATA,EDIT_REQUEST_STATUS,IMG_EDIT,IMG_EDITCOMMENT,UP_PHOTO_ID)
+        insert into imgediterequest(EDIT_REQUEST_ID, AFTER_DATA,BEFORE_DATA,EDIT_REQUEST_STATUS,IMG_EDIT,IMG_EDITCOMMENT,UPPHOTOID)
         values(editrequestid_seq.nextval, #{after}, #{before}, 0, sysdate, #{imgeditcomment}, #{upphotoid})
     </insert>
     <update id="updateUpphotoFoodnum">
