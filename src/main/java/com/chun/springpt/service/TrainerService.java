@@ -2,6 +2,7 @@ package com.chun.springpt.service;
 
 import java.util.List;
 
+import com.chun.springpt.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +42,10 @@ public class TrainerService {
     public int getIsBoolTrainer(String trainer_id)
     {
         return 0;
+    }
+
+    // 트레이너 상세정보(자기 자신 토큰값 사용)
+    public String gettrainerInfo(String TRAINER_ID) {
+        return dao.gettrainerInfo(TRAINER_ID);
     }
 }

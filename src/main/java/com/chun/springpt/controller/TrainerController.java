@@ -2,11 +2,11 @@ package com.chun.springpt.controller;
 
 import java.util.List;
 
+import com.chun.springpt.utils.JwtUtil;
+import com.chun.springpt.vo.MemberVO;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.chun.springpt.service.TrainerService;
 import com.chun.springpt.vo.TrainerVO;
@@ -20,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 public class TrainerController {
     @Autowired
     private TrainerService Tservice;
+    @Autowired
+    private HttpServletRequest request;
     // 전체 트레이너 리스트
     @GetMapping("/trainerList")
     public List<TrainerVO> getTrainerList() {
@@ -49,5 +51,16 @@ public class TrainerController {
         System.out.println("트레이너 디테일" +trainer_id);
         return Tservice.selectTrainerDetail(trainer_id);
     }
-    
+
+
+    // 트레이너 상세정보(자기 자신 토큰값 사용)
+    @GetMapping("/gettrainerInfo")
+    @ResponseBody
+    public String gettrainerInfo() {
+        String authorizationHeader = request.getHeader("Authorization");
+        String token = JwtUtil.extractToken(authorizationHeader);
+        String userName = JwtUtil.getID(token);
+
+        return Tservice.gettrainerInfo(userName);
+    }
 }

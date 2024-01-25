@@ -2,6 +2,7 @@ package com.chun.springpt.dao;
 
 import java.util.List;
 
+import com.chun.springpt.vo.MemberVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.chun.springpt.vo.TrainerVO;
@@ -19,13 +20,11 @@ public interface TrainerDao {
 
     // 지역 리스트 가져오기
     public List<TrainerVO> selectRegion();
-
-
-
-
     public int getIsBoolTrainer(String id);
     
     // 나의 지역에 있는 트레이너 리스트 가져오기
     public List<TrainerVO> selectRegionTrainer(String region);
+    // 트레이너 상세정보(자기 자신 토큰값 사용)
+    public String gettrainerInfo(String TRAINER_ID);
 
 }
