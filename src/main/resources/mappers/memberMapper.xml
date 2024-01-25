@@ -40,30 +40,23 @@
     </select>
 
 
-
-    <!-- 회원 정보 수정 | 일부만 수정해야 될 경우를 상정해야 되서 아래처럼 됨 -->
     <update id="updateMemberInfo" parameterType="mvo">
-        UPDATE MEMBERS
+        UPDATE MEMBERS m
         SET
-        <if test="EMAIL != null">EMAIL = #{EMAIL},</if>
-        <if test="PASSWORD != null">PASSWORD = #{PASSWORD},</if>
-        <if test="NAME != null">NAME = #{NAME},</if>
-        <if test="GENDER != null">GENDER = #{GENDER},</if>
-        <if test="ROLE != null">ROLE = #{ROLE},</if>
-        <if test="BIRTH != null">BIRTH = #{BIRTH},</if>
-        <if test="MEMBER_EMAIL != null">MEMBER_EMAIL = #{MEMBER_EMAIL},</if>
-        <if test="KAKAOCODE != null">KAKAOCODE = #{KAKAOCODE},</if>
-        <if test="WITHOAUTH != null">WITHOAUTH = #{WITHOAUTH},</if>
-        <if test="WEIGHT != null">WEIGHT = #{WEIGHT},</if>
-        <if test="HEIGHT != null">HEIGHT = #{HEIGHT},</if>
-        <if test="PURPOSE != null">PURPOSE = #{PURPOSE},</if>
-        <if test="ACTIVITY != null">ACTIVITY = #{ACTIVITY},</if>
-        <if test="NICKNAME != null">NICKNAME = #{NICKNAME},</if>
-        <if test="TARGET_WEIGHT != null">TARGET_WEIGHT = #{TARGET_WEIGHT},</if>
-        <if test="NM_PROFILEIMG != null">NM_PROFILEIMG = #{NM_PROFILEIMG},</if>
-        <if test="REGION != null">REGION = #{REGION}</if>
-        WHERE ID = #{ID}
+        m.PASSWORD = (SELECT CASE WHEN #{PASSWORD} IS NOT NULL THEN #{PASSWORD} ELSE m.PASSWORD END FROM DUAL),
+        m.KAKAOCODE = (SELECT CASE WHEN #{KAKAOCODE} IS NOT NULL THEN #{KAKAOCODE} ELSE m.KAKAOCODE END FROM DUAL)
+        WHERE m.ID = #{ID}
     </update>
 
-
+    <update id="updateNormalMemInfo" parameterType="mvo">
+        UPDATE NORMAL_MEM nm
+        SET
+        nm.WEIGHT = (SELECT CASE WHEN #{WEIGHT} IS NOT NULL THEN #{WEIGHT} ELSE nm.WEIGHT END FROM DUAL),
+        nm.HEIGHT = (SELECT CASE WHEN #{HEIGHT} IS NOT NULL THEN #{HEIGHT} ELSE nm.HEIGHT END FROM DUAL),
+        nm.PURPOSE = (SELECT CASE WHEN #{PURPOSE} IS NOT NULL THEN #{PURPOSE} ELSE nm.PURPOSE END FROM DUAL),
+        nm.TARGET_WEIGHT = (SELECT CASE WHEN #{TARGET_WEIGHT} IS NOT NULL THEN #{TARGET_WEIGHT} ELSE nm.TARGET_WEIGHT END FROM DUAL),
+        nm.nm_PROFILEIMG = (SELECT CASE WHEN #{nm_PROFILEIMG} IS NOT NULL THEN #{nm_PROFILEIMG} ELSE nm.nm_PROFILEIMG END FROM DUAL),
+        nm.REGION = (SELECT CASE WHEN #{REGION} IS NOT NULL THEN #{REGION} ELSE nm.REGION END FROM DUAL)
+        WHERE nm.NORMAL_ID = #{ID}
+    </update>
 </mapper>

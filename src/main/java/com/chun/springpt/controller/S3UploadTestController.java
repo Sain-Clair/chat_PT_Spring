@@ -25,4 +25,5 @@ public class S3UploadTestController {
         s3uploadService.deleteFileFromS3(path);
         return "삭제 완료";
     }
+
 }

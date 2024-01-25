@@ -16,7 +16,8 @@ public interface MemberDao {
 
 	//유저 정보 전부 가져오기
 	public List<MemberVO> getuserInfo(MemberVO memberVO);
-	public void updateMember(MemberVO memberVO); // 회원 정보 업데이트 쿼리
+	public void updateMemberInfo(MemberVO memberVO); // 회원 정보 업데이트 쿼리
+	public void updateNormalMemInfo(MemberVO memberVO); // 회원 정보 업데이트 쿼리
 
 
 }
