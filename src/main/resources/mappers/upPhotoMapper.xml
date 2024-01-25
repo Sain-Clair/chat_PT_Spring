@@ -47,12 +47,33 @@
         values(editrequestid_seq.nextval, #{after}, #{before}, 0, sysdate, #{imgeditcomment}, #{upphotoid})
     </insert>
     <update id="updateUpphotoFoodnum">
-        update upphoto set foodnum = #{after} where upphotoid = #{upphotoid}
+        UPDATE upphoto
+        SET
+            foodnum = CASE
+                          WHEN #{after} = CANDIDATE1 THEN CANDIDATE1
+                          WHEN #{after} = CANDIDATE2 THEN CANDIDATE2
+                          WHEN #{after} = CANDIDATE3 THEN CANDIDATE3
+                          ELSE -1
+                END,
+            PREDICTRATE = CASE
+                              WHEN #{after} = CANDIDATE1 THEN CANDIDATE1RATE
+                              WHEN #{after} = CANDIDATE2 THEN CANDIDATE2RATE
+                              WHEN #{after} = CANDIDATE3 THEN CANDIDATE3RATE
+                              ELSE 0
+                END,
+            CANDIDATE1 = CASE WHEN #{after} = CANDIDATE1 THEN foodnum ELSE CANDIDATE1 END,
+            CANDIDATE2 = CASE WHEN #{after} = CANDIDATE2 THEN foodnum ELSE CANDIDATE2 END,
+            CANDIDATE3 = CASE WHEN #{after} = CANDIDATE3 THEN foodnum ELSE CANDIDATE3 END,
+
+            CANDIDATE1RATE = CASE WHEN #{after} = CANDIDATE1 THEN PREDICTRATE ELSE CANDIDATE1RATE END,
+            CANDIDATE2RATE = CASE WHEN #{after} = CANDIDATE2 THEN PREDICTRATE ELSE CANDIDATE2RATE END,
+            CANDIDATE3RATE = CASE WHEN #{after} = CANDIDATE3 THEN PREDICTRATE ELSE CANDIDATE3RATE END
+        WHERE upphotoid = #{upphotoid}
     </update>
     <select id="getRequestFoodName">
         select IMG_EDITCOMMENT from
           (select IMG_EDITCOMMENT, EDIT_REQUEST_ID
-           from imgediterequest where up_photo_id = #{upphotoid}
+           from imgediterequest where upphotoid = #{upphotoid}
         order by EDIT_REQUEST_ID desc)
             where rownum = 1
     </select>
