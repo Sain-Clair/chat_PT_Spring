@@ -55,7 +55,7 @@
         WHERE rnum <= 10
         ]]>
     </select>
-    <!-- 해당 지역 추천 트레이너-->
+    <!-- 해당 지역 추천 트레이너! -->
     <select id="selectRegionTrainer" resultMap="TrainerMemberResultMap">
         select m.name, t.region, t.trainercomment, t.mainimage,t.starttime,t.endtime, m.id,t.gym
         from trainer_mem t 
