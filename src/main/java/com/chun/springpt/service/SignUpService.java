@@ -26,6 +26,7 @@ public class SignUpService {
     public int insertMembers(Map<String, Object> data) {
         try {
             String imgbase64 = (String) data.get("nm_profileimg");
+            System.out.println("뭐야이거"+(imgbase64));
             byte[] imageBytes = Base64.getDecoder().decode(imgbase64.split(",")[1]);
             int insertMemResult = sdao.insertMembers(data);
             int insertNormalResult = sdao.insertNormal(data);
