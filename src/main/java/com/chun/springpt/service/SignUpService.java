@@ -38,7 +38,7 @@ public class SignUpService {
             data.put("nnum", nnum); // nnum 값을 data에 삽입
             int insertMemFoodResult = sdao.insertMemFood(data);
             int sum = insertMemResult + insertNormalResult + insertMemFoodResult;
-            String filePath = "normal_user/" + nnum + ".png";
+            String filePath = "normal_user/profile_img/" + nnum + ".png";
             s3uploadService.saveFilewithName(filePath, imageBytes);
 
             if (sum > 3) {
