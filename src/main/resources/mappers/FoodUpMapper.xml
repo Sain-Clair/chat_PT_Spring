@@ -21,7 +21,11 @@
             candidate1, candidate2, candidate3, predictrate, candidate1rate, candidate2rate, candidate3rate
         )
         SELECT
-            #{upphotoid}, nm.nnum, #{foodnum}, #{category}, #{uploaddate}, COALESCE(#{mass}, f.foodweight),
+            #{upphotoid}, nm.nnum, #{foodnum}, #{category}, #{uploaddate},
+            CASE
+                WHEN #{mass} = 0 THEN f.foodweight
+                ELSE #{mass}
+            END,
             #{candidate1}, #{candidate2}, #{candidate3}, #{predictrate}, #{candidate1rate},
             #{candidate2rate}, #{candidate3rate}
         FROM
