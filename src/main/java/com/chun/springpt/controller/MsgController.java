@@ -22,6 +22,8 @@ import lombok.RequiredArgsConstructor;
  *
  * @RequiredArgsConstructor - Lombok 라이브러리의 어노테이션으로, final 또는 @NonNull 필드에 대한
  * 생성자를 자동으로 생성합니다.
+ * 캡처 요망
+ * 
  */
 @RequiredArgsConstructor
 //@Controller
@@ -47,7 +49,7 @@ public class MsgController {
 
   @MessageMapping("/chat/message")
   //public void message(@Payload MessageVO messageVO) {
-  public void message(@Payload MessageVO messageVO) {
+  public void message(@Payload MessageVO messageVO) { //@payload란? 내가 메시지에 실어보낼것
     // 메시지 타입이 ENTER(입장)인 경우, 입장 알림 메시지를 설정합니다.
       if (MessageVO.MessageType.ENTER.equals(messageVO.getType())) {
       messageVO.setLogdate(new Date());
@@ -56,13 +58,7 @@ public class MsgController {
 
     // 해당 채팅방 구독자들에게 메시지를 전송
     // "/sub/chat/room/{roomId}" 경로로 메시지를 보냄으로써, 해당 채팅방에 있는 모든 클라이언트가 메시지를 받을 수 있습니다.
-
-//    System.out.println("\n" + messageVO.getMessage());
-//    System.out.println(token);
-//    System.out.println(messageVO.getLogdate());
-//    System.out.println(messageVO.getSender());
-//    System.out.println(messageVO.getRoomId());
-//    System.out.println(messageVO.getType());
+    
     try {
       messagingTemplate.convertAndSend("/sub/chat/room/" + messageVO.getRoomId(), messageVO);
     } catch (Exception e) {
