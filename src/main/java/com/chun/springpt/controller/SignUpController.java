@@ -25,14 +25,14 @@ public class SignUpController {
     // 일반 회원 가입
     @PostMapping("/signUp/completeSignUp")
     public int completeSignUp(@RequestBody Map<String, Object> data) {
-        int result = signUpService.insertMembers(data);
-        System.out.println("여기는 회원가입 완료창:" + result);
+       // int result = signUpService.insertMembers(data);
+       // System.out.println("여기는 회원가입 완료창:" + result);
         System.out.println("Log1====================");
         for (Map.Entry e : data.entrySet()) {
             System.out.println(e.getKey() +":"+e.getValue());
         }
 
-        return result;
+        return 0;
     }
 
     // pt회원 가입
