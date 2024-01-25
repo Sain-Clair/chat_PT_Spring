@@ -29,10 +29,10 @@
         <!-- 가져온 시퀀스 값을 사용하여 행을 삽입합니다 -->
         INSERT INTO trainer_mem (
         tnum, TRAINER_ID, trainercomment, trainerintro, region, awards1, awards2, awards3, awards4, awards5,
-        starttime, endtime, mainimage, subimage1, subimage2, isverified
+        starttime, endtime, mainimage, subimage1, subimage2, isverified, gym
         ) VALUES (
         #{tnum}, #{id}, #{trainercomment}, #{trainerintro}, #{region}, #{awards1}, #{awards2}, #{awards3}, #{awards4}, #{awards5},
-        #{starttime}, #{endtime}, #{tnum}||'_0.png', #{tnum}||'_1.png', #{tnum}||'_2.png', 0
+        #{starttime}, #{endtime}, #{tnum}||'_0.png', #{tnum}||'_1.png', #{tnum}||'_2.png', 0, #{gym}
         )
     </insert>
     <select id="select_trainer_mem_seq" resultType="int">
