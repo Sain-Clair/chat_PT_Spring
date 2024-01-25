@@ -33,6 +33,29 @@ public class SignUpController {
     // pt회원 가입
     @PostMapping("/signUp/PTcompleteSignUp")
     public int postMethodName(@RequestBody Map<String, Object> data) {
+        // Map의 모든 키-값 쌍을 반복하여 출력
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            String valueType = (value == null) ? "null" : value.getClass().getName(); // 값의 타입을 가져옴
+
+            System.out.println("Key: " + key + ", Value Type: " + valueType);
+        }
+
+//        for (Map.Entry<String, Object> entry : data.entrySet()) {
+//            String key = entry.getKey();
+//            Object value = entry.getValue();
+//
+//            // 값이 String 타입이고 길이가 100자를 초과하는 경우, 문자열의 일부만 또는 길이만 출력
+//            if (value instanceof String && ((String) value).length() > 100) {
+//                System.out.println("Key: " + key + ", Value: (string length: " + ((String) value).length() + ")");
+//                // 또는
+//                // System.out.println("Key: " + key + ", Value: " + ((String) value).substring(0, 50) + "...");
+//            } else {
+//                // 그 외의 경우, 전체 값을 출력
+//                System.out.println("Key: " + key + ", Value: " + value);
+//            }
+//        }
         int result = signUpService.insertTrainerMembers(data);
         System.out.println("트레이너 회원가입 완료창:" + result);
         return result;
