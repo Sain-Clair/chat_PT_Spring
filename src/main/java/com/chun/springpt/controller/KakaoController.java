@@ -50,11 +50,9 @@ public class KakaoController {
         if (id == null) { // 비회원이면 회원가입할 때 채워줄 정보 보내기
 
             responseData.put("isSign", "false");
-            responseData.put("accessToken", accessToken);
             responseData.put("id", "kakao_" + kakaoEmail);
             responseData.put("email", kakaoEmail);
             responseData.put("nickname", kakaoService.getNickname(decodedIDToken));
-            responseData.put("profileImage", kakaoService.getProfileImage(decodedIDToken));
 
         } else { // 회원이면 토큰 발급해서 보내기
 
