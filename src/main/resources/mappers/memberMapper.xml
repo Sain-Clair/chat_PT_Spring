@@ -29,4 +29,34 @@
         when not matched then
             insert (nnum, dietlogkg, dietlogdate) values (n.nnum, #{weight}, trunc(SYSDATE))
     </update>
+
+    <!--    특정 유저아이디에 대한 정보 유저 정보가져오기-->
+    <select id ="getuserInfo" resultType="mvo">
+        select * from MEMBERS full outer join NORMAL_MEM on members.id = normal_mem.normal_id
+        where members.id = #{ID}
+
+        <!--        select * from MEMBERS full outer join NORMAL_MEM on members.id = normal_mem.normal_id-->
+        <!--        where members.id = #{ID}-->
+    </select>
+
+
+    <update id="updateMemberInfo" parameterType="mvo">
+        UPDATE MEMBERS m
+        SET
+        m.PASSWORD = (SELECT CASE WHEN #{PASSWORD} IS NOT NULL THEN #{PASSWORD} ELSE m.PASSWORD END FROM DUAL),
+        m.KAKAOCODE = (SELECT CASE WHEN #{KAKAOCODE} IS NOT NULL THEN #{KAKAOCODE} ELSE m.KAKAOCODE END FROM DUAL)
+        WHERE m.ID = #{ID}
+    </update>
+
+    <update id="updateNormalMemInfo" parameterType="mvo">
+        UPDATE NORMAL_MEM nm
+        SET
+        nm.WEIGHT = (SELECT CASE WHEN #{WEIGHT} IS NOT NULL THEN #{WEIGHT} ELSE nm.WEIGHT END FROM DUAL),
+        nm.HEIGHT = (SELECT CASE WHEN #{HEIGHT} IS NOT NULL THEN #{HEIGHT} ELSE nm.HEIGHT END FROM DUAL),
+        nm.PURPOSE = (SELECT CASE WHEN #{PURPOSE} IS NOT NULL THEN #{PURPOSE} ELSE nm.PURPOSE END FROM DUAL),
+        nm.TARGET_WEIGHT = (SELECT CASE WHEN #{TARGET_WEIGHT} IS NOT NULL THEN #{TARGET_WEIGHT} ELSE nm.TARGET_WEIGHT END FROM DUAL),
+        nm.nm_PROFILEIMG = (SELECT CASE WHEN #{nm_PROFILEIMG} IS NOT NULL THEN #{nm_PROFILEIMG} ELSE nm.nm_PROFILEIMG END FROM DUAL),
+        nm.REGION = (SELECT CASE WHEN #{REGION} IS NOT NULL THEN #{REGION} ELSE nm.REGION END FROM DUAL)
+        WHERE nm.NORMAL_ID = #{ID}
+    </update>
 </mapper>
