@@ -26,8 +26,8 @@ public class TrainerVO {
    private String AWARDS3;
    private String AWARDS4;
    private String AWARDS5;
-   private Date STARTTIME;
-   private Date ENDTIME;
+   private String STARTTIME;
+   private String ENDTIME;
    private String MAINIMAGE;
    private String SUBIMAGE1;
    private String SUBIMAGE2;
