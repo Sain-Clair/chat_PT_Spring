@@ -32,7 +32,7 @@ public class SignUpController {
             System.out.println(e.getKey() +":"+e.getValue());
         }
 
-        return 0;
+        return result;
     }
 
     // pt회원 가입
