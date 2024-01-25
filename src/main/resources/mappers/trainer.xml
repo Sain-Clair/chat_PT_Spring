@@ -51,6 +51,7 @@
                 ROW_NUMBER() OVER (ORDER BY m.id DESC) as rnum
             FROM trainer_mem t
             INNER JOIN members m ON t.trainer_id = m.id
+            where t.isverified = 1
         )         
         WHERE rnum <= 10
         ]]>
@@ -60,7 +61,7 @@
         select m.name, t.region, t.trainercomment, t.mainimage,t.starttime,t.endtime, m.id,t.gym
         from trainer_mem t 
         inner join members m on t.trainer_id = m.id
-        where t.region like '%${region}%'
+        where t.region like '%${region}%' and t.isverified = 1
     </select>
     <!-- 트레이너 상세정보-->
     <select id="selectDetail" resultMap="TrainerMemberResultMap">
