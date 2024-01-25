@@ -16,6 +16,8 @@
         <result property="AWARDS4" column="AWARDS4"/>
         <result property="AWARDS5" column="AWARDS5"/>
         <result property="STATUS" column="STATUS"/>
+        <result property="STARTTIME" column="STARTTIME"/>
+        <result property="ENDTIME" column="ENDTIME"/>
         <result property="MAINIMAGE" column="MAINIMAGE"/>
         <result property="GYM" column="GYM"/>
         <result property="SUBIMAGE1" column="SUBIMAGE1"/>
