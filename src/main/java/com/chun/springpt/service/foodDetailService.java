@@ -23,7 +23,7 @@ public class foodDetailService
     public List<foodDetailVO> selectedFoodDetails(Map<String , Object> parameters)
     {
 
-        System.out.println("parameters : " + parameters);
+//        System.out.println("parameters : " + parameters);
         return dao.selectedFoodDetails(parameters);
     }
 

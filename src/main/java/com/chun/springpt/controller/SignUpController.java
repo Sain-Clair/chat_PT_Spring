@@ -26,7 +26,7 @@ public class SignUpController {
     @PostMapping("/signUp/completeSignUp")
     public int completeSignUp(@RequestBody Map<String, Object> data) {
         int result = signUpService.insertMembers(data);
-        System.out.println("여기는 회원가입 완료창:" + result);
+//        System.out.println("여기는 회원가입 완료창:" + result);
         return result;
     }
 
@@ -39,7 +39,7 @@ public class SignUpController {
             Object value = entry.getValue();
             String valueType = (value == null) ? "null" : value.getClass().getName(); // 값의 타입을 가져옴
 
-            System.out.println("Key: " + key + ", Value Type: " + valueType);
+//            System.out.println("Key: " + key + ", Value Type: " + valueType);
         }
 
 //        for (Map.Entry<String, Object> entry : data.entrySet()) {
@@ -57,7 +57,7 @@ public class SignUpController {
 //            }
 //        }
         int result = signUpService.insertTrainerMembers(data);
-        System.out.println("트레이너 회원가입 완료창:" + result);
+//        System.out.println("트레이너 회원가입 완료창:" + result);
         return result;
     }
 

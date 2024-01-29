@@ -32,11 +32,11 @@ public class MatchptController {
 
     // 사용자 권한
     String userRole = JwtUtil.getRole(token);
-    System.out.println("유저이름 : " + userId + "/ 유저권한 : " + userRole);
-    System.out.println(msgRoomVO.getRoomId() + " : 채팅방아이디");
-    System.out.println(msgRoomVO.getTrainerId() + " : 트레이너아이디");
-    System.out.println(msgRoomVO.getUserId() + " : 유저아이디");
-    System.out.println(msgRoomVO.getStatus() + " : 채팅방상태(wait|live|expired)");
+//    System.out.println("유저이름 : " + userId + "/ 유저권한 : " + userRole);
+//    System.out.println(msgRoomVO.getRoomId() + " : 채팅방아이디");
+//    System.out.println(msgRoomVO.getTrainerId() + " : 트레이너아이디");
+//    System.out.println(msgRoomVO.getUserId() + " : 유저아이디");
+//    System.out.println(msgRoomVO.getStatus() + " : 채팅방상태(wait|live|expired)");
 
     try {
       chatRoomRepository.createChatRoom(msgRoomVO);
@@ -58,11 +58,11 @@ public class MatchptController {
 
     // 사용자 권한
     String userRole = JwtUtil.getRole(token);
-    System.out.println("유저이름 : " + userId + "/ 유저권한 : " + userRole);
-    System.out.println(msgRoomVO.getRoomId() + " : 채팅방아이디");
-    System.out.println(msgRoomVO.getTrainerId() + " : 트레이너아이디");
-    System.out.println(msgRoomVO.getUserId() + " : 유저아이디");
-    System.out.println(msgRoomVO.getStatus() + " : 채팅방상태(wait|live|expired)");
+//    System.out.println("유저이름 : " + userId + "/ 유저권한 : " + userRole);
+//    System.out.println(msgRoomVO.getRoomId() + " : 채팅방아이디");
+//    System.out.println(msgRoomVO.getTrainerId() + " : 트레이너아이디");
+//    System.out.println(msgRoomVO.getUserId() + " : 유저아이디");
+//    System.out.println(msgRoomVO.getStatus() + " : 채팅방상태(wait|live|expired)");
 
     try {
       chatRoomRepository.deleteChatRoom(msgRoomVO);

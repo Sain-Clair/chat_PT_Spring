@@ -68,7 +68,7 @@ public class AnalysisPictureService {
             })
             .block();
 
-        System.out.println("responseFromDjango: " + responseFromDjango);
+//        System.out.println("responseFromDjango: " + responseFromDjango);
 
         // 캐루셀 5개
         List<Map<String, Object>> carouselItems = new ArrayList<>();
@@ -197,12 +197,12 @@ public class AnalysisPictureService {
             .build();
 
         // 보낸 json 출력
-        System.out.println("request: " + new JSONObject(result).toString());
+//        System.out.println("request: " + new JSONObject(result).toString());
 
         try {
             // 요청 보내기 및 응답 받기
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println("response: " + response.body());
+//            System.out.println("response: " + response.body());
         } catch (Exception e) {
             e.printStackTrace();
         }

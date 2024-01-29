@@ -20,7 +20,6 @@ public class SpringptApplication {
 
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				System.out.println("Test==================");
 				registry.addMapping("/**")
 						.allowedOrigins("http://localhost:3000/", "https://chunsik.shop/", "http://www.chatpt.shop/", "http://chatpt.shop:8888/","http://www.chatpt.shop:8888/", "http://3.37.155.116:8888/","http://localhost/", "ws://localhost/", "ws://www.chatpt.shop/","http://localhost:9000/")
 						.allowedHeaders("*")

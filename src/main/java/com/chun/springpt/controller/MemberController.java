@@ -69,18 +69,16 @@ public class MemberController {
     // 회원 정보 수정
     @PostMapping("/updateUserInfo")
     public ResponseEntity<?> updateUserInfo(@RequestBody MemberVO memberVO) {
-        System.out.println("업데이트1");
         String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
         String userName = JwtUtil.getID(token);
-        System.out.println("업데이트2");
 
         memberVO.setID(userName); // 토큰에서 추출한 사용자 ID 설정
-        System.out.println("유저 업데이트 요청! " + memberVO);
+//        System.out.println("유저 업데이트 요청! " + memberVO);
         try {
             Mservice.updateUserInfo(memberVO); // 업데이트 메서드 호출
 
-            System.out.println("유저 업데이트 완료: " + memberVO.getID());
+//            System.out.println("유저 업데이트 완료: " + memberVO.getID());
             return ResponseEntity.ok().body("유저 업데이트 요청 완료 📀");
         } catch (Exception e) {
             System.err.println("업데이트 중 예외 발생: " + e.getMessage());
@@ -92,10 +90,9 @@ public class MemberController {
     public List<String> s3upload(@RequestPart(required = false) List<MultipartFile> uploadImgs) throws IOException {
         if (uploadImgs == null) {
             // 이 부분에 원하는 로직을 추가하세요.
-            System.out.println("uploadImgs : null!!!!!!!!!!!!");
+//            System.out.println("uploadImgs : null!!!!!!!!!!!!");
             return Collections.emptyList(); // 빈 리스트를 반환하거나 다른 적절한 처리를 수행하세요.
         }
-        System.out.println("123");
 
         // 파일 업로드 처리
         return s3uploadService.saveFile("normal_user/profile_img/", uploadImgs);

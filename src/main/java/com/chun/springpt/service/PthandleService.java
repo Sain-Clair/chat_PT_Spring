@@ -56,10 +56,10 @@ public class PthandleService {
 
     for (PthandleVO ptHandle : ptHandles) {
       String userId = ptHandle.getUSERID();
-      System.out.println(userId);
+//      System.out.println(userId);
       DailyTotalVO dailyTotal = dietDao.getTotaldailyinfo(userId);
       Map<String, Object> recommandTandnagi = dietService.GetRecommandTandangi(userId);
-      System.out.println(recommandTandnagi+ "adsfsfasf");
+//      System.out.println(recommandTandnagi+ "adsfsfasf");
       // 권장 탄,단,지 값을 PthandleVO에 설정
       ptHandle.setRecommandTan((BigDecimal) recommandTandnagi.get("p_recommand_tan"));
       ptHandle.setRecommandDan((BigDecimal) recommandTandnagi.get("p_recommand_dan"));
@@ -67,10 +67,10 @@ public class PthandleService {
       ptHandle.setRecommandCal((BigDecimal) recommandTandnagi.get("p_recommand_cal"));
 
       ptHandle.setDailyTotal(dailyTotal);
-      System.out.println(ptHandle.getDailyTotal());
+//      System.out.println(ptHandle.getDailyTotal());
     }
 
-    System.out.println(ptHandles + "!!!!!!!!!");
+//    System.out.println(ptHandles + "!!!!!!!!!");
     return ptHandles;
   }
 }

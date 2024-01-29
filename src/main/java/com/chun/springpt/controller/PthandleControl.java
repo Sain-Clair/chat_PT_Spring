@@ -23,7 +23,6 @@ public class PthandleControl {
   @GetMapping("/pthandleAll")
   @ResponseBody
   public List<PthandleVO> pthandleAll(){
-    System.out.println();
     String authorizationHeader = request.getHeader("Authorization");
         String token = JwtUtil.extractToken(authorizationHeader);
     // 사용자 아이디

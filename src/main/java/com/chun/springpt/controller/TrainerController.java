@@ -48,7 +48,7 @@ public class TrainerController {
     // 트레이너 상세정보
     @GetMapping("/trainerList/{trainer_id}")
     public TrainerVO getTrainerDetail(@PathVariable("trainer_id") String trainer_id) {
-        System.out.println("트레이너 디테일" +trainer_id);
+//        System.out.println("트레이너 디테일" +trainer_id);
         return Tservice.selectTrainerDetail(trainer_id);
     }
 

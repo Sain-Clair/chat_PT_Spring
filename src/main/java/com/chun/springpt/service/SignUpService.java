@@ -26,11 +26,11 @@ public class SignUpService {
     public int insertMembers(Map<String, Object> data) {
         try {
             String imgbase64 = (String) data.get("nm_profileimg");
-            if (imgbase64 instanceof String) {
-                System.out.println("타입: String");
-            } else {
-                System.out.println("타입: " + imgbase64.getClass().getName());
-            }
+//            if (imgbase64 instanceof String) {
+////                System.out.println("타입: String");
+//            } else {
+////                System.out.println("타입: " + imgbase64.getClass().getName());
+//            }
             byte[] imageBytes = Base64.getDecoder().decode(imgbase64.split(",")[1]);
             int insertMemResult = sdao.insertMembers(data);
             int insertNormalResult = sdao.insertNormal(data);
@@ -74,7 +74,7 @@ public class SignUpService {
             int insertTrainerResult = sdao.insertTrainer(data);
             int seqNum = select_trainer_mem_seq();
             int sum = insertMemResult + insertTrainerResult;
-            System.out.println("트레이너 회원가입 sum:" + sum);
+//            System.out.println("트레이너 회원가입 sum:" + sum);
 
             // 이미지 처리
             List<Object> imgbase64List = (List<Object>) data.get("imgs");
@@ -106,7 +106,7 @@ public class SignUpService {
     public int validCheckEmail(String email) {
         // 0이면 가입가능, 1이면 불가능
         int checkEmail = sdao.validCheckEmail(email);
-        System.out.println("서비스" + checkEmail);
+//        System.out.println("서비스" + checkEmail);
         return checkEmail;
     }
 
