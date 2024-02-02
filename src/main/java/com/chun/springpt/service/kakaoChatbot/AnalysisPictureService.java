@@ -32,7 +32,7 @@ public class AnalysisPictureService {
 
     private final WebClient webClient;
 
-    public final String djangoBaseUrl = "http://43.201.156.237:9000";
+    public final String djangoBaseUrl = "http://3.36.122.91:9000";
 
     @Autowired
     private FoodDao foodDao;
