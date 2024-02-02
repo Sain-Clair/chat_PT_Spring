@@ -12,7 +12,7 @@ public class KakaoChatbotService {
 
     public final String s3ImageUrl = "https://chat-pt.s3.ap-northeast-2.amazonaws.com";
 
-    public final String djangoBaseUrl = "http://43.201.156.237:9000";
+    public final String djangoBaseUrl = "http://3.36.122.91:9000";
 
     @Autowired
     private AuthDao authDao;
